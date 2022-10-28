@@ -1,0 +1,88 @@
+<div class="card">
+    <div class="card-header card-header-primary card-header-text">
+        <div class="card-text">
+            <h4 class="card-title">Hasta Yönetimi</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="control-section">
+            <ejs-grid id="Grid" height="400px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowGrouping="true"
+                allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr-TR">
+                    <e-data-manager adaptor="UrlAdaptor" url="/Patient/Get" insertUrl="/Patient/Insert" updateUrl="/Patient/Update" removeUrl="/Patient/Remove"></e-data-manager>
+                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+                    <e-grid-searchSettings fields='@(new string[] {"FullName", "IdentificationNumber"})' operator="contains" ignoreCase="true"></e-grid-searchSettings><e-grid-columns>
+                    <e-grid-column field="PatientId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                    <e-grid-column field="IdentificationNumber" headerText="Kimlik Numarası"></e-grid-column>
+                    <e-grid-column field="FullName" headerText="İsim Soyisim"></e-grid-column>
+                    <e-grid-column field="BirthDate" headerText="Doğum Tarihi" format='yMd' editType="datepickeredit"></e-grid-column>
+                    <e-grid-column field="Gender" headerText="Cinsiyet" editType="dropdownedit"></e-grid-column>
+                    <e-grid-column field="Phone" headerText="Telefon"></e-grid-column>
+                    <e-grid-column field="Email" headerText="Eposta"></e-grid-column>
+                    <e-grid-column field="Address" headerText="Adres" editType="TextBox"></e-grid-column>
+                    <e-grid-column field="ReferenceNumber" headerText="Referans Kimlik No"></e-grid-column>
+                    <e-grid-column field="Detay" headerText="Detay" template="#details"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+
+<script id="details" type="text/x-template">
+    <a href="/User/Details?patientId=${PatientId}">Detay <i class="ni ni-bold-right"></i></a>
+</script>
+
+<script type="text/javascript">
+    ej.base.L10n.load({
+        'tr-TR': {
+            'grid': {
+                'EmptyRecord': 'Kayıt yok.',
+                'Add': 'Ekle',
+                'Edit': 'Düzenle',
+                'Update': 'Güncelle',
+                'Delete': 'Sil',
+                'GroupDropArea': 'Gruplamak için sütunların başlıklarını sürükleyiniz.',
+                'Search': 'Arama',
+                'EditOperationAlert': 'Düzenlemek için kayıt seçilmedi.',
+                'Save': 'Kaydet',
+                'EditFormTitle': 'Kayıt Düzenleme - ',
+                'ConfirmDelete': 'Kaydı silmek istediğinize emin misiniz?',
+                'AddFormTitle': 'Yeni Kayıt',
+                'OKButton': 'Tamam',
+                'SaveButton': 'Kaydet',
+                'CancelButton': 'İptal',
+                'Item': 'kayıt',
+                'Items': 'kayıt'
+            },
+            'pager': {
+                'currentPageInfo': '{0}/{1}',
+                'totalItemsInfo': '({0} kayıt)',
+                'firstPageTooltip': 'İlk Sayfa',
+                'lastPageTooltip': 'Son Sayfa',
+                'nextPageTooltip': 'Sonraki Sayfa',
+                'previousPageTooltip': 'Önceki Sayfa',
+                'nextPagerTooltip': 'Sonraki Sayfa',
+                'previousPagerTooltip': 'Önceki Sayfa'
+            }
+        },
+        'tr': {
+            'datepicker': {
+                'today': 'Bugün'
+            }
+        }
+    });
+    loadCultureFiles('tr');
+    function loadCultureFiles(name) {
+        var files = ['ca-gregorian.json', 'numbers.json', 'timeZoneNames.json', 'dateFields.json'];
+        var loader = ej.base.loadCldr;
+        var loadCulture = function (prop) {
+            var val, ajax;
+            ajax = new ej.base.Ajax(location.origin + '/cldr-data/main/' + name + '/' + files[prop], 'GET', false);
+            ajax.onSuccess = function (value) { val = value; };
+            ajax.send();
+            loader(JSON.parse(val));
+            ej.base.setCulture('tr');
+        };
+        for (var prop = 0; prop < files.length; prop++) { loadCulture(prop); }
+    }
+    datepicker.locale = 'tr';
+</script>

@@ -1,0 +1,78 @@
+<div class="card">
+    <div class="card-header card-header-primary card-header-text">
+        <div class="card-text">
+            <h4 class="card-title">Ozon Yönetimi</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="control-section">
+            <ejs-grid id="Grid" height="400px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowGrouping="true"
+                allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr-TR">
+                    <e-data-manager adaptor="UrlAdaptor" url="/Ozone/Get" insertUrl="/Ozone/Insert" updateUrl="/Ozone/Update" removeUrl="/Ozone/Remove"></e-data-manager>
+                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+                    <e-grid-searchSettings fields='@(new string[] {"FullName", "IdentificationNumber"})' operator="contains" ignoreCase="true"></e-grid-searchSettings><e-grid-columns>
+                    <e-grid-column field="OzoneId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                    <e-grid-column field="PatientId" foreignKeyValue="FullName" headerText="İsim Soyisim" dataSource="ViewBag.Patients" editType="dropdownedit"></e-grid-column>
+                    <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})'></e-grid-column>
+                    <e-grid-column field="SessionDate" headerText="Uygulama Tarihi" format='yMd' editType="datepickeredit"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    ej.base.L10n.load({
+        'tr-TR': {
+            'grid': {
+                'EmptyRecord': 'Kayıt yok.',
+                'Add': 'Ekle',
+                'Edit': 'Düzenle',
+                'Update': 'Güncelle',
+                'Delete': 'Sil',
+                'GroupDropArea': 'Gruplamak için sütunların başlıklarını sürükleyiniz.',
+                'Search': 'Arama',
+                'EditOperationAlert': 'Düzenlemek için kayıt seçilmedi.',
+                'Save': 'Kaydet',
+                'EditFormTitle': 'Kayıt Düzenleme - ',
+                'ConfirmDelete': 'Kaydı silmek istediğinize emin misiniz?',
+                'AddFormTitle': 'Yeni Kayıt',
+                'OKButton': 'Tamam',
+                'SaveButton': 'Kaydet',
+                'CancelButton': 'İptal',
+                'Item': 'kayıt',
+                'Items': 'kayıt'
+            },
+            'pager': {
+                'currentPageInfo': '{0}/{1}',
+                'totalItemsInfo': '({0} kayıt)',
+                'firstPageTooltip': 'İlk Sayfa',
+                'lastPageTooltip': 'Son Sayfa',
+                'nextPageTooltip': 'Sonraki Sayfa',
+                'previousPageTooltip': 'Önceki Sayfa',
+                'nextPagerTooltip': 'Sonraki Sayfa',
+                'previousPagerTooltip': 'Önceki Sayfa'
+            }
+        },
+        'tr': {
+            'datepicker': {
+                'today': 'Bugün'
+            }
+        }
+    });
+    loadCultureFiles('tr');
+    function loadCultureFiles(name) {
+        var files = ['ca-gregorian.json', 'numbers.json', 'timeZoneNames.json', 'dateFields.json'];
+        var loader = ej.base.loadCldr;
+        var loadCulture = function (prop) {
+            var val, ajax;
+            ajax = new ej.base.Ajax(location.origin + '/cldr-data/main/' + name + '/' + files[prop], 'GET', false);
+            ajax.onSuccess = function (value) { val = value; };
+            ajax.send();
+            loader(JSON.parse(val));
+            ej.base.setCulture('tr');
+        };
+        for (var prop = 0; prop < files.length; prop++) { loadCulture(prop); }
+    }
+    datepicker.locale = 'tr';
+</script>

@@ -1,0 +1,131 @@
+@model List<Cor.Apt.Entities.AnalysisType>
+@{
+    var Analysis = (Cor.Apt.Entities.Analysis)ViewBag.Analysis;
+    var Types = (List<Cor.Apt.Entities.Type>)ViewBag.Types;
+}
+<style>
+    h6 {
+        margin-top: 10px !important;
+    } 
+</style>
+<a class="btn btn-icon btn-3 btn-default" href="/User/Details?patientId=@Analysis.PatientId" type="button">
+	<span class="btn-inner--icon"><i class="ni ni-bold-left"></i></span>
+    <span class="btn-inner--text">Hastaya Geri Dön</span>
+</a>
+<div class="card">
+    <div class="card-header card-header-primary card-header-text">
+        <div class="card-text">
+            <h4 class="card-title">Laboratuvar Detay</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Update" asp-controller="AnalysisType" method="post">
+            <input type="hidden" name="AnalysisId" value="@Analysis.AnalysisId">
+            <div class="row">
+                <div class="col-md-2">
+                    <h6>Diabet Paneli</h6>
+                    @foreach (var type in Types.Take(14))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Gaita Paneli</h6>
+                    @foreach (var type in Types.Skip(39).Take(3))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Karaciğer Paneli</h6>
+                    @foreach (var type in Types.Skip(42).Take(11))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                </div>
+                <div class="col-md-2">
+                    <h6>Hormonlar</h6>
+                    @foreach (var type in Types.Skip(14).Take(25))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                </div>
+                <div class="col-md-2">
+                    <h6>Vitaminler Paneli</h6>
+                    @foreach (var type in Types.Skip(53).Take(8))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Elektrolid</h6>
+                    @foreach (var type in Types.Skip(61).Take(12))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Diğer</h6>
+                    @foreach (var type in Types.Skip(76).Take(7))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                </div>
+                <div class="col-md-2">
+                    <h6>Lipid Paneli</h6>
+                    @foreach (var type in Types.Skip(83).Take(8))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Kardiyaloji Paneli</h6>
+                    @foreach (var type in Types.Skip(91).Take(4))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Tiroid Paneli</h6>
+                    @foreach (var type in Types.Skip(95).Take(10))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Çölyak</h6>
+                    @foreach (var type in Types.Skip(161).Take(3))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                </div>
+                <div class="col-md-2">
+                    <h6>Dinamik Testler</h6>
+                    @foreach (var type in Types.Skip(105).Take(17))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Kemik Paneli</h6>
+                    @foreach (var type in Types.Skip(122).Take(2))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Böbrek Paneli</h6>
+                    @foreach (var type in Types.Skip(124).Take(3))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Gebelik</h6>
+                    @foreach (var type in Types.Skip(73).Take(3))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                </div>
+                <div class="col-md-2">
+                    <h6>İdrar Paneli</h6>
+                    @foreach (var type in Types.Skip(127).Take(23))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Katakolaminler İdrar</h6>
+                    @foreach (var type in Types.Skip(150).Take(4))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                    <h6>Marker</h6>
+                    @foreach (var type in Types.Skip(154).Take(7))
+                    {
+                        <span class="d-block"><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></span>
+                    }
+                </div>
+            </div>
+            <button type="submit" class="btn bg-gradient-default">Kaydet</button>
+        </form>
+    </div>
+</div>

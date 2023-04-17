@@ -1,9 +1,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
-using Cor.Apt.Helpers;
 using Cor.Apt.Services.Interfaces;
 using Cor.Apt.Entities;
 
@@ -29,37 +28,61 @@ namespace Cor.Apt.Controllers
         public IActionResult Appointment()
         {
             if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
-            ViewBag.Patients = _context.Patients.ToList();
-            return View();
-        }
-        public IActionResult Andulation()
-        {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
-            ViewBag.Patients = _context.Patients.ToList();
+            ViewBag.AppointmentTypes = _context.AppointmentTypes.ToList();
+            ViewBag.Units = _context.Units.ToList();
+            ViewBag.Resources = new string[] { "Units" };
             return View();
         }
 
         public IActionResult Patient()
         {
             if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            ViewBag.SocialSecurities = _context.SocialSecurities.ToList();
+            ViewBag.DiscountTypes = _context.DiscountTypes.ToList();
             return View();
         }
 
         public IActionResult Details(int patientId)
         {
             if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
-            Patient patient = _context.Patients.Where(i => i.PatientId == patientId).FirstOrDefault();
+            Patient patient = _context.Patients.Include(i => i.DiscountType).Include(i => i.SocialSecurity).Where(i => i.PatientId == patientId).FirstOrDefault();
             if (_context.Anamnesises.Where(i => i.PatientId == patientId).Any()) ViewBag.Anamnesis = _context.Anamnesises.Where(i => i.PatientId == patientId).FirstOrDefault();
             else ViewBag.Anamnesis = new Anamnesis() { };
-            ViewBag.Analyses = _context.Analyses.Where(i => i.PatientId == patientId).ToList();
-            ViewBag.WeightRecords = _context.WeightRecords.Where(i => i.PatientId == patientId).ToList();
+            ViewBag.RadiologyTypes = _context.RadiologyTypes.ToList();
+            ViewBag.DecisionAndTracingTypes = _context.DecisionAndTracingTypes.ToList();
+            ViewBag.Users = _context.Users.ToList();
             return View(patient);
         }
-        public IActionResult Ozone()
+
+        public IActionResult Users()
         {
             if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
             ViewBag.Patients = _context.Patients.ToList();
             return View();
+        }
+
+        public IActionResult UserDetails(int userId)
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            User user = _context.Users.Where(i => i.UserId == userId).FirstOrDefault();
+            ViewBag.LeaveTypes = _context.LeaveTypes.ToList();
+            ViewBag.SalaryPaymentTypes = _context.SalaryPaymentTypes.ToList();
+            return View(user);
+        }
+
+        public IActionResult Applications()
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            ViewBag.ApplicationTypes = _context.ApplicationTypes.ToList();
+            return View();
+        }
+
+        public IActionResult Analysis(int analysisId)
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            ViewBag.Types = _context.Types.ToList();
+            ViewBag.Analysis = _context.Analyses.Where(i => i.AnalysisId == analysisId).FirstOrDefault();
+            return View(_context.AnalysisTypes.Where(i => i.AnalysisId == analysisId).ToList());
         }
     }
 }

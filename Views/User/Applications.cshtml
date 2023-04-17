@@ -1,22 +1,24 @@
 <div class="card">
     <div class="card-header card-header-primary card-header-text">
         <div class="card-text">
-            <h4 class="card-title">Ozon Yönetimi</h4>
+            <h4 class="card-title">Başvurular</h4>
         </div>
     </div>
     <div class="card-body">
         <div class="control-section">
-            <ejs-grid id="Grid" height="400px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowGrouping="true"
-                allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr-TR">
-                    <e-data-manager adaptor="UrlAdaptor" url="/Ozone/Get" insertUrl="/Ozone/Insert" updateUrl="/Ozone/Update" removeUrl="/Ozone/Remove"></e-data-manager>
-                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                    <e-grid-searchSettings fields='@(new string[] {"FullName", "IdentificationNumber"})' operator="contains" ignoreCase="true"></e-grid-searchSettings>
-                    <e-grid-columns>
-                        <e-grid-column field="OzoneId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                        <e-grid-column field="PatientId" foreignKeyValue="FullName" headerText="İsim Soyisim" dataSource="ViewBag.Patients" editType="dropdownedit"></e-grid-column>
-                        <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})'></e-grid-column>
-                        <e-grid-column field="SessionDate" headerText="Uygulama Tarihi" format='yMd' editType="datepickeredit"></e-grid-column>
-                    </e-grid-columns>
+            <ejs-grid id="Grid" height="400px" width="%100"
+                toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowGrouping="true" allowPaging="true" allowResizing="true"
+                allowTextWrap="true" allowSorting="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/Application/Get" insertUrl="/Application/Insert" updateUrl="/Application/Update" removeUrl="/Application/Remove"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-searchSettings fields='@(new string[] {"FullName"})' operator="contains" ignoreCase="true"></e-grid-searchSettings><e-grid-columns>
+                    <e-grid-column field="ApplicationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                    <e-grid-column field="FullName" headerText="İsim Soyisim" width="50px"></e-grid-column>
+                    <e-grid-column field="BirthDate" headerText="Doğum Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
+                    <e-grid-column field="Phone" headerText="Telefon" width="50px"></e-grid-column>
+                    <e-grid-column field="ApplicationTypeId" headerText="Başvuru Bölümü" foreignKeyValue="ApplicationTypeName" foreignKeyField="ApplicationTypeId" dataSource="ViewBag.ApplicationTypes" width="50px"></e-grid-column>
+                    <e-grid-column field="Cv" headerText="Cv" width="200px" editType="TextBox"></e-grid-column>
+                </e-grid-columns>
             </ejs-grid>
         </div>
     </div>
@@ -24,7 +26,10 @@
 
 <script type="text/javascript">
     ej.base.L10n.load({
-        'tr-TR': {
+        'tr': {
+            'datepicker': {
+                'today': 'Bugün'
+            },
             'grid': {
                 'EmptyRecord': 'Kayıt yok.',
                 'Add': 'Ekle',
@@ -54,11 +59,6 @@
                 'nextPagerTooltip': 'Sonraki Sayfa',
                 'previousPagerTooltip': 'Önceki Sayfa'
             }
-        },
-        'tr': {
-            'datepicker': {
-                'today': 'Bugün'
-            }
         }
     });
     loadCultureFiles('tr');
@@ -75,5 +75,4 @@
         };
         for (var prop = 0; prop < files.length; prop++) { loadCulture(prop); }
     }
-    datepicker.locale = 'tr';
 </script>

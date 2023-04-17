@@ -1,0 +1,18 @@
+using System;
+
+namespace Cor.Apt.Entities
+{
+    public class DecisionAndTracing
+    {
+        public int DecisionAndTracingId { get; set; }
+        public DateTime RecordDate { get; set; }
+        public string Description { get; set; }
+
+        public int DecisionAndTracingTypeId { get; set; }
+        public DecisionAndTracingType DecisionAndTracingType { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
+        public int PatientId { get; set; }
+        public Patient Patient { get; set; }
+    }
+}

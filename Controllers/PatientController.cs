@@ -40,12 +40,16 @@ namespace Cor.Apt.Controllers
             _patient.BirthDate = value.Value.BirthDate;
             _patient.Gender = value.Value.Gender;
             _patient.Phone = value.Value.Phone;
+            _patient.SecondPhone = value.Value.SecondPhone;
+            _patient.ThirdPhone = value.Value.ThirdPhone;
             _patient.Email = value.Value.Email;
             _patient.Address = value.Value.Address;
-            _patient.ReferenceNumber = value.Value.ReferenceNumber;
+            _patient.Reference = value.Value.Reference;
+            _patient.DiscountTypeId = value.Value.DiscountTypeId;
+            _patient.SocialSecurityId = value.Value.SocialSecurityId;
             _context.Patients.Add(_patient);
             _context.SaveChanges();
-            return Json(_patient);
+            return Json(value);
         }
         public IActionResult Update([FromBody] CRUDModel<Patient> value) // Update record 
         {
@@ -58,9 +62,13 @@ namespace Cor.Apt.Controllers
                 _patient.BirthDate = value.Value.BirthDate;
                 _patient.Gender = value.Value.Gender;
                 _patient.Phone = value.Value.Phone;
+                _patient.SecondPhone = value.Value.SecondPhone;
+                _patient.ThirdPhone = value.Value.ThirdPhone;
                 _patient.Email = value.Value.Email;
                 _patient.Address = value.Value.Address;
-                _patient.ReferenceNumber = value.Value.ReferenceNumber;
+                _patient.Reference = value.Value.Reference;
+                _patient.DiscountTypeId = value.Value.DiscountTypeId;
+                _patient.SocialSecurityId = value.Value.SocialSecurityId;
             }
             _context.SaveChanges();
             return Json(value.Value);
@@ -86,9 +94,13 @@ namespace Cor.Apt.Controllers
                 _patient.BirthDate = value.BirthDate;
                 _patient.Gender = value.Gender;
                 _patient.Phone = value.Phone;
+                _patient.SecondPhone = value.SecondPhone;
+                _patient.ThirdPhone = value.ThirdPhone;
                 _patient.Email = value.Email;
                 _patient.Address = value.Address;
-                _patient.ReferenceNumber = value.ReferenceNumber;
+                _patient.Reference = value.Reference;
+                _patient.DiscountTypeId = value.DiscountTypeId;
+                _patient.SocialSecurityId = value.SocialSecurityId;
             }
             _context.SaveChanges();
             return RedirectToAction("Details", "User", new { patientId = value.PatientId });

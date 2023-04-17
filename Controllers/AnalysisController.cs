@@ -1,15 +1,10 @@
-using System;
-using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Hosting;
+using Syncfusion.EJ2.Base;
 
-using Cor.Apt.Services.Interfaces;
 using Cor.Apt.Entities;
+using Cor.Apt.Services.Interfaces;
 
 namespace Cor.Apt.Controllers
 {
@@ -17,126 +12,56 @@ namespace Cor.Apt.Controllers
     {
         private readonly AppointmentContext _context;
         private readonly IAuthService _authService;
-        private readonly IWebHostEnvironment _hostingEnv;
 
-        public AnalysisController(IAuthService authService, AppointmentContext context, IWebHostEnvironment env)
+        public AnalysisController(IAuthService authService, AppointmentContext context)
         {
             _context = context;
             _authService = authService;
-            _hostingEnv = env;
         }
-
-        public JsonResult Get (int pid) {
-            List<Analysis> _analysisRecords = _context.Analyses.Where(i => i.PatientId == pid).OrderBy(i => i.AnalysisDate).ToList();
-            return Json(_analysisRecords);
-        }
-        // Upload method for chunk-upload and normal upload
-        public void Save(IList<IFormFile> chunkFile, IList<IFormFile> UploadAnalysis, int pid)
+        public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
-            long size = 0;
-            try
-            {
-                // for chunk-upload
-                foreach (var file in chunkFile)
-                {
-                    var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    filename = Guid.NewGuid().ToString() + Path.GetExtension(filename);
-                    var filepath = _hostingEnv.WebRootPath + $@"\doc\{filename}";
-                    size += file.Length;
-
-                    if (AddAnalysisRecord(filename, pid))
-                    {
-                        using (FileStream fs = System.IO.File.Create(filepath))
-                        {
-                            file.CopyTo(fs);
-                            fs.Flush();
-                        }
-                    }
-                    else
-                    {
-                        using (FileStream fs = System.IO.File.Open(filename, FileMode.Append))
-                        {
-                            file.CopyTo(fs);
-                            fs.Flush();
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Response.Clear();
-                Response.StatusCode = 204;
-                Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Dosya yükleme başarısız oldu";
-                Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = e.Message;
-            }
-
-            // for normal upload
-            try
-            {
-                foreach (var file in UploadAnalysis)
-                {
-                    var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    filename = Guid.NewGuid().ToString() + Path.GetExtension(filename);
-                    var filepath = _hostingEnv.WebRootPath + $@"\doc\{filename}";
-                    size += file.Length;
-                    if (AddAnalysisRecord(filename, pid))
-                    {
-                        using (FileStream fs = System.IO.File.Create(filepath))
-                        {
-                            file.CopyTo(fs);
-                            fs.Flush();
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Response.Clear();
-                Response.StatusCode = 204;
-                Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Dosya yükleme başarısız oldu";
-                Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = e.Message;
-            }
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            IEnumerable<Analysis> DataSource = _context.Analyses.Where(i => i.PatientId == pid).ToList();
+            DataOperations operation = new DataOperations();
+            if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
+            if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting
+            if (dm.Where != null && dm.Where.Count > 0) DataSource = operation.PerformFiltering(DataSource, dm.Where, dm.Where[0].Operator); //Filtering
+            int count = DataSource.Cast<Analysis>().Count();
+            if (dm.Skip != 0) DataSource = operation.PerformSkip(DataSource, dm.Skip);   //Paging
+            if (dm.Take != 0) DataSource = operation.PerformTake(DataSource, dm.Take);
+            return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
         }
-        public JsonResult Remove(int analysisId){
-            Analysis _analysis = _context.Analyses.Where(i => i.AnalysisId == analysisId).FirstOrDefault();
-            if(_analysis != null)
-            {
-                try
-                {
-                    _context.Remove(_analysis);
-                    _context.SaveChanges();
-
-                    var filename = _hostingEnv.WebRootPath + $@"\doc\{_analysis.AnalysisFolderName}";
-                    if (System.IO.File.Exists(filename)) System.IO.File.Delete(filename);
-                }
-                catch (Exception e)
-                {
-                    Response.Clear();
-                    Response.StatusCode = 200;
-                    Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Dosya kaldırma işlemi başarısız oldu";
-                    Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = e.Message;
-                }
-            }
-            return Json(analysisId);
-        }
-        private Boolean AddAnalysisRecord(string filename, int pid)
+        public IActionResult Insert([FromBody] CRUDModel<Analysis> value, int pid) // Insert the new record 
         {
-            try
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            Analysis _analysis = new Analysis();
+            _analysis.Description = value.Value.Description;
+            _analysis.AnalysisDate = value.Value.AnalysisDate;
+            _analysis.PatientId = pid;
+            _context.Analyses.Add(_analysis);
+            _context.SaveChanges();
+            return Json(value);
+        }
+        public IActionResult Update([FromBody] CRUDModel<Analysis> value) // Update record 
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            var _analysis = _context.Analyses.Where(i => i.AnalysisId == value.Value.AnalysisId).FirstOrDefault();
+            if (_analysis != null)
             {
-                Analysis _analysis = new Analysis()
-                {
-                    AnalysisDate = DateTime.Now,
-                    AnalysisFolderName = filename,
-                    PatientId = pid
-                };
-                _context.Add(_analysis);
-                _context.SaveChanges();
+                _analysis.Description = value.Value.Description;
+                _analysis.AnalysisDate = value.Value.AnalysisDate;
+                _analysis.PatientId = value.Value.PatientId;
             }
-            catch (System.Exception)
-            {
-                return false;
-            }
-            return true;
+            _context.SaveChanges();
+            return Json(value.Value);
+        }
+        public ActionResult Remove([FromBody] CRUDModel<Analysis> value) // Remove record 
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            var _analysis = _context.Analyses.Where(i => i.AnalysisId == int.Parse(value.Key.ToString())).FirstOrDefault();
+            _context.Remove(_analysis);
+            _context.SaveChanges();
+            return Json(value);
         }
     }
 }

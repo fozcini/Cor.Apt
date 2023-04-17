@@ -11,7 +11,14 @@ namespace Cor.Apt.Entities
         public string Gender { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string SecondPhone { get; set; }
+        public string ThirdPhone { get; set; }
         public string Address { get; set; }
-        public string ReferenceNumber { get; set; }
+        public string Reference { get; set; }
+
+        public int SocialSecurityId { get; set; }
+        public SocialSecurity SocialSecurity { get; set; }
+        public int DiscountTypeId { get; set; }
+        public DiscountType DiscountType { get; set; }
     }
 }

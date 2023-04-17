@@ -19,32 +19,28 @@ namespace Cor.Apt.Controllers
             _context = context;
             _authService = authService;
         }
-        public ActionResult Load(string type)  // Here we get the Start and End Date and based on that can filter the data and return to Scheduler
+        public ActionResult Load()  // Here we get the Start and End Date and based on that can filter the data and return to Scheduler
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            if (type == "appointment") return Json(_context.Appointments.Include(i => i.Patient).Where(i => !i.IsAndulation).ToList());
-            else return Json(_context.Appointments.Include(i => i.Patient).Where(i => i.IsAndulation).ToList());
+            return Json(_context.Appointments.Include(i => i.AppointmentType).Include(i => i.Unit).ToList());
         }
         [HttpPost]
-        public ActionResult Update([FromBody] EditParams param, string type)
+        public ActionResult Update([FromBody] EditParams param)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
             if (param.action == "insert" || (param.action == "batch" && param.added.Count > 0)) // this block of code will execute while inserting the appointments
             {
                 var value = (param.action == "insert") ? param.value : param.added[0];
-                bool _isAndulation = (type == "appointment") ? false : true;
                 DateTime startTime = Convert.ToDateTime(value.StartTime);
                 DateTime endTime = Convert.ToDateTime(value.EndTime);
                 Appointment appointment = new Appointment()
                 {
-                    Subject = value.Subject,
+                    PatientName = value.PatientName,
                     StartTime = startTime.AddHours(3),
                     EndTime = endTime.AddHours(3),
                     Description = value.Description,
-                    Fee = value.Fee,
-                    IsPaid = value.IsPaid,
-                    PatientId = value.PatientId,
-                    IsAndulation = _isAndulation
+                    AppointmentTypeId = value.AppointmentTypeId,
+                    UnitId = value.UnitId
                 };
                 _context.Appointments.Add(appointment);
                 _context.SaveChanges();
@@ -58,13 +54,12 @@ namespace Cor.Apt.Controllers
                     DateTime startTime = Convert.ToDateTime(value.StartTime);
                     DateTime endTime = Convert.ToDateTime(value.EndTime);
                     Appointment appointment = _context.Appointments.Single(A => A.Id == Convert.ToInt32(value.Id));
-                    appointment.Subject = value.Subject;
+                    appointment.PatientName = value.PatientName;
                     appointment.StartTime = startTime.AddHours(3);
                     appointment.EndTime = endTime.AddHours(3);
                     appointment.Description = value.Description;
-                    appointment.Fee = value.Fee;
-                    appointment.IsPaid = value.IsPaid;
-                    appointment.PatientId = value.PatientId;
+                    appointment.AppointmentTypeId = value.AppointmentTypeId;
+                    appointment.UnitId = value.UnitId;
                 }
                 _context.SaveChanges();
             }

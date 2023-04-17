@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="~/img/apple-icon.png">
     <link rel="icon" type="image/png" href="~/img/favicon.png">
     <title>
-        Dyt. Gülden Özçini Uz
+        EndoKlinik
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -42,7 +42,7 @@
             <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
             <a class="navbar-brand m-0" href="javascript();" target="_blank">
                 <img src="~/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
-                <span class="ms-1 font-weight-bold">Dyt. Gülden Özçini Uz</span>
+                <span class="ms-1 font-weight-bold">EndoKlinik</span>
             </a>
         </div>
         <hr class="horizontal dark mt-0">
@@ -77,14 +77,14 @@
                         <span class="nav-link-text ms-1">Randevu Takvimi</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                @* <li class="nav-item">
                     <a class='nav-link @Html.IsActive(actions: "Andulation", controllers: "User")' href="/User/Andulation">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                           <i class="ni ni-books color-background"></i>
                         </div>
                         <span class="nav-link-text ms-1">Andülasyon Takvimi</span>
                     </a>
-                </li>
+                </li> *@
                 <li class="nav-item">
                     <a class='nav-link @Html.IsActive(actions: "Patient,Details", controllers: "User")' href="/User/Patient">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -94,17 +94,22 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class='nav-link @Html.IsActive(actions: "Ozone", controllers: "User")' href="/User/Ozone">
+                    <a class='nav-link @Html.IsActive(actions: "Users", controllers: "User")' href="/User/Users">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                          <i class="ni ni-atom color-background"></i>
+                          <i class="ni ni-badge color-background"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Ozon Yönetimi</span>
+                        <span class="nav-link-text ms-1">Personel Yönetimi</span>
                     </a>
                 </li>
-                } @*
-                <li class="nav-item mt-3">
-                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
-                </li>*@
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Applications", controllers: "User")' href="/User/Applications">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-archive-2 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Başvurular</span>
+                    </a>
+                </li>
+                }
             </ul>
         </div>
         <div class="sidenav-footer mx-3 ">

@@ -2,15 +2,23 @@
 @{
     var dataManager = new DataManager()
     {
-        Url = "/Appointment/Load?type=appointment",
+        Url = "/Appointment/Load",
         Adaptor = "UrlAdaptor",
-        CrudUrl = "/Appointment/Update?type=appointment",
+        CrudUrl = "/Appointment/Update",
         CrossDomain = true
     };
-    var template = "<div class='template-wrap'><div class='subject'>${getPatientName(data)} - ${Subject}</div><div class='time'>${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div></div>";
+    var template = "<div class='template-wrap'><div class='subject'>${PatientName} - ${getAppointmentType(data)}</div><div class='time'>${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div></div>";
 }
 
 <style>
+    .e-quick-popup-wrapper.e-device {
+        height: auto !important;
+        top: 30vh !important;
+        bottom: auto !important;
+    }
+    .e-popup {
+        height: auto !important;
+    }
     .custom-event-editor .e-textlabel {
         padding-right: 15px;
         text-align: right;
@@ -157,17 +165,39 @@
 </style>
 
 <div class="card">
-    <div class="card-header card-header-primary card-header-text">
+    <div class="card-header card-header-primary card-header-text pb-2">
         <div class="card-text">
             <h4 class="card-title">Randevu Takvimi</h4>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body pt-2">
+        <div class="row mb-3">
+            <h6>Göstermek / Gizlemek İçin Oda Seçin</h6>
+            <div class="col-6 d-flex justify-content-between flex-wrap">
+                @foreach (var unit in ViewBag.Units)
+                {
+                    <ejs-checkbox id="@unit.UnitId" change="onChange" checked="true" label="@unit.UnitName" value="@unit.UnitId"></ejs-checkbox>
+                }
+            </div>
+        </div>
         <div class="control-section">
             <ejs-schedule id="schedule" startHour="09:00" endHour="18:00" firstDayOfWeek="1" height="650px" popupOpen="onPopupOpen" eventRendered="onEventRendered" actionBegin="onActionBegin" editorTemplate="#EventEditorTemplate" locale='tr'>
                 <e-schedule-quickinfotemplates header="#header-template" content="#content-template" footer="#footer-template"></e-schedule-quickinfotemplates>
-                <e-schedule-resources><e-schedule-resource dataSource="@ViewBag.Patients" field="PatientId" title="Hasta" name="Patients" textField="FullName" idField="PatientId"></e-schedule-resource></e-schedule-resources>
-                <e-schedule-timescale interval="60" slotCount="4"></e-schedule-timescale>
+                <e-schedule-views>
+                    <e-schedule-view option="TimelineDay"></e-schedule-view>
+                    <e-schedule-view option="TimelineWeek"></e-schedule-view>
+                    <e-schedule-view option="Day"></e-schedule-view>
+                    <e-schedule-view option="Week"></e-schedule-view>
+                    <e-schedule-view option="WorkWeek"></e-schedule-view>
+                    <e-schedule-view option="Month"></e-schedule-view>
+                    <e-schedule-view option="Agenda"></e-schedule-view>
+                </e-schedule-views>
+                <e-schedule-group enableCompactView="false" resources="@ViewBag.Resources"></e-schedule-group>
+                <e-schedule-resources>
+                    <e-schedule-resource dataSource="@ViewBag.Units" field="UnitId" title="Oda" name="Units" textField="UnitName" idField="UnitId"></e-schedule-resource>
+                    <e-schedule-resource dataSource="@ViewBag.AppointmentTypes" field="AppointmentTypeId" title="Randevu Türü" name="AppointmentTypes" textField="AppointmentTypeName" idField="AppointmentTypeId" colorField="Color"></e-schedule-resource>
+                </e-schedule-resources>
+                <e-schedule-timescale interval="60" slotCount="6"></e-schedule-timescale>
                 <e-schedule-eventsettings dataSource="dataManager" template="@template"></e-schedule-eventsettings>
             </ejs-schedule>
         </div>
@@ -187,16 +217,13 @@
         ${if (elementType == "cell")}
         <div class="e-cell-content">
             <div class="content-area">
-                <input id="subject" placeholder="Açıklama"/>
+                <input id="patient" placeholder="Hasta Adı"/>
             </div>
             <div class="content-area">
-                <input id="patient" placeholder="Hasta Seçimi" />
+                <input id="unit" placeholder="Oda Seçimi" />
             </div>
             <div class="content-area">
-                <input id="fee" placeholder="0.0">
-            </div>
-            <div class="content-area">
-                <input id="isPaid">
+                <input id="type" placeholder="Randevu Türü" />
             </div>
             <div class="content-area">
                 <input id="notes" placeholder="Notlar" />
@@ -205,20 +232,20 @@
         ${else}
         <div class="event-content">
             <div class="meeting-type-wrap">
-                <label>Açıklama</label>:
-                <span>${Subject}</span>
+                <label>Hasta Adı</label>:
+                <span>${PatientName}</span>
             </div>
             <div class="meeting-type-wrap">
-                <label>Hasta</label>:
-                <span>${getPatientName(data)}</span>
+                <label>Oda Seçimi</label>:
+                <span>${getUnitName(data)}</span>
+            </div>
+            <div class="meeting-type-wrap">
+                <label>Randevu Türü</label>:
+                <span>${getAppointmentType(data)}</span>
             </div>
             <div class="notes-wrap">
-                <label>Notlar</label>:
+                <label>Not</label>:
                 <span>${Description}</span>
-            </div>
-            <div class="notes-wrap">
-                <label>Ücret</label>:
-                <span>${Fee}</span>
             </div>
         </div>
         ${/if}
@@ -243,39 +270,33 @@
     <table class="custom-event-editor" width="100%" cellpadding="5">
         <tbody>
             <tr>
-                <td class="e-textlabel">Açıklama</td>
+                <td class="e-textlabel">Hasta Adı</td>
                 <td colspan="4">
-                    <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
+                    <input type="text" id="PatientName" name="PatientName" class="e-field e-input" style="width: 100%" />
                 </td>
             </tr>
             <tr>
-                <td class="e-textlabel">Hasta</td>
+                <td class="e-textlabel">Oda</td>
                 <td colspan="4">
-                    <input type="text" id="PatientId" name="PatientId" class="e-field" style="width: 100%" />
+                    <input type="text" id="UnitId" name="UnitId" class="e-field e-input" style="width: 100%" />
+                </td>
+            </tr>
+            <tr>
+                <td class="e-textlabel">Randevu Türü</td>
+                <td colspan="4">
+                    <input type="text" id="AppointmentTypeId" name="AppointmentTypeId" class="e-field e-input" style="width: 100%" />
                 </td>
             </tr>
             <tr>
                 <td class="e-textlabel">Başlangıç</td>
                 <td colspan="4">
-                    <input id="StartTime" class="e-field" type="text" name="StartTime" />
+                    <input id="StartTime" class="e-field e-input" type="text" name="StartTime" />
                 </td>
             </tr>
             <tr>
                 <td class="e-textlabel">Bitiş</td>
                 <td colspan="4">
-                    <input id="EndTime" class="e-field" type="text" name="EndTime" />
-                </td>
-            </tr>
-            <tr>
-                <td class="e-textlabel">Ücret</td>
-                <td colspan="4">
-                    <input type="number" step="0.50" id="Fee" name="Fee" class="e-field" />
-                </td>
-            </tr>
-            <tr>
-                <td class="e-textlabel">Ödeme Durumu</td>
-                <td colspan="4">
-                    <input type="checkbox" id="IsPaid" name="IsPaid" class="e-field" />
+                    <input id="EndTime" class="e-field e-input" type="text" name="EndTime" />
                 </td>
             </tr>
             <tr>
@@ -291,6 +312,22 @@
 
 <script type="text/javascript">
     var intl = new ej.base.Internationalization();
+    function onChange(args) {
+        var units = [
+            { UnitName: 'Dr. Tugba Arkan', UnitId: 1 },
+            { UnitName: 'Dyt. Gülden Özçini Uz', UnitId: 2 },
+            { UnitName: 'Andülasyon', UnitId: 3 },
+            { UnitName: 'Igne Odasi', UnitId: 4 }
+        ];
+        var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+        var value = parseInt(args.event.currentTarget.querySelector('input').getAttribute('value'), 10);
+        var resourceData = units.filter(function (unit) { return unit.UnitId === value; });
+        if (args.checked) {
+            scheduleObj.addResource(resourceData[0], 'Units', value - 1);
+        } else {
+            scheduleObj.removeResource(value, 'Units');
+        }
+    }
     function getTimeString(value) {
         return intl.formatDate(value, { skeleton: 'Hm' });
     }
@@ -299,11 +336,10 @@
     };
     window.getHeaderStyles = function (data) {
         if (data.elementType === 'cell') {
-            return 'align-items: center; color: #cb0c9f;';
+            return 'align-items: center; color: #e3165b;';
         }
         else {
-            if(data.IsPaid) return 'background: #1FAB89; color: #ffffff'
-            else return 'background: #FF5AB0; color: #ffffff'            
+            return 'background:' + data.AppointmentType.Color + '; color: #ffffff';     
         }
     };
     var buttonClickActions = function (e) {
@@ -312,18 +348,16 @@
         var getSlotData = function () {
             var cellDetails = scheduleObj.getCellDetails(scheduleObj.getSelectedElements());
             if (ej.base.isNullOrUndefined(cellDetails)) { cellDetails = scheduleObj.getCellDetails(scheduleObj.activeCellsData.element); }
-            var subject = quickPopup.querySelector('#subject').ej2_instances[0].value;
+            var patient = quickPopup.querySelector('#patient').ej2_instances[0].value;
             var notes = quickPopup.querySelector('#notes').ej2_instances[0].value;
-            var fee = quickPopup.querySelector('#fee').ej2_instances[0].value;
             var addObj = {};
             addObj.Id = scheduleObj.getEventMaxID();
-            addObj.Subject = ej.base.isNullOrUndefined(subject) ? '' : subject;
+            addObj.PatientName = ej.base.isNullOrUndefined(patient) ? '' : patient;
             addObj.StartTime = new Date(+cellDetails.startTime);
             addObj.EndTime = new Date(+cellDetails.endTime);
-            addObj.Fee = ej.base.isNullOrUndefined(fee) ? '' : fee;
-            addObj.IsPaid = quickPopup.querySelector('#isPaid').ej2_instances[0].checked;
             addObj.Description = ej.base.isNullOrUndefined(notes) ? '' : notes;
-            addObj.PatientId = quickPopup.querySelector('#patient').ej2_instances[0].value;
+            addObj.AppointmentTypeId = quickPopup.querySelector('#type').ej2_instances[0].value;
+            addObj.UnitId = quickPopup.querySelector('#unit').ej2_instances[0].value;
             return addObj;
         };
         if (e.target.id === 'add') {
@@ -338,6 +372,10 @@
             }
             scheduleObj.deleteEvent(eventDetails, currentAction);
         }
+        else if (e.target.id === 'save') {
+            var updateObj = getSlotData();
+            scheduleObj.updateEvent(updateObj);
+        }
         else {
             var isCellPopup = quickPopup.firstElementChild.classList.contains('e-cell-popup');
             var eventDetail = isCellPopup ? getSlotData() : scheduleObj.activeEventData.event;
@@ -349,21 +387,26 @@
         }
         scheduleObj.closeQuickInfoPopup();
     };
-    window.getPatientName = function (data) {
-        return data.Patient.FullName;
+    window.getAppointmentType = function (data) {
+        return data.AppointmentType.AppointmentTypeName;
     };
-    function onEventRendered(args) {
-        var scheduleObj = document.getElementById('schedule').ej2_instances[0];
-        if (!args.element) {
+    window.getUnitName = function (data) {
+        return data.Unit.UnitName;
+    };
+    function applyCategoryColor(args, currentView) {
+        var color = args.data.AppointmentType.Color;
+        if (!args.element || !color) {
             return;
         }
-        if (scheduleObj.currentView === 'Agenda') {
-            if(args.data.IsPaid) (args.element.firstChild).style.borderLeftColor = '#1FAB89';
-            else (args.element.firstChild).style.borderLeftColor = '#FF5AB0';
+        if (currentView === 'Agenda') {
+            (args.element.firstChild).style.borderLeftColor = color;
         } else {
-            if(args.data.IsPaid) args.element.style.backgroundColor = '#1FAB89'
-            else args.element.style.backgroundColor = '#FF5AB0';
+            args.element.style.backgroundColor = color;
         }
+    }
+    function onEventRendered(args) {
+        var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+        applyCategoryColor(args, scheduleObj.currentView);
     }
     function onActionBegin(args) {
         if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
@@ -371,19 +414,26 @@
             if (args.requestType === 'eventCreate') data = args.data[0];
             else if (args.requestType === 'eventChange') data = args.data;
             var scheduleObj = document.getElementById('schedule').ej2_instances[0];
-            if (!scheduleObj.isSlotAvailable(data.StartTime, data.EndTime)) args.cancel = true;
+            @* if (!scheduleObj.isSlotAvailable(data.StartTime, data.EndTime, unitId)) args.cancel = true; *@
         }
     }
     function onPopupOpen(args) {
         var scheduleObj = document.getElementById('schedule').ej2_instances[0];
         if (args.type === 'Editor') {
-            var patientObj = new ej.dropdowns.DropDownList({
-                dataSource: scheduleObj.getResourceCollections().slice(-1)[0].dataSource,
-                placeholder: 'Hasta Seçimi',
-                fields: { text: 'FullName', value: 'PatientId' },
-                index: 0
+            var appointmentTypeObj = new ej.dropdowns.DropDownList({
+                dataSource: scheduleObj.getResourceCollections()[1].dataSource,
+                placeholder: 'Randevu Türü',
+                fields: { text: 'AppointmentTypeName', value: 'AppointmentTypeId' },
+                index: scheduleObj.getResourceCollections()[1].dataSource.findIndex(o => o.AppointmentTypeId == args.data.AppointmentTypeId)
             });
-            patientObj.appendTo(args.element.querySelector('#PatientId'));
+            var unitObj = new ej.dropdowns.DropDownList({
+                dataSource: scheduleObj.getResourceCollections()[0].dataSource,
+                placeholder: 'Oda Seçimi',
+                fields: { text: 'UnitName', value: 'UnitId' },
+                index: scheduleObj.getResourceCollections()[0].dataSource.findIndex(o => o.UnitId == args.data.UnitId)
+            });
+            appointmentTypeObj.appendTo(args.element.querySelector('#AppointmentTypeId'));
+            unitObj.appendTo(args.element.querySelector('#UnitId'));
             var startElement = args.element.querySelector('#StartTime');
             if (!startElement.classList.contains('e-datetimepicker')) {
                 new ej.calendars.DateTimePicker({ value: new Date(startElement.value) || new Date() }, startElement);
@@ -394,19 +444,22 @@
             }
         }
         if (args.type === 'QuickInfo' || args.type === 'ViewEventInfo') {
-            var subjectObj = new ej.inputs.TextBox({ placeholder: 'Açıklama' });
-            subjectObj.appendTo(args.element.querySelector('#subject'));
-            var patientObj = new ej.dropdowns.DropDownList({
-                dataSource: scheduleObj.getResourceCollections().slice(-1)[0].dataSource,
-                placeholder: 'Hasta Seçimi',
-                fields: { text: 'FullName', value: 'PatientId' },
-                index: 0
-            });
+            var patientObj = new ej.inputs.TextBox({ placeholder: 'Hasta Adı' });
             patientObj.appendTo(args.element.querySelector('#patient'));
-            var feeObj = new ej.inputs.NumericTextBox({ locale: 'tr', currency: 'TRY', format: 'c2', value: 0, placeholder: 'Ücret', floatLabelType: 'Auto'});
-            feeObj.appendTo(args.element.querySelector('#fee'));
-            var isPaidObj = new ej.buttons.CheckBox({label: 'Ödeme Durumu', labelPosition: 'Before'});
-            isPaidObj.appendTo(args.element.querySelector("#isPaid"));
+            var appointmentTypeObj = new ej.dropdowns.DropDownList({
+                dataSource: scheduleObj.getResourceCollections()[1].dataSource,
+                placeholder: 'Randevu Türü',
+                fields: { text: 'AppointmentTypeName', value: 'AppointmentTypeId' },
+                index: scheduleObj.getResourceCollections()[1].dataSource.findIndex(o => o.AppointmentTypeId == args.data.AppointmentTypeId)
+            });
+            var unitObj = new ej.dropdowns.DropDownList({
+                dataSource: scheduleObj.getResourceCollections()[0].dataSource,
+                placeholder: 'Oda Seçimi',
+                fields: { text: 'UnitName', value: 'UnitId' },
+                index: scheduleObj.getResourceCollections()[0].dataSource.findIndex(o => o.UnitId == args.data.UnitId)
+            });
+            appointmentTypeObj.appendTo(args.element.querySelector('#type'));
+            unitObj.appendTo(args.element.querySelector('#unit'));
             var notesObj = new ej.inputs.TextBox({ placeholder: 'Notlar' });
             notesObj.appendTo(args.element.querySelector('#notes'));
             var moreDetailsBtn = args.element.querySelector('#more-details');
@@ -445,6 +498,7 @@
                 'month': 'Ay',
                 'agenda': 'Ajanda',
                 'year': 'Yıl',
+                'timelineDay': 'Günlük Çizelge',
                 'timelineWeek': 'Haftalık Çizelge',
                 'timelineMonth': 'Aylık Çizelge',
                 'newEvent': 'Yeni Etkinlik',

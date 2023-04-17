@@ -18,10 +18,10 @@ namespace Cor.Apt.Controllers
             _context = context;
             _authService = authService;
         }
-        public IActionResult Get([FromBody] DataManagerRequest dm)
+        public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            IEnumerable<Andulation> DataSource = _context.Andulations.ToList();
+            IEnumerable<Andulation> DataSource = _context.Andulations.Where(i => i.PatientId == pid).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting
@@ -51,7 +51,7 @@ namespace Cor.Apt.Controllers
             _andulation.PatientId = pid;
             _context.Andulations.Add(_andulation);
             _context.SaveChanges();
-            return Json(_andulation);
+            return Json(value);
         }
         public IActionResult Update([FromBody] CRUDModel<Andulation> value) // Update record 
         {

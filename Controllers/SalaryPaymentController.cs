@@ -9,12 +9,12 @@ using Cor.Apt.Services.Interfaces;
 
 namespace Cor.Apt.Controllers
 {
-    public class OzoneController : Controller
+    public class SalaryPaymentController : Controller
     {
         private readonly AppointmentContext _context;
         private readonly IAuthService _authService;
 
-        public OzoneController(IAuthService authService, AppointmentContext context)
+        public SalaryPaymentController(IAuthService authService, AppointmentContext context)
         {
             _context = context;
             _authService = authService;
@@ -22,48 +22,47 @@ namespace Cor.Apt.Controllers
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            IEnumerable<Ozone> DataSource = _context.Ozones.Where(i => i.PatientId == pid).ToList();
+            IEnumerable<SalaryPayment> DataSource = _context.SalaryPayments.Include(i => i.SalaryPaymentType).Where(i => i.UserId == pid).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting
             if (dm.Where != null && dm.Where.Count > 0) DataSource = operation.PerformFiltering(DataSource, dm.Where, dm.Where[0].Operator); //Filtering
-            int count = DataSource.Cast<Ozone>().Count();
+            int count = DataSource.Cast<SalaryPayment>().Count();
             if (dm.Skip != 0) DataSource = operation.PerformSkip(DataSource, dm.Skip);   //Paging
             if (dm.Take != 0) DataSource = operation.PerformTake(DataSource, dm.Take);
             return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
         }
-        public IActionResult Insert([FromBody] CRUDModel<Ozone> value, int pid) // Insert the new record 
+        public IActionResult Insert([FromBody] CRUDModel<SalaryPayment> value, int pid) // Insert the new record 
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            Ozone _ozone = new Ozone();
-            _ozone.RecordDate = value.Value.RecordDate;
-            _ozone.Description = value.Value.Description;
-            _ozone.Session = value.Value.Session;
-            _ozone.PatientId = pid;
-            _context.Ozones.Add(_ozone);
+            SalaryPayment _salaryPayment = new SalaryPayment();
+            _salaryPayment.RecordDate = value.Value.RecordDate;
+            _salaryPayment.Amount = value.Value.Amount;
+            _salaryPayment.SalaryPaymentTypeId = value.Value.SalaryPaymentTypeId;
+            _salaryPayment.UserId = pid;
+            _context.SalaryPayments.Add(_salaryPayment);
             _context.SaveChanges();
             return Json(value);
         }
-        public IActionResult Update([FromBody] CRUDModel<Ozone> value) // Update record 
+        public IActionResult Update([FromBody] CRUDModel<SalaryPayment> value) // Update record 
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            var _ozone = _context.Ozones.Where(i => i.OzoneId == value.Value.OzoneId).FirstOrDefault();
-            if (_ozone != null)
+            var _salaryPayment = _context.SalaryPayments.Include(i => i.SalaryPaymentType).Where(i => i.SalaryPaymentId == value.Value.SalaryPaymentId).FirstOrDefault();
+            if (_salaryPayment != null)
             {
-                _ozone.OzoneId = value.Value.OzoneId;
-                _ozone.RecordDate = value.Value.RecordDate;
-                _ozone.Description = value.Value.Description;
-                _ozone.Session = value.Value.Session;
-                _ozone.PatientId = value.Value.PatientId;
+                _salaryPayment.RecordDate = value.Value.RecordDate;
+                _salaryPayment.Amount = value.Value.Amount;
+                _salaryPayment.SalaryPaymentTypeId = value.Value.SalaryPaymentTypeId;
+                _salaryPayment.UserId = value.Value.UserId;
             }
             _context.SaveChanges();
             return Json(value.Value);
         }
-        public ActionResult Remove([FromBody] CRUDModel<Ozone> value) // Remove record 
+        public ActionResult Remove([FromBody] CRUDModel<SalaryPayment> value) // Remove record 
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            var _ozone = _context.Ozones.Where(i => i.OzoneId == int.Parse(value.Key.ToString())).FirstOrDefault();
-            _context.Remove(_ozone);
+            var _salaryPayment = _context.SalaryPayments.Where(i => i.SalaryPaymentId == int.Parse(value.Key.ToString())).FirstOrDefault();
+            _context.Remove(_salaryPayment);
             _context.SaveChanges();
             return Json(value);
         }

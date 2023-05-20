@@ -20,10 +20,11 @@ namespace Cor.Apt.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(List<Cor.Apt.Entities.Type> types)
+        public IActionResult Update()
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
             int _analysisId = Convert.ToInt32(HttpContext.Request.Form["AnalysisId"]);
+            int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
             if (_context.AnalysisTypes.Where(i => i.AnalysisId == _analysisId).Any())
             {
                 List<AnalysisType> _analysisTypes = _context.AnalysisTypes.Where(i => i.AnalysisId == _analysisId).ToList();
@@ -39,7 +40,7 @@ namespace Cor.Apt.Controllers
                             TypeId = _type.TypeId,
                             AnalysisId = _analysisId,
                             IsDone = false,
-                            IsEndoklinikTest = false
+                            IsEndoklinikTest = true
                         };
                         _newAnalysisTypes.Add(_analysisType);
                     }
@@ -48,24 +49,69 @@ namespace Cor.Apt.Controllers
             }
             else
             {
-                List<AnalysisType> _analysisTypes = new List<AnalysisType>();
-                foreach (var typeNo in HttpContext.Request.Form["Type"])
+                if (HttpContext.Request.Form["Type"].Count == 0)
                 {
-                    Cor.Apt.Entities.Type _type = _context.Types.Where(i => i.TypeId == Convert.ToInt32(typeNo)).FirstOrDefault();
-                    AnalysisType _analysisType = new AnalysisType
-                    {
-                        Price = _type.Price,
-                        TypeId = _type.TypeId,
-                        AnalysisId = _analysisId,
-                        IsDone = false,
-                        IsEndoklinikTest = false
-                    };
-                    _analysisTypes.Add(_analysisType);
+                    return RedirectToAction("Remove", "AnalysisType", new { analysisId = _analysisId, patientId = _patientId });
                 }
-                _context.AddRange(_analysisTypes);
+                else
+                {
+                    List<AnalysisType> _analysisTypes = new List<AnalysisType>();
+                    foreach (var typeNo in HttpContext.Request.Form["Type"])
+                    {
+                        Cor.Apt.Entities.Type _type = _context.Types.Where(i => i.TypeId == Convert.ToInt32(typeNo)).FirstOrDefault();
+                        AnalysisType _analysisType = new AnalysisType
+                        {
+                            Price = _type.Price,
+                            TypeId = _type.TypeId,
+                            AnalysisId = _analysisId,
+                            IsDone = false,
+                            IsEndoklinikTest = true
+                        };
+                        _analysisTypes.Add(_analysisType);
+                    }
+                    _context.AddRange(_analysisTypes);
+                }
             }
             _context.SaveChanges();
-            return RedirectToAction("Analysis", "User", new { analysisId = HttpContext.Request.Form["AnalysisId"] });
+            return RedirectToAction("Details", "User", new { patientId = _patientId });
+        }
+        [HttpPost]
+        public IActionResult Set()
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            int _analysisId = Convert.ToInt32(HttpContext.Request.Form["AnalysisId"]);
+            int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
+            List<AnalysisType> analysisTypes = _context.AnalysisTypes.Where(i => i.AnalysisId == _analysisId).ToList();
+            Analysis _analysis = _context.Analyses.Where(i => i.AnalysisId == _analysisId).FirstOrDefault();
+            _analysis.Description = HttpContext.Request.Form["Description"];
+            foreach (var analysisType in analysisTypes)
+            {
+                if (HttpContext.Request.Form["IsEndoklinikTest"].Contains(analysisType.AnalysisTypeId.ToString()))
+                {
+                    analysisType.IsEndoklinikTest = true;
+                }
+                else
+                {
+                    analysisType.IsEndoklinikTest = false;
+                }
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Details", "User", new { patientId = _patientId });
+        }
+
+        public IActionResult Remove(int analysisId, int patientId)
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (_context.AnalysisTypes.Any(i => i.AnalysisId == analysisId))
+            {
+                List<AnalysisType> _analysisTypes = _context.AnalysisTypes.Where(i => i.AnalysisId == analysisId).ToList();
+                _context.RemoveRange(_analysisTypes);
+                _context.SaveChanges();
+            }
+            Analysis _analysis = _context.Analyses.Where(i => i.AnalysisId == analysisId).FirstOrDefault();
+            _context.Remove(_analysis);
+            _context.SaveChanges();
+            return RedirectToAction("Details", "User", new { patientId = patientId });
         }
     }
 }

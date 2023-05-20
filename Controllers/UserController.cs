@@ -48,6 +48,9 @@ namespace Cor.Apt.Controllers
             Patient patient = _context.Patients.Include(i => i.DiscountType).Include(i => i.SocialSecurity).Where(i => i.PatientId == patientId).FirstOrDefault();
             if (_context.Anamnesises.Where(i => i.PatientId == patientId).Any()) ViewBag.Anamnesis = _context.Anamnesises.Where(i => i.PatientId == patientId).FirstOrDefault();
             else ViewBag.Anamnesis = new Anamnesis() { };
+            ViewBag.Analyses = _context.Analyses.Where(i => i.PatientId == patientId).ToList();
+            ViewBag.AnalysisTypes = _context.AnalysisTypes.Where(i => i.Analysis.PatientId == patientId).ToList();
+            ViewBag.Types = _context.Types.ToList();
             ViewBag.RadiologyTypes = _context.RadiologyTypes.ToList();
             ViewBag.DecisionAndTracingTypes = _context.DecisionAndTracingTypes.ToList();
             ViewBag.Users = _context.Users.ToList();
@@ -77,10 +80,20 @@ namespace Cor.Apt.Controllers
             return View();
         }
 
-        public IActionResult Analysis(int analysisId)
+        public IActionResult Analysis(int? analysisId, int? patientId)
         {
             if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
             ViewBag.Types = _context.Types.ToList();
+            if (analysisId == null && patientId != null)
+            {
+                Analysis _analysis = new Analysis() {
+                    AnalysisDate = System.DateTime.Now,
+                    PatientId = (int)patientId
+                };
+                _context.Add(_analysis);
+                _context.SaveChanges();
+                analysisId = _analysis.AnalysisId;
+            }
             ViewBag.Analysis = _context.Analyses.Where(i => i.AnalysisId == analysisId).FirstOrDefault();
             return View(_context.AnalysisTypes.Where(i => i.AnalysisId == analysisId).ToList());
         }

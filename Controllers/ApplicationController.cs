@@ -49,7 +49,7 @@ namespace Cor.Apt.Controllers
         public IActionResult Update([FromBody] CRUDModel<Application> value) // Update record 
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            var _application = _context.Applications.Include(i => i.ApplicationType).FirstOrDefault();
+            var _application = _context.Applications.Include(i => i.ApplicationType).Where(i => i.ApplicationId == value.Value.ApplicationId).FirstOrDefault();
             if (_application != null)
             {
                 _application.FullName = value.Value.FullName;

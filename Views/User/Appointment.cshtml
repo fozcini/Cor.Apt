@@ -335,12 +335,7 @@
         return intl.formatDate(data.StartTime, { type: 'date', skeleton: 'full' }) + ' (' + intl.formatDate(data.StartTime, { skeleton: 'Hm' }) + ' - ' + intl.formatDate(data.EndTime, { skeleton: 'Hm' }) + ')';
     };
     window.getHeaderStyles = function (data) {
-        if (data.elementType === 'cell') {
-            return 'align-items: center; color: #e3165b;';
-        }
-        else {
-            return 'background:' + data.AppointmentType.Color + '; color: #ffffff';     
-        }
+        return data.elementType === 'cell' ? 'align-items: center; color: #03834f;' : 'background:' + data.AppointmentType.Color + '; color: #ffffff';
     };
     var buttonClickActions = function (e) {
         var scheduleObj = document.getElementById('schedule').ej2_instances[0];
@@ -442,6 +437,7 @@
             if (!endElement.classList.contains('e-datetimepicker')) {
                 new ej.calendars.DateTimePicker({ value: new Date(endElement.value) || new Date() }, endElement);
             }
+            args.element.querySelector('.e-event-save').onclick = function (e) { buttonClickActions(e); };
         }
         if (args.type === 'QuickInfo' || args.type === 'ViewEventInfo') {
             var patientObj = new ej.inputs.TextBox({ placeholder: 'Hasta Adı' });

@@ -13,6 +13,8 @@ namespace Cor.Apt.Entities
         public string SecondPhone { get; set; }
         public string Email { get; set; }
         public string RegistrationNumber { get; set; }
+        public string Address { get; set; }
+        public string Description { get; set; }
         [JsonIgnore]
         public string Password { get; set; }
         public bool IsActive { get; set; }

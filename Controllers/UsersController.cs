@@ -48,6 +48,8 @@ namespace Cor.Apt.Controllers
             _user.SecondPhone = value.Value.SecondPhone;
             _user.Email = value.Value.Email;
             _user.RegistrationNumber = value.Value.RegistrationNumber;
+            _user.Address = value.Value.Address;
+            _user.Description = value.Value.Description;
             _user.Password = ComputeSha256Hash(_user.IdentificationNumber.Substring(0,6) + _appSettings.Salt);
             _user.IsActive = true;
             _user.PhotoLink = "";
@@ -69,6 +71,8 @@ namespace Cor.Apt.Controllers
                 _user.SecondPhone = value.Value.SecondPhone;
                 _user.Email = value.Value.Email;
                 _user.RegistrationNumber = value.Value.RegistrationNumber;
+                _user.Address = value.Value.Address;
+                _user.Description = value.Value.Description;
             }
             _context.SaveChanges();
             return Json(value.Value);

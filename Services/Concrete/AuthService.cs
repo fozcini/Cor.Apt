@@ -70,7 +70,7 @@ namespace Cor.Apt.Services.Concrete
                     new Claim(ClaimTypes.Name, id),
                     new Claim(ClaimTypes.Role, role),
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(300),
+                Expires = DateTime.UtcNow.AddMinutes(1200),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

@@ -37,7 +37,7 @@ namespace Cor.Apt.Controllers
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
             Ozone _ozone = new Ozone();
             _ozone.RecordDate = value.Value.RecordDate;
-            _ozone.Description = value.Value.Description;
+            _ozone.Description = value.Value.Description.ToUpper();
             _ozone.Session = value.Value.Session;
             _ozone.PatientId = pid;
             _context.Ozones.Add(_ozone);

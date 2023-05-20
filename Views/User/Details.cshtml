@@ -2,11 +2,27 @@
 @{
     var Anamnesis = (Cor.Apt.Entities.Anamnesis)ViewBag.Anamnesis;
     var age = (int) ((DateTime.Now - Model.BirthDate).TotalDays/365.242199);
+    var Analyses = (List<Cor.Apt.Entities.Analysis>)ViewBag.Analyses;
+    var AnalysisTypes = (List<Cor.Apt.Entities.AnalysisType>)ViewBag.AnalysisTypes;
+    var Types = (List<Cor.Apt.Entities.Type>)ViewBag.Types;
 }
 <script>
     var patientId = @Model.PatientId
+    var analysisTypeList = JSON.parse('@Json.Serialize(AnalysisTypes)');
+    var analysesList = JSON.parse('@Json.Serialize(Analyses)');
 </script>
 <style type="text/css" class="cssStyles">
+    input {
+        accent-color: #03834f;
+    }
+    .badge-success {
+        color: #67b108;
+        background-color: #cdf59b;
+    }
+    .badge-secondary {
+        color: #5974a2;
+        background-color: #e4e8ed;
+    }
     .detailtable td {
         font-size: 13px;
         padding: 4px;
@@ -18,7 +34,7 @@
     }
 </style>
 
-<div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('/img/curved-images/curved-8.jpg'); background-position-y: 50%;">
+<div class="page-header min-height-150 border-radius-xl" style="background-image: url('/img/curved-images/curved-8.jpg'); background-position-y: 50%;">
     <span class="mask bg-gradient-primary opacity-6"></span>
 </div>
 <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
@@ -41,427 +57,454 @@
     </div>
 </div>
 <div class="container-fluid px-2 py-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="card h-100">
-                @* <div class="card-header pb-0 p-3">
-                    <div class="row">
-                        <div class="col-md-8 d-flex align-items-center">
-                            <h6 class="mb-0">Diğer Bilgiler</h6>
-                        </div>
-                        <div class="col-md-4 text-end">
-                            <a href="javascript:;">
-                                <i class="fas fa-edit text-secondary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#anamnesisModal"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div> *@
-                <div class="card-body p-3">
-                    <div class="accordion-2">
-                        <div class="row">
-                            <div class="col-md-12 mx-auto">
-                                <div class="accordion">
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingZero">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#zero" aria-expanded="false" aria-controls="zero">
-                                                İşlem Kaydı
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="zero" class="accordion-collapse collapse p-3" aria-labelledby="headingZero">
-                                            <ejs-grid id="GridPatientRecord" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                                                allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                                                    <e-data-manager adaptor="UrlAdaptor" url="/PatientRecord/Get?pid=@Model.PatientId" insertUrl="/PatientRecord/Insert?pid=@Model.PatientId" updateUrl="/PatientRecord/Update" removeUrl="/PatientRecord/Remove"></e-data-manager>
-                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                                                    <e-grid-columns>
-                                                        <e-grid-column field="PatientRecordId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                                                        <e-grid-column field="Description" headerText="Açıklama" width="80px"></e-grid-column>
-                                                        <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="80px"></e-grid-column>
-                                                    </e-grid-columns>
-                                            </ejs-grid>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingOne">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#one" aria-expanded="false" aria-controls="one">
-                                                Hasta Bilgileri
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="one" class="accordion-collapse collapse p-3" aria-labelledby="headingOne">
-                                            <ul class="list-group text-dark">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Sigorta:</strong> &nbsp; @Model.SocialSecurity.SocialSecurityName</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">İndirim:</strong> &nbsp; @Model.DiscountType.DiscountTypeName</li>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Eposta:</strong> &nbsp; @Model.Email</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Telefon:</strong> &nbsp; @Model.Phone</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">İkinci Telefon:</strong> &nbsp; @Model.SecondPhone</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Üçüncü Telefon:</strong> &nbsp; @Model.ThirdPhone</li>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Adres:</strong> &nbsp; @Model.Address</li>
-                                                    </div>
-                                                </div>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingTwo">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#two" aria-expanded="false" aria-controls="two">
-                                                Anamnez
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="two" class="accordion-collapse collapse p-3" aria-labelledby="headingTwo">
-                                            <ul class="list-group text-dark">
-                                                <a href="javascript:;" class="mb-3 text-primary">
-                                                    <i class="fas fa-edit text-secondary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#anamnesisModal">Düzenle</i>
-                                                </a>
-                                                <h6 class="m-0 mt-3 text-muted text-center">Temel Bilgiler</h6>
-                                                <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Meslek:</strong> &nbsp; @Anamnesis.Profession</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; @Anamnesis.Height</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kilo:</strong> &nbsp; @Anamnesis.Weight</li>
-                                                    </div>
-                                                </div>
-                                                <h6 class="m-0 mt-3 text-muted text-center">Şikayet - Öykü</h6>
-                                                <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Şikayet:</strong> &nbsp; @Anamnesis.Complaint</li>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Öykü:</strong> &nbsp; @Anamnesis.MedicalHistory</li>
-                                                    </div>
-                                                </div>
-                                                <h6 class="m-0 mt-3 text-muted text-center">Kilo Öyküsü</h6>
-                                                <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
-                                                <div class="row">
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">18 Yaş:</strong> &nbsp; @Anamnesis.WeightHistoryOnTeen</li>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Eğitim:</strong> &nbsp; @Anamnesis.WeightHistoryOnEducation</li>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">İş:</strong> &nbsp; @Anamnesis.WeightHistoryOnWork</li>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Evlilik:</strong> &nbsp; @Anamnesis.WeightHistoryOnMarriage</li>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Gebelik:</strong> &nbsp; @Anamnesis.WeightHistoryOnPregnancy</li>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diyet:</strong> &nbsp; @Anamnesis.WeightHistoryOnDiet</li>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Yüksek:</strong> &nbsp; @Anamnesis.WeightHistoryOnTop</li>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Düşük:</strong> &nbsp; @Anamnesis.WeightHistoryOnLow</li>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hayal:</strong> &nbsp; @Anamnesis.WeightHistoryOnDream</li>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hedef:</strong> &nbsp; @Anamnesis.WeightHistoryOnGoal</li>
-                                                    </div>
-                                                </div>
-                                                <h6 class="m-0 mt-3 text-muted text-center">Özgeçmiş</h6>
-                                                <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Adet Düzeni:</strong> &nbsp; @Anamnesis.Period</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Doğum Sayısı:</strong> &nbsp; @Anamnesis.NumberOfBirth</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Düşük Sayısı:</strong> &nbsp; @Anamnesis.NumberOfMiscarry</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Bebek Doğum Ağırlığı:</strong> &nbsp; @Anamnesis.BabyWeightOnBirth</li>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Operasyonlar:</strong> &nbsp; @Anamnesis.MedicalOperations</li>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Medeni Durum:</strong> &nbsp; @Anamnesis.MaritalStatus</li>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Beslenme Durumu:</strong> &nbsp; @Anamnesis.Nutrition</li>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Uyku Durumu:</strong> &nbsp; @Anamnesis.Sleep</li>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Spor Durumu:</strong> &nbsp; @Anamnesis.Sport</li>
-                                                    </div>
-                                                </div>
-                                                <h6 class="m-0 mt-3 text-muted text-center">Alışkanlıklar</h6>
-                                                <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Sigara:</strong> &nbsp; @Anamnesis.Smoking</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Alkol:</strong> &nbsp; @Anamnesis.Alcohol</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kafein:</strong> &nbsp; @Anamnesis.Caffeine</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Madde:</strong> &nbsp; @Anamnesis.Drugs</li>
-                                                    </div>
-                                                </div>
-                                                <h6 class="m-0 mt-3 text-muted text-center">Soy Geçmiş</h6>
-                                                <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Anne:</strong> &nbsp; @Anamnesis.Mother</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Baba:</strong> &nbsp; @Anamnesis.Father</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kardeş:</strong> &nbsp; @Anamnesis.Siblings</li>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diğer:</strong> &nbsp; @Anamnesis.Other</li>
-                                                    </div>
-                                                </div>                                              
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingThree">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#three" aria-expanded="false" aria-controls="three">
-                                                Fizik Muayene
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="three" class="accordion-collapse collapse p-3" aria-labelledby="headingThree">
-                                            <ejs-grid id="GridPhysicalExaminations" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                                                allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                                                    <e-data-manager adaptor="UrlAdaptor" url="/PhysicalExamination/Get?pid=@Model.PatientId" insertUrl="/PhysicalExamination/Insert?pid=@Model.PatientId" updateUrl="/PhysicalExamination/Update" removeUrl="/PhysicalExamination/Remove"></e-data-manager>
-                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                                                    <e-grid-columns>
-                                                        <e-grid-column field="PhysicalExaminationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                                                        <e-grid-column field="BloodPressure" headerText="Tansiyon" width="80px"></e-grid-column>
-                                                        <e-grid-column field="Pulse" headerText="Nabız" width="80px"></e-grid-column>
-                                                        <e-grid-column field="Description" headerText="Açıklama" width="80px"></e-grid-column>
-                                                    </e-grid-columns>
-                                            </ejs-grid>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingFour">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#four" aria-expanded="false" aria-controls="four">
-                                                Vücut Analizi
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="four" class="accordion-collapse collapse p-3" aria-labelledby="headingFour">
-                                            <ejs-grid id="GridBodyAnalysis" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                                                allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                                                    <e-data-manager adaptor="UrlAdaptor" url="/BodyAnalysis/Get?pid=@Model.PatientId" insertUrl="/BodyAnalysis/Insert?pid=@Model.PatientId" updateUrl="/BodyAnalysis/Update" removeUrl="/BodyAnalysis/Remove"></e-data-manager>
-                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                                                    <e-grid-columns>
-                                                        <e-grid-column field="BodyAnalysisId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                                                        <e-grid-column field="Height" headerText="Boy" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Weight" headerText="Kilo" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Bmi" headerText="BMI" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Fat" headerText="Fat%" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Fm" headerText="FM" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Mm" headerText="MM" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Tbw" headerText="TBW" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                                                    </e-grid-columns>
-                                            </ejs-grid>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingFive">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#five" aria-expanded="false" aria-controls="five">
-                                                Radyoloji
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="five" class="accordion-collapse collapse p-3" aria-labelledby="headingFive">
-                                            <ejs-grid id="GridRadiology" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                                                allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                                                    <e-data-manager adaptor="UrlAdaptor" url="/Radiology/Get?pid=@Model.PatientId" insertUrl="/Radiology/Insert?pid=@Model.PatientId" updateUrl="/Radiology/Update" removeUrl="/Radiology/Remove"></e-data-manager>
-                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                                                    <e-grid-columns>
-                                                        <e-grid-column field="RadiologyId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                                                        <e-grid-column field="Description" headerText="Açıklama" width="80px"></e-grid-column>
-                                                        <e-grid-column field="RadiologyTypeId" headerText="Tür" width="80px" foreignKeyValue="RadiologyTypeName" foreignKeyField="RadiologyTypeId" dataSource="ViewBag.RadiologyTypes"></e-grid-column>
-                                                    </e-grid-columns>
-                                            </ejs-grid>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingSix">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#six" aria-expanded="false" aria-controls="six">
-                                                Karar - Takip
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="six" class="accordion-collapse collapse p-3" aria-labelledby="headingSix">
-                                            <ejs-grid id="GridDecisionAndTracing" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                                                allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                                                    <e-data-manager adaptor="UrlAdaptor" url="/DecisionAndTracing/Get?pid=@Model.PatientId" insertUrl="/DecisionAndTracing/Insert?pid=@Model.PatientId" updateUrl="/DecisionAndTracing/Update" removeUrl="/DecisionAndTracing/Remove"></e-data-manager>
-                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                                                    <e-grid-columns>
-                                                        <e-grid-column field="DecisionAndTracingId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                                                        <e-grid-column field="Description" headerText="Açıklama" width="80px"></e-grid-column>
-                                                        <e-grid-column field="DecisionAndTracingTypeId" headerText="Tür" foreignKeyValue="DecisionAndTracingTypeName" foreignKeyField="DecisionAndTracingTypeId" dataSource="ViewBag.DecisionAndTracingTypes" width="80px"></e-grid-column>
-                                                        <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="80px"></e-grid-column>
-                                                    </e-grid-columns>
-                                            </ejs-grid>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingSeven">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#seven" aria-expanded="false" aria-controls="seven">
-                                                Adülasyon
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="seven" class="accordion-collapse collapse p-3" aria-labelledby="headingSeven">
-                                            <ejs-grid id="GridAndulation" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                                                allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                                                    <e-data-manager adaptor="UrlAdaptor" url="/Andulation/Get?pid=@Model.PatientId" insertUrl="/Andulation/Insert?pid=@Model.PatientId" updateUrl="/Andulation/Update" removeUrl="/Andulation/Remove"></e-data-manager>
-                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                                                    <e-grid-columns>
-                                                        <e-grid-column field="AndulationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="SessionDate" headerText="Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                                                        <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Schedule" headerText="Program" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Duration" headerText="Dakika" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Vibration" headerText="Titreşim" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
-                                                        <e-grid-column field="Chest" headerText="Göğüs" editType="numericedit" width="80px"></e-grid-column>
-                                                        <e-grid-column field="Waist" headerText="Bel" editType="numericedit" width="80px"></e-grid-column>
-                                                        <e-grid-column field="Abdomen" headerText="Karın" editType="numericedit" width="80px"></e-grid-column>
-                                                        <e-grid-column field="Hip" headerText="Kalça" editType="numericedit" width="80px"></e-grid-column>
-                                                        <e-grid-column field="RightArm" headerText="Sağ Kol" editType="numericedit" width="80px"></e-grid-column>
-                                                        <e-grid-column field="RightLeg" headerText="Sağ Bacak" editType="numericedit" width="80px"></e-grid-column>
-                                                        <e-grid-column field="Reason" headerText="Nedeni" width="150px"></e-grid-column>
-                                                        <e-grid-column field="Description" headerText="Not" width="150px"></e-grid-column>
-                                                    </e-grid-columns>
-                                            </ejs-grid>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingEight">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#eight" aria-expanded="false" aria-controls="eight">
-                                                Ozon
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="eight" class="accordion-collapse collapse p-3" aria-labelledby="headingEight">
-                                            <ejs-grid id="GridOzone" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                                                allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                                                <e-data-manager adaptor="UrlAdaptor" url="/Ozone/Get?pid=@Model.PatientId" insertUrl="/Ozone/Insert?pid=@Model.PatientId" updateUrl="/Ozone/Update" removeUrl="/Ozone/Remove"></e-data-manager>
-                                                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                                                <e-grid-columns>
-                                                    <e-grid-column field="OzoneId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                    <e-grid-column field="RecordDate" headerText="Uygulama Tarihi" format='yMd' editType="datepickeredit"></e-grid-column>
-                                                    <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})'></e-grid-column>
-                                                    <e-grid-column field="Description" headerText="Açıklama"></e-grid-column>
-                                                </e-grid-columns>
-                                            </ejs-grid>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                    <div class="accordion-item mb-3">
-                                        <h5 class="accordion-header" id="headingNine">
-                                            <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nine" aria-expanded="false" aria-controls="nine">
-                                                Laboratuvar
-                                                <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                                <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                            </button>
-                                        </h5>
-                                        <div id="nine" class="accordion-collapse collapse p-3" aria-labelledby="headingNine">
-                                            <ejs-grid id="GridAnalysis" height="250px" width="%100" actionBegin="actionBegin"
-                                                actionComplete="actionComplete" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                                                allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                                                <e-data-manager adaptor="UrlAdaptor" url="/Analysis/Get?pid=@Model.PatientId" insertUrl="/Analysis/Insert?pid=@Model.PatientId" updateUrl="/Analysis/Update" removeUrl="/Analysis/Remove"></e-data-manager>
-                                                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                                                <e-grid-columns>
-                                                    <e-grid-column field="AnalysisId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                    <e-grid-column field="AnalysisDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit"></e-grid-column>
-                                                    <e-grid-column field="Description" headerText="Açıklama"></e-grid-column>
-                                                    <e-grid-column field="Detay" headerText="Detay" template="#details"></e-grid-column>
-                                                </e-grid-columns>
-                                            </ejs-grid>
-                                        </div>
-                                    </div>
-                                    <!-- ACCORDION ITEM -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="card h-100">
+        <div class="card-body p-3">
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">İşlem Kaydı</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ejs-grid id="GridPatientRecord" height="200px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                        <e-data-manager adaptor="UrlAdaptor" url="/PatientRecord/Get?pid=@Model.PatientId" insertUrl="/PatientRecord/Insert?pid=@Model.PatientId" updateUrl="/PatientRecord/Update" removeUrl="/PatientRecord/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="PatientRecordId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="250px"></e-grid-column>
+                            <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="50px"></e-grid-column>
+                        </e-grid-columns>
+                </ejs-grid>
             </div>
-            <hr>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Hasta Bilgileri</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ul class="list-group text-dark">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Sigorta:</strong> &nbsp; @Model.SocialSecurity.SocialSecurityName</li>
+                        </div>
+                        <div class="col-md-3">
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">İndirim:</strong> &nbsp; @Model.DiscountType.DiscountTypeName</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Eposta:</strong> &nbsp; @Model.Email</li>
+                        </div>
+                        <div class="col-md-3">
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Telefon:</strong> &nbsp; @Model.Phone</li>
+                        </div>
+                        <div class="col-md-3">
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">İkinci Telefon:</strong> &nbsp; @Model.SecondPhone</li>
+                        </div>
+                        <div class="col-md-3">
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Üçüncü Telefon:</strong> &nbsp; @Model.ThirdPhone</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-muted">Adres:</strong> &nbsp; @Model.Address</li>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Anamnez</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ul class="list-group text-dark">
+                    <a href="javascript:;" class="mb-3 text-primary">
+                        <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#anamnesisModal">Düzenle</i>
+                    </a>
+                    <h6 class="m-0 mt-1 text-muted text-center">Temel Bilgiler</h6>
+                    <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
+                    <div class="row">
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Meslek:</strong> &nbsp; @Anamnesis.Profession</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; @Anamnesis.Height</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kilo:</strong> &nbsp; @Anamnesis.Weight</li>
+                        </div>
+                    </div>
+                    <h6 class="m-0 mt-3 text-muted text-center">Şikayet - Öykü</h6>
+                    <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Şikayet:</strong> &nbsp; @Anamnesis.Complaint</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Öykü:</strong> &nbsp; @Anamnesis.MedicalHistory</li>
+                        </div>
+                    </div>
+                    <h6 class="m-0 mt-3 text-muted text-center">Kilo Öyküsü</h6>
+                    <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
+                    <div class="row">
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">18 Yaş:</strong> &nbsp; @Anamnesis.WeightHistoryOnTeen</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Eğitim:</strong> &nbsp; @Anamnesis.WeightHistoryOnEducation</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">İş:</strong> &nbsp; @Anamnesis.WeightHistoryOnWork</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Evlilik:</strong> &nbsp; @Anamnesis.WeightHistoryOnMarriage</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Gebelik:</strong> &nbsp; @Anamnesis.WeightHistoryOnPregnancy</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diyet:</strong> &nbsp; @Anamnesis.WeightHistoryOnDiet</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Yüksek:</strong> &nbsp; @Anamnesis.WeightHistoryOnTop</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Düşük:</strong> &nbsp; @Anamnesis.WeightHistoryOnLow</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hayal:</strong> &nbsp; @Anamnesis.WeightHistoryOnDream</li>
+                        </div>
+                        <div class="col-md">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hedef:</strong> &nbsp; @Anamnesis.WeightHistoryOnGoal</li>
+                        </div>
+                    </div>
+                    <h6 class="m-0 mt-3 text-muted text-center">Özgeçmiş</h6>
+                    <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
+                    <div class="row">
+                         <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Adet Düzeni:</strong> &nbsp; @Anamnesis.Period</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Doğum Sayısı:</strong> &nbsp; @Anamnesis.NumberOfBirth</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Düşük Sayısı:</strong> &nbsp; @Anamnesis.NumberOfMiscarry</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Bebek Doğum Ağırlığı:</strong> &nbsp; @Anamnesis.BabyWeightOnBirth</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Operasyonlar:</strong> &nbsp; @Anamnesis.MedicalOperations</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Medeni Durum:</strong> &nbsp; @Anamnesis.MaritalStatus</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Beslenme Durumu:</strong> &nbsp; @Anamnesis.Nutrition</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Uyku Durumu:</strong> &nbsp; @Anamnesis.Sleep</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Spor Durumu:</strong> &nbsp; @Anamnesis.Sport</li>
+                        </div>
+                    </div>
+                    <h6 class="m-0 mt-3 text-muted text-center">Alışkanlıklar</h6>
+                    <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Sigara:</strong> &nbsp; @Anamnesis.Smoking</li>
+                        </div>
+                        <div class="col-md-6">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Alkol:</strong> &nbsp; @Anamnesis.Alcohol</li>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kafein:</strong> &nbsp; @Anamnesis.Caffeine</li>
+                        </div>
+                        <div class="col-md-6">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Madde:</strong> &nbsp; @Anamnesis.Drugs</li>
+                        </div>
+                    </div>
+                    <h6 class="m-0 mt-3 text-muted text-center">Soy Geçmiş</h6>
+                    <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Anne:</strong> &nbsp; @Anamnesis.Mother</li>
+                        </div>
+                    </div>                                              
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Baba:</strong> &nbsp; @Anamnesis.Father</li>
+                        </div>
+                    </div>                                              
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kardeş:</strong> &nbsp; @Anamnesis.Siblings</li>
+                        </div>
+                    </div>                                              
+                    <div class="row">
+                        <div class="col-md-12">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diğer:</strong> &nbsp; @Anamnesis.Other</li>
+                        </div>
+                    </div>                                              
+                </ul>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Fizik Muayene</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ejs-grid id="GridPhysicalExaminations" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                        <e-data-manager adaptor="UrlAdaptor" url="/PhysicalExamination/Get?pid=@Model.PatientId" insertUrl="/PhysicalExamination/Insert?pid=@Model.PatientId" updateUrl="/PhysicalExamination/Update" removeUrl="/PhysicalExamination/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="PhysicalExaminationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
+                            <e-grid-column field="BloodPressure" headerText="Tansiyon" width="50px"></e-grid-column>
+                            <e-grid-column field="Pulse" headerText="Nabız" width="50px"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="250px"></e-grid-column>
+                        </e-grid-columns>
+                </ejs-grid>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Vücut Analizi</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ejs-grid id="GridBodyAnalysis" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                        <e-data-manager adaptor="UrlAdaptor" url="/BodyAnalysis/Get?pid=@Model.PatientId" insertUrl="/BodyAnalysis/Insert?pid=@Model.PatientId" updateUrl="/BodyAnalysis/Update" removeUrl="/BodyAnalysis/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="BodyAnalysisId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
+                            <e-grid-column field="Height" headerText="Boy" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
+                            <e-grid-column field="Weight" headerText="Kilo" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
+                            <e-grid-column field="Bmi" headerText="BMI" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
+                            <e-grid-column field="Fat" headerText="Fat%" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
+                            <e-grid-column field="Fm" headerText="FM" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
+                            <e-grid-column field="Mm" headerText="MM" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
+                            <e-grid-column field="Tbw" headerText="TBW" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
+                        </e-grid-columns>
+                </ejs-grid>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Radyoloji</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ejs-grid id="GridRadiology" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                        <e-data-manager adaptor="UrlAdaptor" url="/Radiology/Get?pid=@Model.PatientId" insertUrl="/Radiology/Insert?pid=@Model.PatientId" updateUrl="/Radiology/Update" removeUrl="/Radiology/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="RadiologyId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="250px"></e-grid-column>
+                            <e-grid-column field="RadiologyTypeId" headerText="Tür" width="50px" foreignKeyValue="RadiologyTypeName" foreignKeyField="RadiologyTypeId" dataSource="ViewBag.RadiologyTypes"></e-grid-column>
+                        </e-grid-columns>
+                </ejs-grid>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Karar - Takip</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ejs-grid id="GridDecisionAndTracing" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                        <e-data-manager adaptor="UrlAdaptor" url="/DecisionAndTracing/Get?pid=@Model.PatientId" insertUrl="/DecisionAndTracing/Insert?pid=@Model.PatientId" updateUrl="/DecisionAndTracing/Update" removeUrl="/DecisionAndTracing/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="DecisionAndTracingId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
+                            <e-grid-column field="DecisionAndTracingTypeId" headerText="Tür" foreignKeyValue="DecisionAndTracingTypeName" foreignKeyField="DecisionAndTracingTypeId" dataSource="ViewBag.DecisionAndTracingTypes" width="50px"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="200px"></e-grid-column>
+                            <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="50px"></e-grid-column>
+                        </e-grid-columns>
+                </ejs-grid>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Andülasyon</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ejs-grid id="GridAndulation" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                        <e-data-manager adaptor="UrlAdaptor" url="/Andulation/Get?pid=@Model.PatientId" insertUrl="/Andulation/Insert?pid=@Model.PatientId" updateUrl="/Andulation/Update" removeUrl="/Andulation/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="AndulationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                            <e-grid-column field="SessionDate" headerText="Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
+                            <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
+                            <e-grid-column field="Schedule" headerText="Program" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
+                            <e-grid-column field="Duration" headerText="Dakika" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
+                            <e-grid-column field="Vibration" headerText="Titreşim" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
+                            <e-grid-column field="Chest" headerText="Göğüs" editType="numericedit" width="80px"></e-grid-column>
+                            <e-grid-column field="Waist" headerText="Bel" editType="numericedit" width="80px"></e-grid-column>
+                            <e-grid-column field="Abdomen" headerText="Karın" editType="numericedit" width="80px"></e-grid-column>
+                            <e-grid-column field="Hip" headerText="Kalça" editType="numericedit" width="80px"></e-grid-column>
+                            <e-grid-column field="RightArm" headerText="Sağ Kol" editType="numericedit" width="80px"></e-grid-column>
+                            <e-grid-column field="RightLeg" headerText="Sağ Bacak" editType="numericedit" width="80px"></e-grid-column>
+                            <e-grid-column field="Reason" headerText="Nedeni" width="150px"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Not" width="150px"></e-grid-column>
+                        </e-grid-columns>
+                </ejs-grid>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Ozon</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ejs-grid id="GridOzone" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                    <e-data-manager adaptor="UrlAdaptor" url="/Ozone/Get?pid=@Model.PatientId" insertUrl="/Ozone/Insert?pid=@Model.PatientId" updateUrl="/Ozone/Update" removeUrl="/Ozone/Remove"></e-data-manager>
+                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                    <e-grid-columns>
+                        <e-grid-column field="OzoneId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                        <e-grid-column field="RecordDate" headerText="Uygulama Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
+                        <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="50px"></e-grid-column>
+                        <e-grid-column field="Description" headerText="Açıklama" width="250px"></e-grid-column>
+                    </e-grid-columns>
+                </ejs-grid>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Laboratuvar</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <a href="/User/Analysis?patientId=@Model.PatientId" class="mb-3 text-primary">
+                        <i class="fas fa-edit text-primary text-sm">Yeni Kayıt</i>
+                </a>
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarih</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Seçimler</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ücret</th>
+                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">Uygulama Yeri</th>
+                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">Toplam</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Açıklama</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var analysis in Analyses)
+                        {
+                            double sum = 0;
+                            <tr>
+                                <td class="align-middle"><span class="text-secondary text-xs font-weight-bold">@analysis.AnalysisDate.ToString("dd/MM/yyyy")</span></td>
+                                <td class="align-middle">
+                                    @foreach (var analysisType in AnalysisTypes.Where(i => i.AnalysisId == analysis.AnalysisId).ToList())
+                                    {
+                                        <p class="text-xs text-secondary mb-0">@Types.Where(i => i.TypeId == analysisType.TypeId).FirstOrDefault().TypeName</p>
+                                    }
+                                </td>
+                                <td class="align-middle">
+                                    @foreach (var analysisType in AnalysisTypes.Where(i => i.AnalysisId == analysis.AnalysisId).ToList())
+                                    {
+                                        <p class="text-xs text-secondary mb-0">@analysisType.Price₺</p>
+                                    }
+                                </td>
+                                <td class="align-middle text-center">
+                                    @foreach (var analysisType in AnalysisTypes.Where(i => i.AnalysisId == analysis.AnalysisId).ToList())
+                                    {
+                                        @if (analysisType.IsEndoklinikTest){
+                                            sum += analysisType.Price;
+                                            <p class="text-xs text-primary mb-0">EndoKlinik</p>
+                                        }
+                                        else{
+                                            <p class="text-xs text-secondary mb-0">Dışarı</p>
+                                        }
+                                    }
+                                </td>
+                                <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">@sum₺</span></td>
+                                <td class="align-middle"><span class="text-secondary text-xs font-weight-bold" style="white-space: normal !important; max-width: 20vw">@analysis.Description</span></td>
+                                <td class="align-middle">
+                                    <a class="text-secondary font-weight-bold text-xs" onclick="openPopup(@analysis.AnalysisId)">Düzenle</a>
+                                </td>
+                                <td class="align-middle">
+                                    <a href="/AnalysisType/Remove/?analysisId=@analysis.AnalysisId&patientId=@Model.PatientId" class="text-danger font-weight-bold text-xs">Sil</a>
+                                </td>
+                            </tr>   
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 <script id="details" type="text/x-template">
     <a href="/User/Analysis?analysisId=${AnalysisId}">Detay<i class="ni ni-bold-right"></i></a>
 </script>
+<script>
+    function openPopup(analysisId){
+        var tableBody = document.getElementById('tableBody')
+        var rows = ''
+        document.getElementById('ModalAnalysisId').value = analysisId
+        document.getElementById('Description').value = analysesList.find(o => o.AnalysisId == analysisId).Description
+        analysisTypeList.forEach((e) => {
+            if(e.AnalysisId == analysisId)
+            {
+                var isEndo = e.IsEndoklinikTest ? 'checked' : ''
+                rows += '<tr><td><p class="text-s text-secondary mb-0">'+ e.Type.TypeName +'</p></td>' +
+                    '<td><p class="text-s text-secondary mb-0">'+ e.Price +'₺</p></td>' +
+                    '<td><input type="checkbox" id="'+e.AnalysisTypeId+'" name="IsEndoklinikTest" value="'+e.AnalysisTypeId+'"'+isEndo+'><label for="'+e.AnalysisTypeId+'">EndoKlinik</label></td></tr>'
+            }
+        })
+        tableBody.innerHTML = rows
+        $('#analysisModal').modal('show')
+    }
+</script>
 
+<!-- Anamnesis Modal -->
+<div class="modal fade" id="analysisModal" tabindex="-1" role="dialog" aria-labelledby="analysisModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="analysisModalLabel">Laboratuvar Kaydı</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Set" asp-controller="AnalysisType" method="post">
+                    <input type="hidden" name="AnalysisId" value="" id="ModalAnalysisId">
+                    <input type="hidden" name="PatientId" value="@Model.PatientId" id="ModalPatientId">
+                    <div class="modal-body" id="AnalysisTypeModal">
+                        <table style="margin: 0 auto; width: 100%;">
+                            <thead>
+                                <tr>
+                                  <th class="text-secondary opacity-7"></th>
+                                  <th class="text-uppercase text-secondary text-s font-weight-bolder opacity-7">Fiyat</th>
+                                  <th class="text-uppercase text-secondary text-s font-weight-bolder opacity-7">Uygulama Yeri</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <label for="Description">Açıklama</label>
+                            <textarea class="form-control" id="Description" name="Description" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">İptal</button>
+                        <button type="submit" class="btn bg-gradient-info">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Anamnesis Modal -->
 <div class="modal fade" id="anamnesisModal" tabindex="-1" role="dialog" aria-labelledby="anamnesisModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -494,21 +537,23 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="Complaint">Şikayet</label>
-                                <textarea class="form-control" name="Complaint">@Anamnesis.Complaint</textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="MedicalHistory">Öykü</label>
-                                <textarea class="form-control" name="MedicalHistory">@Anamnesis.MedicalHistory</textarea>
+                                <textarea class="form-control" name="Complaint" rows="3">@Anamnesis.Complaint</textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <h6>Kilo Öyküsü</h6>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="MedicalHistory">Öykü</label>
+                                <textarea class="form-control" name="MedicalHistory" rows="10">@Anamnesis.MedicalHistory</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h6 class="text-muted text-sm">Kilo Öyküsü</h6>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnTeen">18 Yaş</label>
@@ -573,87 +618,67 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h6>Özgeçmiş</h6>
-                        <div class="col-md-3">
+                        <h6 class="text-muted text-sm">Özgeçmiş</h6>
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="Period">Adet Düzeni</label>
-                                <input type="text" class="form-control" name="Period" value="@Anamnesis.Period">
+                                <textarea class="form-control" name="Period" rows="1">@Anamnesis.Period</textarea>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="NumberOfBirth">Doğum Sayısı</label>
                                 <input type="number" class="form-control" name="NumberOfBirth" value="@Anamnesis.NumberOfBirth">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="NumberOfMiscarry">Düşük Sayısı</label>
                                 <input type="number" class="form-control" name="NumberOfMiscarry" value="@Anamnesis.NumberOfMiscarry">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="BabyWeightOnBirth">Bebek Doğum Ağırlığı</label>
-                                <input type="number" class="form-control" name="BabyWeightOnBirth" value="@Anamnesis.BabyWeightOnBirth">
+                                <textarea class="form-control" name="BabyWeightOnBirth" rows="4">@Anamnesis.BabyWeightOnBirth</textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="MedicalOperations">Operasyonlar</label>
-                                <input type="text" class="form-control" name="MedicalOperations" value="@Anamnesis.MedicalOperations">
+                                <textarea class="form-control" name="MedicalOperations" rows="4">@Anamnesis.MedicalOperations</textarea>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <h6 class="text-muted text-sm">Alışkanlıklar</h6>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="MaritalStatus">Medeni Durum</label>
-                                <input type="text" class="form-control" name="MaritalStatus" value="@Anamnesis.MaritalStatus">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="Nutrition">Beslenme Durumu</label>
-                                <input type="text" class="form-control" name="Nutrition" value="@Anamnesis.Nutrition">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="Sleep">Uyku Durumu</label>
-                                <input type="text" class="form-control" name="Sleep" value="@Anamnesis.Sleep">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="Sport">Spor Durumu</label>
-                                <input type="text" class="form-control" name="Sport" value="@Anamnesis.Sport">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <h6>Alışkanlıklar</h6>
-                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="Smoking">Sigara</label>
                                 <input type="text" class="form-control" name="Smoking" value="@Anamnesis.Smoking">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="Alcohol">Alkol</label>
                                 <input type="text" class="form-control" name="Alcohol" value="@Anamnesis.Alcohol">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="Caffeine">Kafein</label>
                                 <input type="text" class="form-control" name="Caffeine" value="@Anamnesis.Caffeine">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="Drugs">Madde</label>
                                 <input type="text" class="form-control" name="Drugs" value="@Anamnesis.Drugs">
@@ -661,26 +686,64 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h6>Soy Geçmiş</h6>
-                        <div class="col-md-3">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="MaritalStatus">Medeni Durum</label>
+                                <textarea class="form-control" name="MaritalStatus">@Anamnesis.MaritalStatus</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Nutrition">Beslenme Durumu</label>
+                                <textarea class="form-control" name="Nutrition">@Anamnesis.Nutrition</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Sleep">Uyku Durumu</label>
+                                <textarea class="form-control" name="Sleep">@Anamnesis.Sleep</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Sport">Spor Durumu</label>
+                                <textarea class="form-control" name="Sport">@Anamnesis.Sport</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h6 class="text-muted text-sm">Soy Geçmiş</h6>
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="Mother">Anne</label>
                                 <textarea type="text" class="form-control" name="Mother">@Anamnesis.Mother</textarea>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="Father">Baba</label>
                                 <textarea type="text" class="form-control" name="Father">@Anamnesis.Father</textarea>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="Siblings">Kardeş</label>
                                 <textarea type="text" class="form-control" name="Siblings">@Anamnesis.Siblings</textarea>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="Other">Diğer</label>
                                 <textarea type="text" class="form-control" name="Other">@Anamnesis.Other</textarea>
@@ -690,7 +753,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">İptal</button>
-                    <button type="submit" class="btn bg-gradient-primary">Kaydet</button>
+                    <button type="submit" class="btn bg-gradient-info">Kaydet</button>
                 </div>
             </form>
         </div>

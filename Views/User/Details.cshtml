@@ -30,7 +30,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-	font-weight: normal;
+	    font-weight: normal;
     }
 </style>
 
@@ -366,6 +366,10 @@
             <div class="my-3">
                 <h6 class="text-primary">Ozon</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
+                <a href="javascript:;" class="mb-3 text-primary">
+                    <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#ozoneDescriptionModal">Düzenle</i>
+                </a>
+                <p><strong class="text-muted">Ozon Not: </strong> @Model.OzoneDescription</p>
                 <ejs-grid id="GridOzone" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                     allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                     <e-data-manager adaptor="UrlAdaptor" url="/Ozone/Get?pid=@Model.PatientId" insertUrl="/Ozone/Insert?pid=@Model.PatientId" updateUrl="/Ozone/Update" removeUrl="/Ozone/Remove"></e-data-manager>
@@ -466,7 +470,33 @@
     }
 </script>
 
-<!-- Anamnesis Modal -->
+<!-- Ozone Description Modal -->
+<div class="modal fade" id="ozoneDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="ozoneDescriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ozoneDescriptionModalLabel">Laboratuvar Kaydı</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="UpdateOzoneDescription" asp-controller="Ozone" method="post">
+                    <input type="hidden" name="PatientId" value="@Model.PatientId" id="OzoneModalPatientId">
+                    <div class="modal-body" id="AnalysisTypeModal">
+                        <div class="form-group">
+                            <label for="OzoneDescription">Ozon Not:</label>
+                            <textarea class="form-control" id="OzoneDescription" name="OzoneDescription" rows="4">@Model.OzoneDescription</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">İptal</button>
+                        <button type="submit" class="btn bg-gradient-info">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Analysis Modal -->
 <div class="modal fade" id="analysisModal" tabindex="-1" role="dialog" aria-labelledby="analysisModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

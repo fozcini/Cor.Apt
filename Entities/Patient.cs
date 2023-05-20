@@ -15,6 +15,7 @@ namespace Cor.Apt.Entities
         public string ThirdPhone { get; set; }
         public string Address { get; set; }
         public string Reference { get; set; }
+        public string OzoneDescription { get; set; }
 
         public int SocialSecurityId { get; set; }
         public SocialSecurity SocialSecurity { get; set; }

@@ -1,7 +1,7 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Syncfusion.EJ2.Base;
 
 using Cor.Apt.Entities;
@@ -58,6 +58,17 @@ namespace Cor.Apt.Controllers
             }
             _context.SaveChanges();
             return Json(value.Value);
+        }
+        public IActionResult UpdateOzoneDescription() // Update record 
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            var _patient = _context.Patients.Where(i => i.PatientId == Convert.ToInt32(HttpContext.Request.Form["PatientId"])).FirstOrDefault();
+            if (_patient != null)
+            {
+                _patient.OzoneDescription = HttpContext.Request.Form["OzoneDescription"];
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Details", "User", new { patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]) });
         }
         public ActionResult Remove([FromBody] CRUDModel<Ozone> value) // Remove record 
         {

@@ -1,0 +1,50 @@
+@model List<Cor.Apt.Entities.RadiologyRequestType>
+@{
+    var RadiologyRequest = (Cor.Apt.Entities.RadiologyRequest)ViewBag.RadiologyRequest;
+    var RadiologyRequestTypeLists = (List<Cor.Apt.Entities.RadiologyRequestTypeList>)ViewBag.RadiologyRequestTypeLists;
+}
+<style>
+    h6 {
+        margin-top: 10px !important;
+    } 
+</style>
+<a class="btn btn-icon btn-3 btn-default" href="/User/Details?patientId=@RadiologyRequest.PatientId" type="button">
+	<span class="btn-inner--icon"><i class="ni ni-bold-left"></i></span>
+    <span class="btn-inner--text">Hastaya Geri Dön</span>
+</a>
+<div class="card">
+    <div class="card-header card-header-primary card-header-text" style="padding-bottom: 0px !important">
+        <div class="card-text">
+            <h4 class="card-title">Radyoloji Tetkik İstem</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Update" asp-controller="RadiologyRequestType" method="post">
+            <input type="hidden" name="RadiologyRequestId" value="@RadiologyRequest.RadiologyRequestId">
+            <input type="hidden" name="PatientId" value="@RadiologyRequest.PatientId">
+            <div class="row">
+                <div class="col-md-3">
+                    <table>
+                        <thead>
+                            <tr>
+                              <th class="text-secondary opacity-7"></th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fiyat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* <tr><td><h6>Diabet Paneli</h6></td></tr> *@
+                            @foreach (var type in RadiologyRequestTypeLists.Take(12))
+                            {
+                                <tr>
+                                    <td><ejs-checkbox id="@type.RadiologyRequestTypeListId" checked='@Model.Any(i => i.RadiologyRequestTypeListId == type.RadiologyRequestTypeListId) ? true : false' label="@type.TypeName" value="@type.RadiologyRequestTypeListId" name="RadiologyRequestTypeLists"></ejs-checkbox></td>
+                                    <td style="padding-left: 0.5rem"><p class="text-xs text-secondary mb-0">@type.Price₺</p></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button type="submit" class="btn bg-gradient-default mt-3">Kaydet</button>
+        </form>
+    </div>
+</div>

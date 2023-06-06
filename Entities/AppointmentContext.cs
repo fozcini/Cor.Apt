@@ -50,5 +50,8 @@ namespace Cor.Apt.Entities
         public DbSet<Unit> Units { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserNote> UserNotes { get; set; }
+        public DbSet<RadiologyRequest> RadiologyRequests { get; set; }
+        public DbSet<RadiologyRequestType> RadiologyRequestTypes { get; set; }
+        public DbSet<RadiologyRequestTypeList> RadiologyRequestTypeLists { get; set; }
     }
 }

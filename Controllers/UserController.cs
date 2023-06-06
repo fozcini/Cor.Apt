@@ -54,6 +54,9 @@ namespace Cor.Apt.Controllers
             ViewBag.RadiologyTypes = _context.RadiologyTypes.ToList();
             ViewBag.DecisionAndTracingTypes = _context.DecisionAndTracingTypes.ToList();
             ViewBag.Users = _context.Users.ToList();
+            ViewBag.RadiologyRequests = _context.RadiologyRequests.ToList();
+            ViewBag.RadiologyRequestTypes = _context.RadiologyRequestTypes.ToList();
+            ViewBag.RadiologyRequestTypeLists = _context.RadiologyRequestTypeLists.ToList();
             return View(patient);
         }
 
@@ -96,6 +99,23 @@ namespace Cor.Apt.Controllers
             }
             ViewBag.Analysis = _context.Analyses.Where(i => i.AnalysisId == analysisId).FirstOrDefault();
             return View(_context.AnalysisTypes.Where(i => i.AnalysisId == analysisId).ToList());
+        }
+        public IActionResult RadiologyRequest(int? radiologyRequestId, int? patientId)
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            ViewBag.RadiologyRequestTypeLists = _context.RadiologyRequestTypeLists.ToList();
+            if (radiologyRequestId == null && patientId != null)
+            {
+                RadiologyRequest _radiologyRequest = new RadiologyRequest() {
+                    RadiologyRequestDate = System.DateTime.Now,
+                    PatientId = (int)patientId
+                };
+                _context.Add(_radiologyRequest);
+                _context.SaveChanges();
+                radiologyRequestId = _radiologyRequest.RadiologyRequestId;
+            }
+            ViewBag.RadiologyRequest = _context.RadiologyRequests.Where(i => i.RadiologyRequestId == radiologyRequestId).FirstOrDefault();
+            return View(_context.RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequestId).ToList());
         }
     }
 }

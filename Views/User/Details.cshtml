@@ -5,11 +5,16 @@
     var Analyses = (List<Cor.Apt.Entities.Analysis>)ViewBag.Analyses;
     var AnalysisTypes = (List<Cor.Apt.Entities.AnalysisType>)ViewBag.AnalysisTypes;
     var Types = (List<Cor.Apt.Entities.Type>)ViewBag.Types;
+    var RadiologyRequests = (List<Cor.Apt.Entities.RadiologyRequest>)ViewBag.RadiologyRequests;
+    var RadiologyRequestTypes = (List<Cor.Apt.Entities.RadiologyRequestType>)ViewBag.RadiologyRequestTypes;
+    var RadiologyRequestTypeLists = (List<Cor.Apt.Entities.RadiologyRequestTypeList>)ViewBag.RadiologyRequestTypeLists;
 }
 <script>
     var patientId = @Model.PatientId
     var analysisTypeList = JSON.parse('@Json.Serialize(AnalysisTypes)');
     var analysesList = JSON.parse('@Json.Serialize(Analyses)');
+    var radiologyRequestTypeListJs = JSON.parse('@Json.Serialize(RadiologyRequestTypes)');
+    var radiologyRequestListJs = JSON.parse('@Json.Serialize(RadiologyRequests)');
 </script>
 <style type="text/css" class="cssStyles">
     input {
@@ -444,6 +449,68 @@
                     </tbody>
                 </table>
             </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary">Radyoloji Tetkik İstem</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <a href="/User/RadiologyRequest?patientId=@Model.PatientId" class="mb-3 text-primary">
+                        <i class="fas fa-edit text-primary text-sm">Yeni Kayıt</i>
+                </a>
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarih</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Seçimler</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ücret</th>
+                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">Uygulama Yeri</th>
+                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">Toplam</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Açıklama</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var radiologyRequest in RadiologyRequests)
+                        {
+                            double sum = 0;
+                            <tr>
+                                <td class="align-middle"><span class="text-secondary text-xs font-weight-bold">@radiologyRequest.RadiologyRequestDate.ToString("dd/MM/yyyy")</span></td>
+                                <td class="align-middle">
+                                    @foreach (var radiologyRequestType in RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequest.RadiologyRequestId).ToList())
+                                    {
+                                        <p class="text-xs text-secondary mb-0">@RadiologyRequestTypeLists.Where(i => i.RadiologyRequestTypeListId == radiologyRequestType.RadiologyRequestTypeListId).FirstOrDefault().TypeName</p>
+                                    }
+                                </td>
+                                <td class="align-middle">
+                                    @foreach (var radiologyRequestType in RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequest.RadiologyRequestId).ToList())
+                                    {
+                                        <p class="text-xs text-secondary mb-0">@radiologyRequestType.Price₺</p>
+                                    }
+                                </td>
+                                <td class="align-middle text-center">
+                                    @foreach (var radiologyRequestType in RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequest.RadiologyRequestId).ToList())
+                                    {
+                                        @if (radiologyRequestType.IsEndoklinikTest){
+                                            sum += radiologyRequestType.Price;
+                                            <p class="text-xs text-primary mb-0">EndoKlinik</p>
+                                        }
+                                        else{
+                                            <p class="text-xs text-secondary mb-0">Dışarı</p>
+                                        }
+                                    }
+                                </td>
+                                <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">@sum₺</span></td>
+                                <td class="align-middle"><span class="text-secondary text-xs font-weight-bold" style="white-space: normal !important; max-width: 20vw">@radiologyRequest.Description</span></td>
+                                <td class="align-middle">
+                                    <a class="text-secondary font-weight-bold text-xs" onclick="openRadiologyRequestPopup(@radiologyRequest.RadiologyRequestId)">Düzenle</a>
+                                </td>
+                                <td class="align-middle">
+                                    <a href="/RadiologyRequestType/Remove/?radiologyRequestId=@radiologyRequest.RadiologyRequestId&patientId=@Model.PatientId" class="text-danger font-weight-bold text-xs">Sil</a>
+                                </td>
+                            </tr>   
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -467,6 +534,23 @@
         })
         tableBody.innerHTML = rows
         $('#analysisModal').modal('show')
+    }
+    function openRadiologyRequestPopup(radiologyRequestId){
+        var tableBody = document.getElementById('tableRequestTypeBody')
+        var rows = ''
+        document.getElementById('ModalRadiologyRequestId').value = radiologyRequestId
+        document.getElementById('RadiologyRequestTypeDescription').value = radiologyRequestListJs.find(o => o.RadiologyRequestId == radiologyRequestId).Description
+        radiologyRequestTypeListJs.forEach((e) => {
+            if(e.RadiologyRequestId == radiologyRequestId)
+            {
+                var isEndo = e.IsEndoklinikTest ? 'checked' : ''
+                rows += '<tr><td><p class="text-s text-secondary mb-0">'+ e.RadiologyRequestTypeList.TypeName +'</p></td>' +
+                    '<td><p class="text-s text-secondary mb-0">'+ e.Price +'₺</p></td>' +
+                    '<td><input type="checkbox" id="'+e.RadiologyRequestTypeId+'" name="IsEndoklinikTest" value="'+e.RadiologyRequestTypeId+'"'+isEndo+'><label for="'+e.RadiologyRequestTypeId+'">EndoKlinik</label></td></tr>'
+            }
+        })
+        tableBody.innerHTML = rows
+        $('#radiologyRequestModal').modal('show')
     }
 </script>
 
@@ -524,6 +608,45 @@
                         <div class="form-group">
                             <label for="Description">Açıklama</label>
                             <textarea class="form-control" id="Description" name="Description" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">İptal</button>
+                        <button type="submit" class="btn bg-gradient-info">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- RadiologyRequest Modal -->
+<div class="modal fade" id="radiologyRequestModal" tabindex="-1" role="dialog" aria-labelledby="radiologyRequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="radiologyRequestModalLabel">Radyoloji Tetkik İstem Kaydı</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Set" asp-controller="RadiologyRequestType" method="post">
+                    <input type="hidden" name="RadiologyRequestId" value="" id="ModalRadiologyRequestId">
+                    <input type="hidden" name="PatientId" value="@Model.PatientId" id="ModalRadiologyRequestPatientId">
+                    <div class="modal-body" id="RadiologyRequestTypeModal">
+                        <table style="margin: 0 auto; width: 100%;">
+                            <thead>
+                                <tr>
+                                  <th class="text-secondary opacity-7"></th>
+                                  <th class="text-uppercase text-secondary text-s font-weight-bolder opacity-7">Fiyat</th>
+                                  <th class="text-uppercase text-secondary text-s font-weight-bolder opacity-7">Uygulama Yeri</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableRequestTypeBody">
+
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <label for="RadiologyRequestTypeDescription">Açıklama</label>
+                            <textarea class="form-control" id="RadiologyRequestTypeDescription" name="Description" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

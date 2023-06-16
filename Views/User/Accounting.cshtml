@@ -1,27 +1,33 @@
 <div class="card">
-    <div class="card-header card-header-primary card-header-text py-2">
+    <div class="card-header card-header-primary card-header-text">
         <div class="card-text">
-            <h4 class="card-title">Başvurular</h4>
+            <h4 class="card-title">Hasta Seçimi</h4>
         </div>
     </div>
     <div class="card-body">
         <div class="control-section">
-            <ejs-grid id="Grid" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
-                <e-data-manager adaptor="UrlAdaptor" url="/Application/Get" insertUrl="/Application/Insert" updateUrl="/Application/Update" removeUrl="/Application/Remove"></e-data-manager>
-                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                <e-grid-searchSettings fields='@(new string[] {"FullName"})' operator="contains" ignoreCase="true"></e-grid-searchSettings><e-grid-columns>
-                    <e-grid-column field="ApplicationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                    <e-grid-column field="FullName" headerText="İsim Soyisim" width="110"></e-grid-column>
-                    <e-grid-column field="BirthDate" headerText="Doğum Tarihi" format='yMd' editType="datepickeredit" width="110"></e-grid-column>
-                    <e-grid-column field="Phone" headerText="Telefon" width="110"></e-grid-column>
-                    <e-grid-column field="ApplicationTypeId" headerText="Bölümü" foreignKeyValue="ApplicationTypeName" foreignKeyField="ApplicationTypeId" dataSource="ViewBag.ApplicationTypes" width="80"></e-grid-column>
-                    <e-grid-column field="Cv" headerText="Cv" width="250" editType="TextBox"></e-grid-column>
+            <ejs-grid id="Grid" height="400px" width="%100" toolbar='@(new List<string>() {"Search"})' allowGrouping="true" allowPaging="true" allowResizing="true"
+                allowTextWrap="true" allowSorting="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/Patient/Get"></e-data-manager>
+                <e-grid-searchSettings fields='@(new string[] {"FullName", "IdentificationNumber"})' operator="contains" ignoreCase="true"></e-grid-searchSettings><e-grid-columns>
+                    <e-grid-column field="PatientId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                    <e-grid-column field="IdentificationNumber" headerText="Kimlik Numarası"></e-grid-column>
+                    <e-grid-column field="FullName" headerText="İsim Soyisim"></e-grid-column>
+                    <e-grid-column field="SocialSecurityId" foreignKeyValue="SocialSecurityName" headerText="Sigorta" dataSource="ViewBag.SocialSecurities" editType="dropdownedit"></e-grid-column>
+                    <e-grid-column field="DiscountTypeId" foreignKeyValue="DiscountTypeName" headerText="İndirim" dataSource="ViewBag.DiscountTypes" editType="dropdownedit"></e-grid-column>
+                    <e-grid-column field="Phone" headerText="Telefon"></e-grid-column>
+                    <e-grid-column field="Email" headerText="Eposta"></e-grid-column>
+                    <e-grid-column field="Address" headerText="Adres" editType="TextBox"></e-grid-column>
+                    <e-grid-column field="Detay" headerText="Detay" template="#details"></e-grid-column>
                 </e-grid-columns>
             </ejs-grid>
         </div>
     </div>
 </div>
+
+<script id="details" type="text/x-template">
+    <a href="/User/Details?patientId=${PatientId}">Detay <i class="ni ni-bold-right"></i></a>
+</script>
 
 <script type="text/javascript">
     ej.base.L10n.load({
@@ -46,7 +52,7 @@
                 'SaveButton': 'Kaydet',
                 'CancelButton': 'İptal',
                 'Item': 'kayıt',
-                'Items': 'kayıt',
+                'Items': 'kayıt'
             },
             'pager': {
                 'currentPageInfo': '{0}/{1}',
@@ -56,9 +62,7 @@
                 'nextPageTooltip': 'Sonraki Sayfa',
                 'previousPageTooltip': 'Önceki Sayfa',
                 'nextPagerTooltip': 'Sonraki Sayfa',
-                'previousPagerTooltip': 'Önceki Sayfa',
-                'pagerDropDown' : 'Sayfa başı kayıt',
-                'All': 'Tümü'
+                'previousPagerTooltip': 'Önceki Sayfa'
             }
         }
     });
@@ -76,4 +80,5 @@
         };
         for (var prop = 0; prop < files.length; prop++) { loadCulture(prop); }
     }
+    datepicker.locale = 'tr';
 </script>

@@ -83,17 +83,18 @@
                                                 <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
                                             </button>
                                         </h5>
-                                        <div id="two" class="accordion-collapse collapse p-3" aria-labelledby="headingTwo">
-                                            <ejs-grid id="GridLeave" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                                        <div id="two" class="accordion-collapse collapse p-2" aria-labelledby="headingTwo">
+                                            <ejs-grid id="GridLeave" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                                                 allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                                                    <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
                                                     <e-data-manager adaptor="UrlAdaptor" url="/Leave/Get?pid=@Model.UserId" insertUrl="/Leave/Insert?pid=@Model.UserId" updateUrl="/Leave/Update" removeUrl="/Leave/Remove"></e-data-manager>
                                                     <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
                                                     <e-grid-columns>
                                                         <e-grid-column field="Id" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="StartTime" headerText="Başlangıç" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                                                        <e-grid-column field="EndTime" headerText="Bitiş" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                                                        <e-grid-column field="Days" headerText="Gün" width="80px"></e-grid-column>
-                                                        <e-grid-column field="LeaveTypeId" headerText="İzin Türü" foreignKeyValue="LeaveTypeName" foreignKeyField="LeaveTypeId" dataSource="ViewBag.LeaveTypes" width="80px"></e-grid-column>
+                                                        <e-grid-column field="StartTime" headerText="Başlangıç" format='yMd' editType="datepickeredit" width="100"></e-grid-column>
+                                                        <e-grid-column field="EndTime" headerText="Bitiş" format='yMd' editType="datepickeredit" width="100"></e-grid-column>
+                                                        <e-grid-column field="Days" headerText="Gün" width="80"></e-grid-column>
+                                                        <e-grid-column field="LeaveTypeId" headerText="İzin Türü" foreignKeyValue="LeaveTypeName" foreignKeyField="LeaveTypeId" dataSource="ViewBag.LeaveTypes" width="80"></e-grid-column>
                                                     </e-grid-columns>
                                             </ejs-grid>
                                         </div>
@@ -107,16 +108,17 @@
                                                 <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
                                             </button>
                                         </h5>
-                                        <div id="three" class="accordion-collapse collapse p-3" aria-labelledby="headingThree">
-                                            <ejs-grid id="GridPayment" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                                        <div id="three" class="accordion-collapse collapse p-2" aria-labelledby="headingThree">
+                                            <ejs-grid id="GridPayment" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                                                 allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                                                    <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
                                                     <e-data-manager adaptor="UrlAdaptor" url="/SalaryPayment/Get?pid=@Model.UserId" insertUrl="/SalaryPayment/Insert?pid=@Model.UserId" updateUrl="/SalaryPayment/Update" removeUrl="/SalaryPayment/Remove"></e-data-manager>
                                                     <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
                                                     <e-grid-columns>
                                                         <e-grid-column field="SalaryPaymentId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80px"></e-grid-column>
-                                                        <e-grid-column field="Amount" headerText="Tutar" editType="numericedit" width="80px"></e-grid-column>
-                                                        <e-grid-column field="SalaryPaymentTypeId" headerText="Ödeme Türü" foreignKeyValue="SalaryPaymentTypeName" foreignKeyField="SalaryPaymentTypeId" dataSource="ViewBag.SalaryPaymentTypes" width="80px"></e-grid-column>
+                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80"></e-grid-column>
+                                                        <e-grid-column field="Amount" headerText="Tutar" editType="numericedit" width="80"></e-grid-column>
+                                                        <e-grid-column field="SalaryPaymentTypeId" headerText="Ödeme Türü" foreignKeyValue="SalaryPaymentTypeName" foreignKeyField="SalaryPaymentTypeId" dataSource="ViewBag.SalaryPaymentTypes" width="80"></e-grid-column>
                                                     </e-grid-columns>
                                             </ejs-grid>
                                         </div>
@@ -130,15 +132,15 @@
                                                 <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
                                             </button>
                                         </h5>
-                                        <div id="four" class="accordion-collapse collapse p-3" aria-labelledby="headingFour">
-                                            <ejs-grid id="GridUserNote" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                                                allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                                        <div id="four" class="accordion-collapse collapse p-2" aria-labelledby="headingFour">
+                                            <ejs-grid id="GridUserNote" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                                                     <e-data-manager adaptor="UrlAdaptor" url="/UserNote/Get?pid=@Model.UserId" insertUrl="/UserNote/Insert?pid=@Model.UserId" updateUrl="/UserNote/Update" removeUrl="/UserNote/Remove"></e-data-manager>
                                                     <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                                                    <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
                                                     <e-grid-columns>
                                                         <e-grid-column field="UserNoteId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
-                                                        <e-grid-column field="Description" headerText="Açıklama" width="200px"></e-grid-column>
+                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100"></e-grid-column>
+                                                        <e-grid-column field="Description" headerText="Açıklama" width="200"></e-grid-column>
                                                     </e-grid-columns>
                                             </ejs-grid>
                                         </div>
@@ -204,7 +206,9 @@
                 'nextPageTooltip': 'Sonraki Sayfa',
                 'previousPageTooltip': 'Önceki Sayfa',
                 'nextPagerTooltip': 'Sonraki Sayfa',
-                'previousPagerTooltip': 'Önceki Sayfa'
+                'previousPagerTooltip': 'Önceki Sayfa',
+                'pagerDropDown' : 'Sayfa başı kayıt',
+                'All': 'Tümü'
             }
         }
     });

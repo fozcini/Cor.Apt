@@ -100,6 +100,7 @@ namespace Cor.Apt.Controllers
             ViewBag.Analysis = _context.Analyses.Where(i => i.AnalysisId == analysisId).FirstOrDefault();
             return View(_context.AnalysisTypes.Where(i => i.AnalysisId == analysisId).ToList());
         }
+
         public IActionResult RadiologyRequest(int? radiologyRequestId, int? patientId)
         {
             if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
@@ -116,6 +117,12 @@ namespace Cor.Apt.Controllers
             }
             ViewBag.RadiologyRequest = _context.RadiologyRequests.Where(i => i.RadiologyRequestId == radiologyRequestId).FirstOrDefault();
             return View(_context.RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequestId).ToList());
+        }
+
+        public IActionResult Accounting()
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            return View();
         }
     }
 }

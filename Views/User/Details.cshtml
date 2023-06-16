@@ -68,15 +68,16 @@
             <div class="my-3">
                 <h6 class="text-primary">İşlem Kaydı</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridPatientRecord" height="200px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                <ejs-grid id="GridPatientRecord" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                     allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/PatientRecord/Get?pid=@Model.PatientId" insertUrl="/PatientRecord/Insert?pid=@Model.PatientId" updateUrl="/PatientRecord/Update" removeUrl="/PatientRecord/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="PatientRecordId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
-                            <e-grid-column field="Description" headerText="Açıklama" width="250px"></e-grid-column>
-                            <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="50px"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="300"></e-grid-column>
+                            <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="80"></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
@@ -274,16 +275,17 @@
             <div class="my-3">
                 <h6 class="text-primary">Fizik Muayene</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridPhysicalExaminations" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                <ejs-grid id="GridPhysicalExaminations" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                     allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/PhysicalExamination/Get?pid=@Model.PatientId" insertUrl="/PhysicalExamination/Insert?pid=@Model.PatientId" updateUrl="/PhysicalExamination/Update" removeUrl="/PhysicalExamination/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="PhysicalExaminationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
-                            <e-grid-column field="BloodPressure" headerText="Tansiyon" width="50px"></e-grid-column>
-                            <e-grid-column field="Pulse" headerText="Nabız" width="50px"></e-grid-column>
-                            <e-grid-column field="Description" headerText="Açıklama" width="250px"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80"></e-grid-column>
+                            <e-grid-column field="BloodPressure" headerText="Tansiyon" width="80"></e-grid-column>
+                            <e-grid-column field="Pulse" headerText="Nabız" width="80"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="300"></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
@@ -291,20 +293,21 @@
             <div class="my-3">
                 <h6 class="text-primary">Vücut Analizi</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridBodyAnalysis" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                <ejs-grid id="GridBodyAnalysis" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                     allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/BodyAnalysis/Get?pid=@Model.PatientId" insertUrl="/BodyAnalysis/Insert?pid=@Model.PatientId" updateUrl="/BodyAnalysis/Update" removeUrl="/BodyAnalysis/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="BodyAnalysisId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                            <e-grid-column field="Height" headerText="Boy" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                            <e-grid-column field="Weight" headerText="Kilo" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                            <e-grid-column field="Bmi" headerText="BMI" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                            <e-grid-column field="Fat" headerText="Fat%" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                            <e-grid-column field="Fm" headerText="FM" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                            <e-grid-column field="Mm" headerText="MM" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
-                            <e-grid-column field="Tbw" headerText="TBW" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80px"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80"></e-grid-column>
+                            <e-grid-column field="Height" headerText="Boy" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
+                            <e-grid-column field="Weight" headerText="Kilo" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
+                            <e-grid-column field="Bmi" headerText="BMI" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
+                            <e-grid-column field="Fat" headerText="Fat%" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
+                            <e-grid-column field="Fm" headerText="FM" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
+                            <e-grid-column field="Mm" headerText="MM" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
+                            <e-grid-column field="Tbw" headerText="TBW" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
@@ -312,15 +315,16 @@
             <div class="my-3">
                 <h6 class="text-primary">Radyoloji</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridRadiology" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                <ejs-grid id="GridRadiology" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                     allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/Radiology/Get?pid=@Model.PatientId" insertUrl="/Radiology/Insert?pid=@Model.PatientId" updateUrl="/Radiology/Update" removeUrl="/Radiology/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="RadiologyId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
-                            <e-grid-column field="Description" headerText="Açıklama" width="250px"></e-grid-column>
-                            <e-grid-column field="RadiologyTypeId" headerText="Tür" width="50px" foreignKeyValue="RadiologyTypeName" foreignKeyField="RadiologyTypeId" dataSource="ViewBag.RadiologyTypes"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="300"></e-grid-column>
+                            <e-grid-column field="RadiologyTypeId" headerText="Tür" width="80" foreignKeyValue="RadiologyTypeName" foreignKeyField="RadiologyTypeId" dataSource="ViewBag.RadiologyTypes"></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
@@ -328,16 +332,17 @@
             <div class="my-3">
                 <h6 class="text-primary">Karar - Takip</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridDecisionAndTracing" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                <ejs-grid id="GridDecisionAndTracing" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                     allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/DecisionAndTracing/Get?pid=@Model.PatientId" insertUrl="/DecisionAndTracing/Insert?pid=@Model.PatientId" updateUrl="/DecisionAndTracing/Update" removeUrl="/DecisionAndTracing/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="DecisionAndTracingId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
-                            <e-grid-column field="DecisionAndTracingTypeId" headerText="Tür" foreignKeyValue="DecisionAndTracingTypeName" foreignKeyField="DecisionAndTracingTypeId" dataSource="ViewBag.DecisionAndTracingTypes" width="50px"></e-grid-column>
-                            <e-grid-column field="Description" headerText="Açıklama" width="200px"></e-grid-column>
-                            <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="50px"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80"></e-grid-column>
+                            <e-grid-column field="DecisionAndTracingTypeId" headerText="Tür" foreignKeyValue="DecisionAndTracingTypeName" foreignKeyField="DecisionAndTracingTypeId" dataSource="ViewBag.DecisionAndTracingTypes" width="80"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="300"></e-grid-column>
+                            <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="80"></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
@@ -345,25 +350,26 @@
             <div class="my-3">
                 <h6 class="text-primary">Andülasyon</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridAndulation" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                <ejs-grid id="GridAndulation" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                     allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/Andulation/Get?pid=@Model.PatientId" insertUrl="/Andulation/Insert?pid=@Model.PatientId" updateUrl="/Andulation/Update" removeUrl="/Andulation/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="AndulationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="SessionDate" headerText="Tarihi" format='yMd' editType="datepickeredit" width="100px"></e-grid-column>
-                            <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
-                            <e-grid-column field="Schedule" headerText="Program" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
-                            <e-grid-column field="Duration" headerText="Dakika" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
-                            <e-grid-column field="Vibration" headerText="Titreşim" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80px"></e-grid-column>
-                            <e-grid-column field="Chest" headerText="Göğüs" editType="numericedit" width="80px"></e-grid-column>
-                            <e-grid-column field="Waist" headerText="Bel" editType="numericedit" width="80px"></e-grid-column>
-                            <e-grid-column field="Abdomen" headerText="Karın" editType="numericedit" width="80px"></e-grid-column>
-                            <e-grid-column field="Hip" headerText="Kalça" editType="numericedit" width="80px"></e-grid-column>
-                            <e-grid-column field="RightArm" headerText="Sağ Kol" editType="numericedit" width="80px"></e-grid-column>
-                            <e-grid-column field="RightLeg" headerText="Sağ Bacak" editType="numericedit" width="80px"></e-grid-column>
-                            <e-grid-column field="Reason" headerText="Nedeni" width="150px"></e-grid-column>
-                            <e-grid-column field="Description" headerText="Not" width="150px"></e-grid-column>
+                            <e-grid-column field="SessionDate" headerText="Tarihi" format='yMd' editType="datepickeredit" width="80"></e-grid-column>
+                            <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
+                            <e-grid-column field="Schedule" headerText="Program" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
+                            <e-grid-column field="Duration" headerText="Dakika" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
+                            <e-grid-column field="Vibration" headerText="Titreşim" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
+                            <e-grid-column field="Chest" headerText="Göğüs" editType="numericedit" width="80"></e-grid-column>
+                            <e-grid-column field="Waist" headerText="Bel" editType="numericedit" width="80"></e-grid-column>
+                            <e-grid-column field="Abdomen" headerText="Karın" editType="numericedit" width="80"></e-grid-column>
+                            <e-grid-column field="Hip" headerText="Kalça" editType="numericedit" width="80"></e-grid-column>
+                            <e-grid-column field="RightArm" headerText="Sağ Kol" editType="numericedit" width="80"></e-grid-column>
+                            <e-grid-column field="RightLeg" headerText="Sağ Bacak" editType="numericedit" width="80"></e-grid-column>
+                            <e-grid-column field="Reason" headerText="Nedeni" width="150"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Not" width="150"></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
@@ -375,15 +381,16 @@
                     <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#ozoneDescriptionModal">Düzenle</i>
                 </a>
                 <p><strong class="text-muted">Ozon Not: </strong> @Model.OzoneDescription</p>
-                <ejs-grid id="GridOzone" height="250px" width="%100" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
+                <ejs-grid id="GridOzone" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
                     allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                     <e-data-manager adaptor="UrlAdaptor" url="/Ozone/Get?pid=@Model.PatientId" insertUrl="/Ozone/Insert?pid=@Model.PatientId" updateUrl="/Ozone/Update" removeUrl="/Ozone/Remove"></e-data-manager>
                     <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                    <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                     <e-grid-columns>
                         <e-grid-column field="OzoneId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                        <e-grid-column field="RecordDate" headerText="Uygulama Tarihi" format='yMd' editType="datepickeredit" width="50px"></e-grid-column>
-                        <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="50px"></e-grid-column>
-                        <e-grid-column field="Description" headerText="Açıklama" width="250px"></e-grid-column>
+                        <e-grid-column field="RecordDate" headerText="Uygulama Tarihi" format='yMd' editType="datepickeredit" width="80"></e-grid-column>
+                        <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
+                        <e-grid-column field="Description" headerText="Açıklama" width="300"></e-grid-column>
                     </e-grid-columns>
                 </ejs-grid>
             </div>
@@ -394,7 +401,7 @@
                 <a href="/User/Analysis?patientId=@Model.PatientId" class="mb-3 text-primary">
                         <i class="fas fa-edit text-primary text-sm">Yeni Kayıt</i>
                 </a>
-                <table class="table mb-0">
+                <table class="table mb-0" style="display: block; overflow-x: scroll;">
                     <thead>
                         <tr>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarih</th>
@@ -456,7 +463,7 @@
                 <a href="/User/RadiologyRequest?patientId=@Model.PatientId" class="mb-3 text-primary">
                         <i class="fas fa-edit text-primary text-sm">Yeni Kayıt</i>
                 </a>
-                <table class="table mb-0">
+                <table class="table mb-0" style="display: block; max-width: fit-content; overflow-x: scroll;">
                     <thead>
                         <tr>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarih</th>

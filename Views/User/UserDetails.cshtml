@@ -91,8 +91,8 @@
                                                     <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
                                                     <e-grid-columns>
                                                         <e-grid-column field="Id" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="StartTime" headerText="Başlangıç" format='yMd' editType="datepickeredit" width="100"></e-grid-column>
-                                                        <e-grid-column field="EndTime" headerText="Bitiş" format='yMd' editType="datepickeredit" width="100"></e-grid-column>
+                                                        <e-grid-column field="StartTime" headerText="Başlangıç" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                                                        <e-grid-column field="EndTime" headerText="Bitiş" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
                                                         <e-grid-column field="Days" headerText="Gün" width="80"></e-grid-column>
                                                         <e-grid-column field="LeaveTypeId" headerText="İzin Türü" foreignKeyValue="LeaveTypeName" foreignKeyField="LeaveTypeId" dataSource="ViewBag.LeaveTypes" width="80"></e-grid-column>
                                                     </e-grid-columns>
@@ -116,7 +116,7 @@
                                                     <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
                                                     <e-grid-columns>
                                                         <e-grid-column field="SalaryPaymentId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80"></e-grid-column>
+                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80" DefaultValue="@(DateTime.Now)"></e-grid-column>
                                                         <e-grid-column field="Amount" headerText="Tutar" editType="numericedit" width="80"></e-grid-column>
                                                         <e-grid-column field="SalaryPaymentTypeId" headerText="Ödeme Türü" foreignKeyValue="SalaryPaymentTypeName" foreignKeyField="SalaryPaymentTypeId" dataSource="ViewBag.SalaryPaymentTypes" width="80"></e-grid-column>
                                                     </e-grid-columns>
@@ -139,7 +139,7 @@
                                                     <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
                                                     <e-grid-columns>
                                                         <e-grid-column field="UserNoteId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100"></e-grid-column>
+                                                        <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
                                                         <e-grid-column field="Description" headerText="Açıklama" width="200"></e-grid-column>
                                                     </e-grid-columns>
                                             </ejs-grid>

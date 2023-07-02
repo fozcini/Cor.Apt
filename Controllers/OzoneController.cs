@@ -59,6 +59,14 @@ namespace Cor.Apt.Controllers
             _context.SaveChanges();
             return Json(value.Value);
         }
+        public ActionResult Remove([FromBody] CRUDModel<Ozone> value) // Remove record 
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            var _ozone = _context.Ozones.Where(i => i.OzoneId == int.Parse(value.Key.ToString())).FirstOrDefault();
+            _context.Remove(_ozone);
+            _context.SaveChanges();
+            return Json(value);
+        }
         public IActionResult UpdateOzoneDescription() // Update record 
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
@@ -69,14 +77,6 @@ namespace Cor.Apt.Controllers
             }
             _context.SaveChanges();
             return RedirectToAction("Details", "User", new { patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]) });
-        }
-        public ActionResult Remove([FromBody] CRUDModel<Ozone> value) // Remove record 
-        {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            var _ozone = _context.Ozones.Where(i => i.OzoneId == int.Parse(value.Key.ToString())).FirstOrDefault();
-            _context.Remove(_ozone);
-            _context.SaveChanges();
-            return Json(value);
         }
     }
 }

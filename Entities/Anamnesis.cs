@@ -21,7 +21,7 @@ namespace Cor.Apt.Entities
         public string Period { get; set; }
         public int NumberOfBirth { get; set; }
         public int NumberOfMiscarry { get; set; }
-        public double BabyWeightOnBirth { get; set; }
+        public string BabyWeightOnBirth { get; set; }
         public string MedicalOperations { get; set; }
         public string Smoking { get; set; }
         public string Alcohol { get; set; }

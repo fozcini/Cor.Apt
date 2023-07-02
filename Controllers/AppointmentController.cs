@@ -36,6 +36,7 @@ namespace Cor.Apt.Controllers
                 Appointment appointment = new Appointment()
                 {
                     PatientName = value.PatientName,
+                    Phone = value.Phone,
                     StartTime = startTime.AddHours(3),
                     EndTime = endTime.AddHours(3),
                     Description = value.Description,
@@ -55,6 +56,7 @@ namespace Cor.Apt.Controllers
                     DateTime endTime = Convert.ToDateTime(value.EndTime);
                     Appointment appointment = _context.Appointments.Single(A => A.Id == Convert.ToInt32(value.Id));
                     appointment.PatientName = value.PatientName;
+                    appointment.Phone = value.Phone;
                     appointment.StartTime = startTime.AddHours(3);
                     appointment.EndTime = endTime.AddHours(3);
                     appointment.Description = value.Description;

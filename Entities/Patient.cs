@@ -16,6 +16,8 @@ namespace Cor.Apt.Entities
         public string Address { get; set; }
         public string Reference { get; set; }
         public string OzoneDescription { get; set; }
+        public string AndulationDescription { get; set; }
+        public string CrylineDescription { get; set; }
 
         public int SocialSecurityId { get; set; }
         public SocialSecurity SocialSecurity { get; set; }

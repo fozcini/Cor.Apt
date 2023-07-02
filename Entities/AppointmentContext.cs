@@ -25,6 +25,8 @@ namespace Cor.Apt.Entities
         public DbSet<AnalysisType> AnalysisTypes { get; set; }
         public DbSet<Anamnesis> Anamnesises { get; set; }
         public DbSet<Andulation> Andulations { get; set; }
+        public DbSet<AndulationRecord> AndulationRecords { get; set; }
+        public DbSet<Cryline> Crylines { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<ApplicationType> ApplicationTypes { get; set; }
         public DbSet<Appointment> Appointments { get; set; }

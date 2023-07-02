@@ -37,7 +37,7 @@ namespace Cor.Apt.Controllers
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
             Application _application = new Application();
             _application.FullName = value.Value.FullName;
-            _application.BirthDate = value.Value.BirthDate;
+            _application.BirthDate = value.Value.BirthDate.AddHours(3);
             _application.Phone = value.Value.Phone;
             _application.Cv = value.Value.Cv;
             _application.PhotoLink = "";

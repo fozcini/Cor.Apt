@@ -9,7 +9,9 @@
     };
     var template = "<div class='template-wrap'><div class='subject'>${PatientName} - ${getAppointmentType(data)}</div><div class='time'>${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div></div>";
 }
-
+<script>
+    var unitListForCheck = JSON.parse('@Json.Serialize(ViewBag.Units)');
+</script>
 <style>
     .e-quick-popup-wrapper.e-device {
         height: auto !important;
@@ -171,6 +173,24 @@
         </div>
     </div>
     <div class="card-body pt-2">
+        <div class="row mb-3 d-lg-none">
+            <h6>Randevu Ekle</h6>
+            <ejs-textbox class="mt-2" id="ManPatientName" placeholder="Hasta İsmi"></ejs-textbox>
+            <ejs-textbox class="mt-2" id="ManPhone" placeholder="Telefon"></ejs-textbox>
+            <ejs-dropdownlist class="mt-2" id="ManUnits" dataSource="@ViewBag.Units" placeholder="Takvim Seçin">
+                <e-dropdownlist-fields text="UnitName" value="UnitId"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+            <ejs-dropdownlist class="mt-2" id="ManAppointmentTypes" dataSource="@ViewBag.AppointmentTypes" placeholder="Randevu Türü">
+                <e-dropdownlist-fields text="AppointmentTypeName" value="AppointmentTypeId"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+            <ejs-datetimepicker class="mt-2" id="ManStartTime" placeholder="Başlangıç" value="DateTime.Now" step="10"></ejs-datetimepicker>
+            <ejs-datetimepicker class="mt-2" id="ManEndTime" placeholder="Bitiş" value="DateTime.Now"></ejs-datetimepicker>
+            <ejs-textbox class="mt-2" id="ManDescription" placeholder="Notlar"></ejs-textbox>
+            <div class="row">
+                <ejs-button class="mt-3" id="Man" content="Kaydet"></ejs-button>
+                <ejs-button class="mt-3" id="ManUpdate" content="Takvimi Güncelle"></ejs-button>
+            </div>
+        </div>
         <div class="row mb-3">
             <h6>Göstermek / Gizlemek İçin Oda Seçin</h6>
             <div class="col-6 d-flex justify-content-between flex-wrap">
@@ -181,7 +201,7 @@
             </div>
         </div>
         <div class="control-section" style="height: 60vh">
-            <ejs-schedule id="schedule" startHour="09:00" endHour="18:00" height="100%" firstDayOfWeek="1" popupOpen="onPopupOpen" eventRendered="onEventRendered" actionBegin="onActionBegin" editorTemplate="#EventEditorTemplate" locale='tr'>
+            <ejs-schedule id="schedule" startHour="09:00" endHour="18:00" height="100%" firstDayOfWeek="1" popupOpen="onPopupOpen" eventRendered="onEventRendered" actionBegin="onActionBegin" locale='tr'>
                 <e-schedule-quickinfotemplates header="#header-template" content="#content-template" footer="#footer-template"></e-schedule-quickinfotemplates>
                 <e-schedule-views>
                     <e-schedule-view option="TimelineDay"></e-schedule-view>
@@ -220,10 +240,19 @@
                 <input id="patient" placeholder="Hasta Adı"/>
             </div>
             <div class="content-area">
+                <input id="phone" placeholder="Telefon"/>
+            </div>
+            <div class="content-area">
                 <input id="unit" placeholder="Oda Seçimi" />
             </div>
             <div class="content-area">
                 <input id="type" placeholder="Randevu Türü" />
+            </div>
+            <div class="content-area">
+                <input id="start" placeholder="Başlangıç" />
+            </div>
+            <div class="content-area">
+                <input id="end" placeholder="Bitiş" />
             </div>
             <div class="content-area">
                 <input id="notes" placeholder="Notlar" />
@@ -234,6 +263,10 @@
             <div class="meeting-type-wrap">
                 <label>Hasta Adı</label>:
                 <span>${PatientName}</span>
+            </div>
+            <div class="meeting-type-wrap">
+                <label>Telefon</label>:
+                <span>${Phone}</span>
             </div>
             <div class="meeting-type-wrap">
                 <label>Oda Seçimi</label>:
@@ -255,70 +288,41 @@
     <div class="quick-info-footer">
         ${if (elementType == "cell")}
         <div class="cell-footer">
-            <button id="more-details">Daha fazla</button>
             <button id="add">Ekle</button>
         </div>
         ${else}
         <div class="event-footer">
             <button id="delete">Sil</button>
-            <button id="more-details">Daha fazla</button>
         </div>
         ${/if}
     </div>
 </script>
-<script id="EventEditorTemplate" type="text/x-template">
-    <table class="custom-event-editor" width="100%" cellpadding="5">
-        <tbody>
-            <tr>
-                <td class="e-textlabel">Hasta Adı</td>
-                <td colspan="4">
-                    <input type="text" id="PatientName" name="PatientName" class="e-field e-input" style="width: 100%" />
-                </td>
-            </tr>
-            <tr>
-                <td class="e-textlabel">Oda</td>
-                <td colspan="4">
-                    <input type="text" id="UnitId" name="UnitId" class="e-field e-input" style="width: 100%" />
-                </td>
-            </tr>
-            <tr>
-                <td class="e-textlabel">Randevu Türü</td>
-                <td colspan="4">
-                    <input type="text" id="AppointmentTypeId" name="AppointmentTypeId" class="e-field e-input" style="width: 100%" />
-                </td>
-            </tr>
-            <tr>
-                <td class="e-textlabel">Başlangıç</td>
-                <td colspan="4">
-                    <input id="StartTime" class="e-field e-input" type="text" name="StartTime" />
-                </td>
-            </tr>
-            <tr>
-                <td class="e-textlabel">Bitiş</td>
-                <td colspan="4">
-                    <input id="EndTime" class="e-field e-input" type="text" name="EndTime" />
-                </td>
-            </tr>
-            <tr>
-                <td class="e-textlabel">Not</td>
-                <td colspan="4">
-                    <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
-                        style="width: 100%; height: 60px !important; resize: vertical"></textarea>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</script>
 
 <script type="text/javascript">
+    document.getElementById('Man').onclick = function() {
+        var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+        var addObj = {}
+        addObj.Id = scheduleObj.getEventMaxID();
+        addObj.PatientName = document.getElementById('ManPatientName').value;
+        addObj.Phone = document.getElementById('ManPhone').value;
+        addObj.StartTime = document.getElementById('ManStartTime').ej2_instances[0].value;
+        addObj.EndTime = document.getElementById('ManEndTime').ej2_instances[0].value;
+        addObj.Description = document.getElementById('ManDescription').value;
+        addObj.AppointmentTypeId = document.getElementById('ManAppointmentTypes_hidden').value;
+        addObj.UnitId = document.getElementById('ManUnits_hidden').value;
+        scheduleObj.addEvent(addObj);
+        scheduleObj.refreshEvents();
+        document.getElementById('ManPatientName').value = ''
+        document.getElementById('ManDescription').value = ''
+    }
+    document.getElementById('ManUpdate').onclick = function() {
+        var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+        scheduleObj.refreshEvents();
+    }
+    var editorData = {};
     var intl = new ej.base.Internationalization();
     function onChange(args) {
-        var units = [
-            { UnitName: 'Dr. Tugba Arkan', UnitId: 1 },
-            { UnitName: 'Dyt. Gülden Özçini Uz', UnitId: 2 },
-            { UnitName: 'Andülasyon', UnitId: 3 },
-            { UnitName: 'Igne Odasi', UnitId: 4 }
-        ];
+        var units = unitListForCheck
         var scheduleObj = document.getElementById('schedule').ej2_instances[0];
         var value = parseInt(args.event.currentTarget.querySelector('input').getAttribute('value'), 10);
         var resourceData = units.filter(function (unit) { return unit.UnitId === value; });
@@ -340,16 +344,21 @@
     var buttonClickActions = function (e) {
         var scheduleObj = document.getElementById('schedule').ej2_instances[0];
         var quickPopup = ej.base.closest(e.target, '.e-quick-popup-wrapper');
+        var editor = ej.base.closest(e.target, '.e-schedule-dialog');
         var getSlotData = function () {
             var cellDetails = scheduleObj.getCellDetails(scheduleObj.getSelectedElements());
             if (ej.base.isNullOrUndefined(cellDetails)) { cellDetails = scheduleObj.getCellDetails(scheduleObj.activeCellsData.element); }
             var patient = quickPopup.querySelector('#patient').ej2_instances[0].value;
+            var phone = quickPopup.querySelector('#phone').ej2_instances[0].value;
             var notes = quickPopup.querySelector('#notes').ej2_instances[0].value;
+            var start = quickPopup.querySelector('#start').ej2_instances[0].value;
+            var end = quickPopup.querySelector('#end').ej2_instances[0].value;
             var addObj = {};
             addObj.Id = scheduleObj.getEventMaxID();
             addObj.PatientName = ej.base.isNullOrUndefined(patient) ? '' : patient;
-            addObj.StartTime = new Date(+cellDetails.startTime);
-            addObj.EndTime = new Date(+cellDetails.endTime);
+            addObj.Phone = ej.base.isNullOrUndefined(phone) ? '' : phone;
+            addObj.StartTime = start;
+            addObj.EndTime = end;
             addObj.Description = ej.base.isNullOrUndefined(notes) ? '' : notes;
             addObj.AppointmentTypeId = quickPopup.querySelector('#type').ej2_instances[0].value;
             addObj.UnitId = quickPopup.querySelector('#unit').ej2_instances[0].value;
@@ -371,13 +380,16 @@
             var updateObj = getSlotData();
             scheduleObj.updateEvent(updateObj);
         }
+        else if (e.target.id === 'EditorSave')
+        {
+            console.log(editorData)
+            editorData.Id = scheduleObj.getEventMaxID();
+            scheduleObj.addEvent(editorData);
+        }
         else {
             var isCellPopup = quickPopup.firstElementChild.classList.contains('e-cell-popup');
             var eventDetail = isCellPopup ? getSlotData() : scheduleObj.activeEventData.event;
             var currentActions = isCellPopup ? 'Add' : 'Save';
-            if (eventDetail.RecurrenceRule) {
-                currentActions = 'EditOccurrence';
-            }
             scheduleObj.openEditor(eventDetail, currentActions, true);
         }
         scheduleObj.closeQuickInfoPopup();
@@ -408,40 +420,26 @@
             var data;
             if (args.requestType === 'eventCreate') data = args.data[0];
             else if (args.requestType === 'eventChange') data = args.data;
-            var scheduleObj = document.getElementById('schedule').ej2_instances[0];
-            @* if (!scheduleObj.isSlotAvailable(data.StartTime, data.EndTime, unitId)) args.cancel = true; *@
         }
     }
     function onPopupOpen(args) {
-        var scheduleObj = document.getElementById('schedule').ej2_instances[0];
-        if (args.type === 'Editor') {
-            var appointmentTypeObj = new ej.dropdowns.DropDownList({
-                dataSource: scheduleObj.getResourceCollections()[1].dataSource,
-                placeholder: 'Randevu Türü',
-                fields: { text: 'AppointmentTypeName', value: 'AppointmentTypeId' },
-                index: scheduleObj.getResourceCollections()[1].dataSource.findIndex(o => o.AppointmentTypeId == args.data.AppointmentTypeId)
-            });
-            var unitObj = new ej.dropdowns.DropDownList({
-                dataSource: scheduleObj.getResourceCollections()[0].dataSource,
-                placeholder: 'Oda Seçimi',
-                fields: { text: 'UnitName', value: 'UnitId' },
-                index: scheduleObj.getResourceCollections()[0].dataSource.findIndex(o => o.UnitId == args.data.UnitId)
-            });
-            appointmentTypeObj.appendTo(args.element.querySelector('#AppointmentTypeId'));
-            unitObj.appendTo(args.element.querySelector('#UnitId'));
-            var startElement = args.element.querySelector('#StartTime');
-            if (!startElement.classList.contains('e-datetimepicker')) {
-                new ej.calendars.DateTimePicker({ value: new Date(startElement.value) || new Date() }, startElement);
-            }
-            var endElement = args.element.querySelector('#EndTime');
-            if (!endElement.classList.contains('e-datetimepicker')) {
-                new ej.calendars.DateTimePicker({ value: new Date(endElement.value) || new Date() }, endElement);
-            }
-            args.element.querySelector('.e-event-save').onclick = function (e) { buttonClickActions(e); };
+        if (args.type === 'Editor')
+        {
+            args.cancel = true;
         }
         if (args.type === 'QuickInfo' || args.type === 'ViewEventInfo') {
+            var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+            var cellDetails = scheduleObj.getCellDetails(scheduleObj.getSelectedElements());
+            if(cellDetails !== undefined){
+                var startObj = new ej.calendars.DateTimePicker({value: new Date(+cellDetails.startTime), step: 10});
+                startObj.appendTo(args.element.querySelector('#start'))
+                var endObj = new ej.calendars.DateTimePicker({value: new Date(+cellDetails.endTime), step: 10});
+                endObj.appendTo(args.element.querySelector('#end'))
+            }
             var patientObj = new ej.inputs.TextBox({ placeholder: 'Hasta Adı' });
             patientObj.appendTo(args.element.querySelector('#patient'));
+            var phoneObj = new ej.inputs.TextBox({ placeholder: 'Telefon' });
+            phoneObj.appendTo(args.element.querySelector('#phone'));
             var appointmentTypeObj = new ej.dropdowns.DropDownList({
                 dataSource: scheduleObj.getResourceCollections()[1].dataSource,
                 placeholder: 'Randevu Türü',
@@ -458,15 +456,6 @@
             unitObj.appendTo(args.element.querySelector('#unit'));
             var notesObj = new ej.inputs.TextBox({ placeholder: 'Notlar' });
             notesObj.appendTo(args.element.querySelector('#notes'));
-            var moreDetailsBtn = args.element.querySelector('#more-details');
-            if (moreDetailsBtn) {
-                var moreObj = new ej.buttons.Button({
-                    content: 'Daha fazla', cssClass: 'e-flat',
-                    isPrimary: args.element.firstElementChild.classList.contains('e-event-popup')
-                });
-                moreObj.appendTo(moreDetailsBtn);
-                moreDetailsBtn.onclick = function (e) { buttonClickActions(e); };
-            }
             var addBtn = args.element.querySelector('#add');
             if (addBtn) {
                 new ej.buttons.Button({ content: 'Ekle', cssClass: 'e-flat', isPrimary: true }, addBtn);

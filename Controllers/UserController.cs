@@ -48,14 +48,17 @@ namespace Cor.Apt.Controllers
             Patient patient = _context.Patients.Include(i => i.DiscountType).Include(i => i.SocialSecurity).Where(i => i.PatientId == patientId).FirstOrDefault();
             if (_context.Anamnesises.Where(i => i.PatientId == patientId).Any()) ViewBag.Anamnesis = _context.Anamnesises.Where(i => i.PatientId == patientId).FirstOrDefault();
             else ViewBag.Anamnesis = new Anamnesis() { };
-            ViewBag.Analyses = _context.Analyses.Where(i => i.PatientId == patientId).ToList();
-            ViewBag.AnalysisTypes = _context.AnalysisTypes.Where(i => i.Analysis.PatientId == patientId).ToList();
-            ViewBag.Types = _context.Types.ToList();
+            
             ViewBag.RadiologyTypes = _context.RadiologyTypes.ToList();
             ViewBag.DecisionAndTracingTypes = _context.DecisionAndTracingTypes.ToList();
             ViewBag.Users = _context.Users.ToList();
-            ViewBag.RadiologyRequests = _context.RadiologyRequests.ToList();
-            ViewBag.RadiologyRequestTypes = _context.RadiologyRequestTypes.ToList();
+
+            ViewBag.Analyses = _context.Analyses.Where(i => i.PatientId == patientId).OrderByDescending(i => i.AnalysisDate).ToList();
+            ViewBag.AnalysisTypes = _context.AnalysisTypes.Where(i => i.Analysis.PatientId == patientId).ToList();
+            ViewBag.Types = _context.Types.ToList();
+
+            ViewBag.RadiologyRequests = _context.RadiologyRequests.Where(i => i.PatientId == patientId).OrderByDescending(i => i.RadiologyRequestDate).ToList();
+            ViewBag.RadiologyRequestTypes = _context.RadiologyRequestTypes.Where(i => i.RadiologyRequest.PatientId == patientId).ToList();
             ViewBag.RadiologyRequestTypeLists = _context.RadiologyRequestTypeLists.ToList();
             return View(patient);
         }

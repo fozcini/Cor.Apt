@@ -13,20 +13,20 @@
                 <e-grid-searchSettings fields='@(new string[] {"FullName", "IdentificationNumber"})' operator="contains" ignoreCase="true"></e-grid-searchSettings>
                 <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>  
                 <e-grid-columns>
+                    <e-grid-column field="Detay" headerText="Detay" template="#details" width="110"></e-grid-column>
                     <e-grid-column field="PatientId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                    <e-grid-column field="IdentificationNumber" headerText="Kimlik Numarası" width="110"></e-grid-column>
-                    <e-grid-column field="FullName" headerText="İsim Soyisim" width="110"></e-grid-column>
-                    <e-grid-column field="BirthDate" headerText="Doğum Tarihi" format='yMd' editType="datepickeredit" width="100"></e-grid-column>
-                    <e-grid-column field="Gender" headerText="Cinsiyet" editType="dropdownedit" width="60"></e-grid-column>
-                    <e-grid-column field="SocialSecurityId" foreignKeyValue="SocialSecurityName" headerText="Sigorta" dataSource="ViewBag.SocialSecurities" editType="dropdownedit" width="80"></e-grid-column>
-                    <e-grid-column field="DiscountTypeId" foreignKeyValue="DiscountTypeName" headerText="İndirim" dataSource="ViewBag.DiscountTypes" editType="dropdownedit" width="80"></e-grid-column>
-                    <e-grid-column field="Phone" headerText="Telefon" width="100"></e-grid-column>
+                    <e-grid-column field="IdentificationNumber" headerText="Kimlik Numarası" width="150"></e-grid-column>
+                    <e-grid-column field="FullName" headerText="İsim Soyisim" width="150"></e-grid-column>
+                    <e-grid-column field="BirthDate" headerText="Doğum Tarihi" format='yMd' editType="datepickeredit" width="150"></e-grid-column>
+                    <e-grid-column field="Gender" headerText="Cinsiyet" editType="dropdownedit" width="125"></e-grid-column>
+                    <e-grid-column field="SocialSecurityId" foreignKeyValue="SocialSecurityName" headerText="Sigorta" dataSource="ViewBag.SocialSecurities" editType="dropdownedit" width="160"></e-grid-column>
+                    <e-grid-column field="DiscountTypeId" foreignKeyValue="DiscountTypeName" headerText="İndirim" dataSource="ViewBag.DiscountTypes" editType="dropdownedit" width="160"></e-grid-column>
+                    <e-grid-column field="Phone" headerText="Telefon" width="150"></e-grid-column>
                     <e-grid-column field="SecondPhone" headerText="İkinci Telefon" visible="false"></e-grid-column>
                     <e-grid-column field="ThirdPhone" headerText="Üçüncü Telefon" visible="false"></e-grid-column>
-                    <e-grid-column field="Email" headerText="Eposta" width="110"></e-grid-column>
-                    <e-grid-column field="Address" headerText="Adres" editType="TextBox" width="140"></e-grid-column>
+                    <e-grid-column field="Email" headerText="Eposta" width="150"></e-grid-column>
+                    <e-grid-column field="Address" headerText="Adres" editType="TextBox" width="450"></e-grid-column>
                     <e-grid-column field="Reference" headerText="Referans" visible="false"></e-grid-column>
-                    <e-grid-column field="Detay" headerText="Detay" template="#details" width="80"></e-grid-column>
                 </e-grid-columns>
             </ejs-grid>
         </div>

@@ -13,17 +13,18 @@
                 <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
                 <e-grid-searchSettings fields='@(new string[] {"FullName", "IdentificationNumber"})' operator="contains" ignoreCase="true"></e-grid-searchSettings><e-grid-columns>
+                    <e-grid-column field="Detay" headerText="Detay" template="#details" width="110"></e-grid-column>
                     <e-grid-column field="UserId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                    <e-grid-column field="IdentificationNumber" headerText="Kimlik Numarası" width="110"></e-grid-column>
-                    <e-grid-column field="FullName" headerText="İsim Soyisim" width="110"></e-grid-column>
-                    <e-grid-column field="BirthDate" headerText="Doğum Tarihi" format='yMd' editType="datepickeredit" width="110" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                    <e-grid-column field="Phone" headerText="Telefon" width="110"></e-grid-column>
-                    <e-grid-column field="SecondPhone" headerText="İkinci Telefon" width="110"></e-grid-column>
-                    <e-grid-column field="Email" headerText="Eposta" width="110"></e-grid-column>
-                    <e-grid-column field="RegistrationNumber" headerText="SGK Sicil No" width="80"></e-grid-column>
-                    <e-grid-column field="Address" headerText="Adres" width="120"></e-grid-column>
-                    <e-grid-column field="Description" headerText="Not" width="120"></e-grid-column>
-                    <e-grid-column field="Detay" headerText="Detay" template="#details" width="80"></e-grid-column>
+                    <e-grid-column field="IdentificationNumber" headerText="Kimlik Numarası" width="150"></e-grid-column>
+                    <e-grid-column field="FullName" headerText="İsim Soyisim" width="150"></e-grid-column>
+                    <e-grid-column field="BirthDate" headerText="Doğum Tarihi" format='yMd' editType="datepickeredit" width="125" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                    <e-grid-column field="StartTime" headerText="Başlama Tarihi" format='yMd' editType="datepickeredit" width="125" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                    <e-grid-column field="Phone" headerText="Telefon" width="150"></e-grid-column>
+                    <e-grid-column field="SecondPhone" headerText="İkinci Telefon" width="150"></e-grid-column>
+                    <e-grid-column field="Email" headerText="Eposta" width="150"></e-grid-column>
+                    <e-grid-column field="RegistrationNumber" headerText="SGK Sicil No" width="150"></e-grid-column>
+                    <e-grid-column field="Address" headerText="Adres" width="300"></e-grid-column>
+                    <e-grid-column field="Description" headerText="Not" width="250"></e-grid-column>
                 </e-grid-columns>
             </ejs-grid>
         </div>

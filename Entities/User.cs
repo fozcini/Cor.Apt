@@ -9,6 +9,7 @@ namespace Cor.Apt.Entities
         public string IdentificationNumber { get; set; }
         public string FullName { get; set; }
         public DateTime BirthDate { get; set; }
+        public DateTime StartTime { get; set; }
         public string Phone { get; set; }
         public string SecondPhone { get; set; }
         public string Email { get; set; }

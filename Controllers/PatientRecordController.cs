@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Syncfusion.EJ2.Base;
 
@@ -12,16 +13,18 @@ namespace Cor.Apt.Controllers
     {
         private readonly AppointmentContext _context;
         private readonly IAuthService _authService;
+        private readonly IHttpContextAccessor _accesor;
 
-        public PatientRecordController(IAuthService authService, AppointmentContext context)
+        public PatientRecordController(IAuthService authService, AppointmentContext context, IHttpContextAccessor accesor)
         {
             _context = context;
             _authService = authService;
+            _accesor = accesor;
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            IEnumerable<PatientRecord> DataSource = _context.PatientRecords.Where(i => i.PatientId == pid).ToList();
+            IEnumerable<PatientRecord> DataSource =  _context.PatientRecords.Where(i => i.PatientId == pid).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting
@@ -35,9 +38,10 @@ namespace Cor.Apt.Controllers
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
             PatientRecord _patientRecord = new PatientRecord();
+            int uid = (int)_accesor.HttpContext.Session.GetInt32("userid");
             _patientRecord.Description = value.Value.Description;
             _patientRecord.RecordDate = value.Value.RecordDate;
-            _patientRecord.UserId = value.Value.UserId;
+            _patientRecord.UserId = uid;
             _patientRecord.PatientId = pid;
             _context.PatientRecords.Add(_patientRecord);
             _context.SaveChanges();
@@ -49,9 +53,10 @@ namespace Cor.Apt.Controllers
             var _patientRecord = _context.PatientRecords.Where(i => i.PatientRecordId == value.Value.PatientRecordId).FirstOrDefault();
             if (_patientRecord != null)
             {
+                int uid = (int)_accesor.HttpContext.Session.GetInt32("userid");
                 _patientRecord.RecordDate = value.Value.RecordDate;
                 _patientRecord.Description = value.Value.Description;
-                _patientRecord.UserId = value.Value.UserId;
+                _patientRecord.UserId = uid;
                 _patientRecord.PatientId = value.Value.PatientId;
             }
             _context.SaveChanges();

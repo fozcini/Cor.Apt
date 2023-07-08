@@ -4,6 +4,27 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+ .e-schedule
+ {
+   overflow: unset !important;
+ }
+ body
+ {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+ }
+ .e-grid *
+ {
+    font-size: 1.1rem !important;
+    font-weight: 400 !important;
+ }
+ .text-primary {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+ }
+ h6 {
+  font-size: 1.2rem !important;
+ }
 :root {
   --bs-blue: #63B3ED;
   --bs-indigo: #596CFF;
@@ -53,7 +74,7 @@
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
-  --bs-body-font-size: 1rem;
+  --bs-body-font-size: 1.5;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #67748e;
@@ -4836,7 +4857,6 @@ fieldset:disabled .btn {
 }
 
 .navbar {
-  --bs-navbar-padding-x: 1rem;
   --bs-navbar-padding-y: 0.5rem;
   --bs-navbar-color: #344767;
   --bs-navbar-hover-color: rgba(52, 71, 103, 0.7);
@@ -4881,7 +4901,6 @@ fieldset:disabled .btn {
   padding-top: var(--bs-navbar-brand-padding-y);
   padding-bottom: var(--bs-navbar-brand-padding-y);
   margin-right: var(--bs-navbar-brand-margin-end);
-  font-size: var(--bs-navbar-brand-font-size);
   color: var(--bs-navbar-brand-color);
   white-space: nowrap;
 }
@@ -10740,7 +10759,7 @@ fieldset:disabled .btn {
 }
 
 .text-dark {
-  color: #344767 !important;
+  color: #000 !important;
 }
 
 .text-white {
@@ -10752,7 +10771,7 @@ fieldset:disabled .btn {
 }
 
 .text-muted {
-  color: #6c757d !important;
+  color: #000 !important;
 }
 
 .text-black-50 {
@@ -25025,7 +25044,7 @@ p,
 }
 
 .text-sm {
-  font-size: 0.875rem !important;
+  font-size: 1.1rem !important;
 }
 
 .text-xs {
@@ -25132,7 +25151,7 @@ p {
 }
 
 .text-muted {
-  color: #67748e !important;
+  color: #000 !important;
 }
 
 .text-black-50 {

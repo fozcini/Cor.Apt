@@ -13,16 +13,19 @@ namespace Cor.Apt.Controllers
     {
         private readonly AppointmentContext _context;
         private readonly IAuthService _authService;
+        private readonly IHttpContextAccessor _accesor;
 
-        public DecisionAndTracingController(IAuthService authService, AppointmentContext context)
+
+        public DecisionAndTracingController(IAuthService authService, AppointmentContext context, IHttpContextAccessor accesor)
         {
             _context = context;
             _authService = authService;
+            _accesor = accesor;
         }
-        public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
+        public IActionResult Get([FromBody] DataManagerRequest dm, int pid, bool isDecision)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            IEnumerable<DecisionAndTracing> DataSource = _context.DecisionAndTracings.Where(i => i.PatientId == pid).ToList();
+            IEnumerable<DecisionAndTracing> DataSource = isDecision ? _context.DecisionAndTracings.Where(i => i.PatientId == pid & i.DecisionAndTracingTypeId == 1).ToList(): _context.DecisionAndTracings.Where(i => i.PatientId == pid & i.DecisionAndTracingTypeId == 2).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting
@@ -32,14 +35,15 @@ namespace Cor.Apt.Controllers
             if (dm.Take != 0) DataSource = operation.PerformTake(DataSource, dm.Take);
             return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
         }
-        public IActionResult Insert([FromBody] CRUDModel<DecisionAndTracing> value, int pid) // Insert the new record 
+        public IActionResult Insert([FromBody] CRUDModel<DecisionAndTracing> value, int pid, bool isDecision) // Insert the new record 
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
             DecisionAndTracing _decisionAndTracing = new DecisionAndTracing();
+            int uid = (int)_accesor.HttpContext.Session.GetInt32("userid");
             _decisionAndTracing.Description = value.Value.Description;
             _decisionAndTracing.RecordDate = value.Value.RecordDate;
-            _decisionAndTracing.UserId = value.Value.UserId;
-            _decisionAndTracing.DecisionAndTracingTypeId = value.Value.DecisionAndTracingTypeId;
+            _decisionAndTracing.UserId = uid;
+            _decisionAndTracing.DecisionAndTracingTypeId = isDecision ? 1 : 2;
             _decisionAndTracing.PatientId = pid;
             _context.DecisionAndTracings.Add(_decisionAndTracing);
             _context.SaveChanges();
@@ -51,10 +55,10 @@ namespace Cor.Apt.Controllers
             var _decisionAndTracing = _context.DecisionAndTracings.Where(i => i.DecisionAndTracingId == value.Value.DecisionAndTracingId).FirstOrDefault();
             if (_decisionAndTracing != null)
             {
+                int uid = (int)_accesor.HttpContext.Session.GetInt32("userid");
                 _decisionAndTracing.RecordDate = value.Value.RecordDate;
                 _decisionAndTracing.Description = value.Value.Description;
-                _decisionAndTracing.UserId = value.Value.UserId;
-                _decisionAndTracing.DecisionAndTracingTypeId = value.Value.DecisionAndTracingTypeId;
+                _decisionAndTracing.UserId = uid;
                 _decisionAndTracing.PatientId = value.Value.PatientId;
             }
             _context.SaveChanges();

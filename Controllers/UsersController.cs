@@ -44,6 +44,7 @@ namespace Cor.Apt.Controllers
             _user.IdentificationNumber = value.Value.IdentificationNumber;
             _user.FullName = value.Value.FullName;
             _user.BirthDate = value.Value.BirthDate;
+            _user.StartTime = value.Value.StartTime;
             _user.Phone = value.Value.Phone;
             _user.SecondPhone = value.Value.SecondPhone;
             _user.Email = value.Value.Email;
@@ -67,6 +68,7 @@ namespace Cor.Apt.Controllers
                 _user.IdentificationNumber = value.Value.IdentificationNumber;
                 _user.FullName = value.Value.FullName;
                 _user.BirthDate = value.Value.BirthDate;
+                _user.StartTime = value.Value.StartTime;
                 _user.Phone = value.Value.Phone;
                 _user.SecondPhone = value.Value.SecondPhone;
                 _user.Email = value.Value.Email;

@@ -86,7 +86,11 @@ namespace Cor.Apt.Controllers
             var data = _context.Appointments.ToList();
             return Json(data);
         }
-
+        [HttpPost]
+        public List<Appointment> Search(string str)
+        {
+            return _context.Appointments.Include(i => i.Unit).Where(i => i.PatientName.Contains(str)).OrderByDescending(i => i.StartTime).ToList();
+        } 
         public class EditParams
         {
             public string key { get; set; }

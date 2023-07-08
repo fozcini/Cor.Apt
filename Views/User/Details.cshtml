@@ -69,24 +69,21 @@
         <div class="card-body p-3">
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">İşlem Kaydı</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">İşlem Kaydı</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridPatientRecord" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <ejs-grid id="GridPatientRecord" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/PatientRecord/Get?pid=@Model.PatientId" insertUrl="/PatientRecord/Insert?pid=@Model.PatientId" updateUrl="/PatientRecord/Update" removeUrl="/PatientRecord/Remove"></e-data-manager>
-                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                         <e-grid-columns>
                             <e-grid-column field="PatientRecordId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                            <e-grid-column field="Description" headerText="Açıklama" width="300"></e-grid-column>
-                            <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="100"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="600"></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Hasta Bilgileri</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Hasta Bilgileri</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
                 <ul class="list-group text-dark">
                     <div class="row">
@@ -120,26 +117,40 @@
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Anamnez</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Anamnez</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
                 <ul class="list-group text-dark">
                     <a href="javascript:;" class="mb-3 text-primary">
                         <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#anamnesisModal">Düzenle</i>
                     </a>
-                    <h6 class="m-0 mt-1 text-muted text-center">Temel Bilgiler</h6>
+                    <h6 class="m-0 mt-1 text-muted">Temel Bilgiler</h6>
                     <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
                     <div class="row">
                         <div class="col-md">
                             <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Meslek:</strong> &nbsp; @Anamnesis.Profession</li>
                         </div>
                         <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; @Anamnesis.Height</li>
+                            @if (Anamnesis.Height == 0)
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; </li>
+                            }
+                            else 
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; @Anamnesis.Height</li>
+                            }
                         </div>
                         <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kilo:</strong> &nbsp; @Anamnesis.Weight</li>
+                            @if (Anamnesis.Height == 0)
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kilo:</strong> &nbsp; </li>
+                            }
+                            else 
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; @Anamnesis.Weight</li>
+                            }
                         </div>
                     </div>
-                    <h6 class="m-0 mt-3 text-muted text-center">Şikayet - Öykü</h6>
+                    <h6 class="m-0 mt-3 text-muted">Şikayet - Öykü</h6>
                     <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
                     <div class="row">
                         <div class="col-md-12">
@@ -151,41 +162,113 @@
                             <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Öykü:</strong> &nbsp; @Anamnesis.MedicalHistory</li>
                         </div>
                     </div>
-                    <h6 class="m-0 mt-3 text-muted text-center">Kilo Öyküsü</h6>
+                    <h6 class="m-0 mt-3 text-muted">Kilo Öyküsü</h6>
                     <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
                     <div class="row">
                         <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">18 Yaş:</strong> &nbsp; @Anamnesis.WeightHistoryOnTeen</li>
+                            @if (Anamnesis.WeightHistoryOnTeen == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">18 Yaş:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">18 Yaş:</strong> &nbsp; @Anamnesis.WeightHistoryOnTeen</li>
+                            }
                         </div>
                         <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Eğitim:</strong> &nbsp; @Anamnesis.WeightHistoryOnEducation</li>
+                            @if (Anamnesis.WeightHistoryOnEducation == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Eğitim:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Eğitim:</strong> &nbsp; @Anamnesis.WeightHistoryOnEducation</li>
+                            }
                         </div>
                         <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">İş:</strong> &nbsp; @Anamnesis.WeightHistoryOnWork</li>
+                            @if (Anamnesis.WeightHistoryOnWork == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">İş:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">İş:</strong> &nbsp; @Anamnesis.WeightHistoryOnWork</li>
+                            }
                         </div>
                         <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Evlilik:</strong> &nbsp; @Anamnesis.WeightHistoryOnMarriage</li>
+                            @if (Anamnesis.WeightHistoryOnMarriage == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Evlilik:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Evlilik:</strong> &nbsp; @Anamnesis.WeightHistoryOnMarriage</li>
+                            }
                         </div>
                         <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Gebelik:</strong> &nbsp; @Anamnesis.WeightHistoryOnPregnancy</li>
-                        </div>
-                        <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diyet:</strong> &nbsp; @Anamnesis.WeightHistoryOnDiet</li>
-                        </div>
-                        <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Yüksek:</strong> &nbsp; @Anamnesis.WeightHistoryOnTop</li>
-                        </div>
-                        <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Düşük:</strong> &nbsp; @Anamnesis.WeightHistoryOnLow</li>
-                        </div>
-                        <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hayal:</strong> &nbsp; @Anamnesis.WeightHistoryOnDream</li>
-                        </div>
-                        <div class="col-md">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hedef:</strong> &nbsp; @Anamnesis.WeightHistoryOnGoal</li>
+                            @if (Anamnesis.WeightHistoryOnPregnancy == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Gebelik:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Gebelik:</strong> &nbsp; @Anamnesis.WeightHistoryOnPregnancy</li>
+                            }
                         </div>
                     </div>
-                    <h6 class="m-0 mt-3 text-muted text-center">Özgeçmiş</h6>
+                    <div class="row">
+                        <div class="col-md">
+                            @if (Anamnesis.WeightHistoryOnDiet == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diyet:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diyet:</strong> &nbsp; @Anamnesis.WeightHistoryOnDiet</li>
+                            }
+                        </div>
+                        <div class="col-md">
+                            @if (Anamnesis.WeightHistoryOnTop == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Yüksek:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Yüksek:</strong> &nbsp; @Anamnesis.WeightHistoryOnTop</li>
+                            }
+                        </div>
+                        <div class="col-md">
+                            @if (Anamnesis.WeightHistoryOnLow == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Düşük:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Düşük:</strong> &nbsp; @Anamnesis.WeightHistoryOnLow</li>
+                            }
+                        </div>
+                        <div class="col-md">
+                            @if (Anamnesis.WeightHistoryOnDream == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hayal:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hayal:</strong> &nbsp; @Anamnesis.WeightHistoryOnDream</li>
+                            }
+                        </div>
+                        <div class="col-md">
+                            @if (Anamnesis.WeightHistoryOnGoal == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hedef:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hedef:</strong> &nbsp; @Anamnesis.WeightHistoryOnGoal</li>
+                            }
+                        </div>
+                    </div>
+                    <h6 class="m-0 mt-3 text-muted">Özgeçmiş</h6>
                     <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
                     <div class="row">
                          <div class="col-md-12">
@@ -194,12 +277,26 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Doğum Sayısı:</strong> &nbsp; @Anamnesis.NumberOfBirth</li>
+                            @if (Anamnesis.NumberOfBirth == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Doğum Sayısı:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Doğum Sayısı:</strong> &nbsp; @Anamnesis.NumberOfBirth</li>
+                            }
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Düşük Sayısı:</strong> &nbsp; @Anamnesis.NumberOfMiscarry</li>
+                            @if (Anamnesis.NumberOfMiscarry == 0)
+                            { 
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Düşük Sayısı:</strong> &nbsp; </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Düşük Sayısı:</strong> &nbsp; @Anamnesis.NumberOfMiscarry</li>
+                            }
                         </div>
                     </div>
                     <div class="row">
@@ -232,7 +329,7 @@
                             <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Spor Durumu:</strong> &nbsp; @Anamnesis.Sport</li>
                         </div>
                     </div>
-                    <h6 class="m-0 mt-3 text-muted text-center">Alışkanlıklar</h6>
+                    <h6 class="m-0 mt-3 text-muted">Alışkanlıklar</h6>
                     <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
                     <div class="row">
                         <div class="col-md-6">
@@ -250,7 +347,7 @@
                             <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Madde:</strong> &nbsp; @Anamnesis.Drugs</li>
                         </div>
                     </div>
-                    <h6 class="m-0 mt-3 text-muted text-center">Soy Geçmiş</h6>
+                    <h6 class="m-0 mt-3 text-muted">Soy Geçmiş</h6>
                     <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
                     <div class="row">
                         <div class="col-md-12">
@@ -276,34 +373,30 @@
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Fizik Muayene</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Fizik Muayene</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridPhysicalExaminations" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <ejs-grid id="GridPhysicalExaminations" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/PhysicalExamination/Get?pid=@Model.PatientId" insertUrl="/PhysicalExamination/Insert?pid=@Model.PatientId" updateUrl="/PhysicalExamination/Update" removeUrl="/PhysicalExamination/Remove"></e-data-manager>
-                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                         <e-grid-columns>
                             <e-grid-column field="PhysicalExaminationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                            <e-grid-column field="BloodPressure" headerText="Tansiyon" width="100"></e-grid-column>
-                            <e-grid-column field="Pulse" headerText="Nabız" width="100"></e-grid-column>
-                            <e-grid-column field="Description" headerText="Açıklama" width="300"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                            <e-grid-column field="BloodPressure" headerText="Tansiyon" width="110"></e-grid-column>
+                            <e-grid-column field="Pulse" headerText="Nabız" width="110"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="600"></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Vücut Analizi</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Vücut Analizi</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridBodyAnalysis" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <ejs-grid id="GridBodyAnalysis" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/BodyAnalysis/Get?pid=@Model.PatientId" insertUrl="/BodyAnalysis/Insert?pid=@Model.PatientId" updateUrl="/BodyAnalysis/Update" removeUrl="/BodyAnalysis/Remove"></e-data-manager>
-                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                         <e-grid-columns>
                             <e-grid-column field="BodyAnalysisId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
                             <e-grid-column field="Height" headerText="Boy" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
                             <e-grid-column field="Weight" headerText="Kilo" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
                             <e-grid-column field="Bmi" headerText="BMI" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })' width="80"></e-grid-column>
@@ -316,73 +409,78 @@
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Radyoloji</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Radyoloji</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridRadiology" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <ejs-grid id="GridRadiology" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' 
+                    allowGrouping="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/Radiology/Get?pid=@Model.PatientId" insertUrl="/Radiology/Insert?pid=@Model.PatientId" updateUrl="/Radiology/Update" removeUrl="/Radiology/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="RadiologyId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                            <e-grid-column field="Description" headerText="Açıklama" width="300" edit='@(new {create = "create", read = "read", destroy = "destroy", write = "write"})'></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
                             <e-grid-column field="RadiologyTypeId" headerText="Tür" width="100" foreignKeyValue="RadiologyTypeName" foreignKeyField="RadiologyTypeId" dataSource="ViewBag.RadiologyTypes"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="600" edit='@(new {create = "create", read = "read", destroy = "destroy", write = "write"})'></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Karar - Takip</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Karar</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridDecisionAndTracing" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                        <e-data-manager adaptor="UrlAdaptor" url="/DecisionAndTracing/Get?pid=@Model.PatientId" insertUrl="/DecisionAndTracing/Insert?pid=@Model.PatientId" updateUrl="/DecisionAndTracing/Update" removeUrl="/DecisionAndTracing/Remove"></e-data-manager>
+                <ejs-grid id="GridDecision" height="35vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                        <e-data-manager adaptor="UrlAdaptor" url="/DecisionAndTracing/Get?pid=@Model.PatientId&isDecision=true" insertUrl="/DecisionAndTracing/Insert?pid=@Model.PatientId&isDecision=true" updateUrl="/DecisionAndTracing/Update" removeUrl="/DecisionAndTracing/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="DecisionAndTracingId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                            <e-grid-column field="DecisionAndTracingTypeId" headerText="Tür" foreignKeyValue="DecisionAndTracingTypeName" foreignKeyField="DecisionAndTracingTypeId" dataSource="ViewBag.DecisionAndTracingTypes" width="100"></e-grid-column>
-                            <e-grid-column field="Description" headerText="Açıklama" width="300" edit='@(new {create = "create", read = "read", destroy = "destroy", write = "write"})'></e-grid-column>
-                            <e-grid-column field="UserId" headerText="Kayıt Yapan" foreignKeyValue="FullName" foreignKeyField="UserId" dataSource="ViewBag.Users" width="100"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="600" edit='@(new {create = "create", read = "read", destroy = "destroy", write = "write"})'></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Andülasyon</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Takip</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ejs-grid id="GridTracing" height="35vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                        <e-data-manager adaptor="UrlAdaptor" url="/DecisionAndTracing/Get?pid=@Model.PatientId&isDecision=false" insertUrl="/DecisionAndTracing/Insert?pid=@Model.PatientId&isDecision=false" updateUrl="/DecisionAndTracing/Update" removeUrl="/DecisionAndTracing/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="DecisionAndTracingId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Açıklama" width="600" edit='@(new {create = "create", read = "read", destroy = "destroy", write = "write"})'></e-grid-column>
+                        </e-grid-columns>
+                </ejs-grid>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Andülasyon</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
                 <a href="javascript:;" class="mb-3 text-primary">
                     <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#andulationDescriptionModal">Düzenle</i>
                 </a>
                 <p><strong class="text-muted">Andülasyon Not: </strong> @Model.AndulationDescription</p>
-                <ejs-grid id="GridAndulation" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <ejs-grid id="GridAndulation" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/Andulation/Get?pid=@Model.PatientId" insertUrl="/Andulation/Insert?pid=@Model.PatientId" updateUrl="/Andulation/Update" removeUrl="/Andulation/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="AndulationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
                             <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="100"></e-grid-column>
-                            <e-grid-column field="Program" headerText="Program" width="150"></e-grid-column>
+                            <e-grid-column field="Program" headerText="Program" width="450"></e-grid-column>
                             <e-grid-column field="IsDone" headerText="Uygulandı" width="100" displayAsCheckBox="true" textAlign="Center" type="boolean" editType="booleanedit"></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Andülasyon Ölçüm</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Andülasyon Ölçüm</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridAndulationRecord" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <ejs-grid id="GridAndulationRecord" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/AndulationRecord/Get?pid=@Model.PatientId" insertUrl="/AndulationRecord/Insert?pid=@Model.PatientId" updateUrl="/AndulationRecord/Update" removeUrl="/AndulationRecord/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="AndulationRecordId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="SessionDate" headerText="Tarihi" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                            <e-grid-column field="SessionDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
                             <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
                             <e-grid-column field="Chest" headerText="Göğüs" editType="numericedit" width="80"></e-grid-column>
                             <e-grid-column field="Waist" headerText="Bel" editType="numericedit" width="80"></e-grid-column>
@@ -395,21 +493,19 @@
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Cryline</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Cryoline</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
                 <a href="javascript:;" class="mb-3 text-primary">
                     <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#crylineDescriptionModal">Düzenle</i>
                 </a>
-                <p><strong class="text-muted">Cryline Not: </strong> @Model.CrylineDescription</p>
-                <ejs-grid id="GridCryline" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <p><strong class="text-muted">Cryoline Not: </strong> @Model.CrylineDescription</p>
+                <ejs-grid id="GridCryline" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/Cryline/Get?pid=@Model.PatientId" insertUrl="/Cryline/Insert?pid=@Model.PatientId" updateUrl="/Cryline/Update" removeUrl="/Cryline/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                        <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
                         <e-grid-columns>
                             <e-grid-column field="CrylineId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Tarihi" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                            <e-grid-column field="Area" headerText="Bölge" width="150"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                            <e-grid-column field="Area" headerText="Bölge" width="200"></e-grid-column>
                             <e-grid-column field="Seans" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
                             <e-grid-column field="MeasureOnFoot" headerText="Ayakta Ölçüm" width="100"></e-grid-column>
                             <e-grid-column field="MeasureOnBed" headerText="Yatarak Ölçüm" width="100"></e-grid-column>
@@ -418,28 +514,26 @@
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Ozon</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Ozon</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
                 <a href="javascript:;" class="mb-3 text-primary">
                     <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#ozoneDescriptionModal">Düzenle</i>
                 </a>
                 <p><strong class="text-muted">Ozon Not: </strong> @Model.OzoneDescription</p>
-                <ejs-grid id="GridOzone" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})'
-                    allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <ejs-grid id="GridOzone" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                     <e-data-manager adaptor="UrlAdaptor" url="/Ozone/Get?pid=@Model.PatientId" insertUrl="/Ozone/Insert?pid=@Model.PatientId" updateUrl="/Ozone/Update" removeUrl="/Ozone/Remove"></e-data-manager>
-                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
-                    <e-grid-pageSettings pageSizes="true" pageSize="5"></e-grid-pagesettings>
+                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                     <e-grid-columns>
                         <e-grid-column field="OzoneId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                        <e-grid-column field="RecordDate" headerText="Uygulama Tarihi" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                        <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
                         <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
-                        <e-grid-column field="Description" headerText="Açıklama" width="300"></e-grid-column>
+                        <e-grid-column field="Description" headerText="Açıklama" width="600"></e-grid-column>
                     </e-grid-columns>
                 </ejs-grid>
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Laboratuvar</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Laboratuvar</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
                 <a href="/User/Analysis?patientId=@Model.PatientId" class="mb-3 text-primary">
                         <i class="fas fa-edit text-primary text-sm">Yeni Kayıt</i>
@@ -447,13 +541,13 @@
                 <table class="table mb-0" style="display: block; overflow-x: scroll;">
                     <thead>
                         <tr>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarih</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Seçimler</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ücret</th>
-                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">Uygulama Yeri</th>
-                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">Toplam</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Açıklama</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Tarih</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Seçimler</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Ücret</th>
+                            <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Uygulama Yeri</th>
+                            <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Toplam</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Açıklama</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -461,17 +555,17 @@
                         {
                             double sum = 0;
                             <tr>
-                                <td class="align-middle"><span class="text-secondary text-xs font-weight-bold">@analysis.AnalysisDate.ToString("dd/MM/yyyy")</span></td>
+                                <td class="align-middle"><span class="text-secondary text-s font-weight-bold">@analysis.AnalysisDate.ToString("dd/MM/yyyy")</span></td>
                                 <td class="align-middle">
                                     @foreach (var analysisType in AnalysisTypes.Where(i => i.AnalysisId == analysis.AnalysisId).ToList())
                                     {
-                                        <p class="text-xs text-secondary mb-0">@Types.Where(i => i.TypeId == analysisType.TypeId).FirstOrDefault().TypeName</p>
+                                        <p class="text-s text-secondary mb-0">@Types.Where(i => i.TypeId == analysisType.TypeId).FirstOrDefault().TypeName</p>
                                     }
                                 </td>
                                 <td class="align-middle">
                                     @foreach (var analysisType in AnalysisTypes.Where(i => i.AnalysisId == analysis.AnalysisId).ToList())
                                     {
-                                        <p class="text-xs text-secondary mb-0">@analysisType.Price₺</p>
+                                        <p class="text-s text-secondary mb-0">@analysisType.Price₺</p>
                                     }
                                 </td>
                                 <td class="align-middle text-center">
@@ -486,13 +580,13 @@
                                         }
                                     }
                                 </td>
-                                <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">@sum₺</span></td>
-                                <td class="align-middle"><span class="text-secondary text-xs font-weight-bold" style="white-space: normal !important; max-width: 20vw">@analysis.Description</span></td>
+                                <td class="align-middle text-center"><span class="text-secondary text-s font-weight-bold">@sum₺</span></td>
+                                <td class="align-middle"><span class="text-secondary text-s font-weight-bold" style="white-space: normal !important; max-width: 20vw">@analysis.Description</span></td>
                                 <td class="align-middle">
-                                    <a class="text-secondary font-weight-bold text-xs" onclick="openPopup(@analysis.AnalysisId)">Düzenle</a>
+                                    <a class="text-secondary font-weight-bold text-s" onclick="openPopup(@analysis.AnalysisId)">Düzenle</a>
                                 </td>
                                 <td class="align-middle">
-                                    <a href="/AnalysisType/Remove/?analysisId=@analysis.AnalysisId&patientId=@Model.PatientId" class="text-danger font-weight-bold text-xs">Sil</a>
+                                    <a href="/AnalysisType/Remove/?analysisId=@analysis.AnalysisId&patientId=@Model.PatientId" class="text-danger font-weight-bold text-s">Sil</a>
                                 </td>
                             </tr>   
                         }
@@ -501,7 +595,7 @@
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary">Radyoloji Tetkik İstem</h6>
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Radyoloji Tetkik İstem</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
                 <a href="/User/RadiologyRequest?patientId=@Model.PatientId" class="mb-3 text-primary">
                         <i class="fas fa-edit text-primary text-sm">Yeni Kayıt</i>
@@ -509,13 +603,13 @@
                 <table class="table mb-0" style="display: block; max-width: fit-content; overflow-x: scroll;">
                     <thead>
                         <tr>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarih</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Seçimler</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ücret</th>
-                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">Uygulama Yeri</th>
-                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">Toplam</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Açıklama</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Tarih</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Seçimler</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Ücret</th>
+                            <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Uygulama Yeri</th>
+                            <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Toplam</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Açıklama</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -523,17 +617,17 @@
                         {
                             double sum = 0;
                             <tr>
-                                <td class="align-middle"><span class="text-secondary text-xs font-weight-bold">@radiologyRequest.RadiologyRequestDate.ToString("dd/MM/yyyy")</span></td>
+                                <td class="align-middle"><span class="text-secondary text-s font-weight-bold">@radiologyRequest.RadiologyRequestDate.ToString("dd/MM/yyyy")</span></td>
                                 <td class="align-middle">
                                     @foreach (var radiologyRequestType in RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequest.RadiologyRequestId).ToList())
                                     {
-                                        <p class="text-xs text-secondary mb-0">@RadiologyRequestTypeLists.Where(i => i.RadiologyRequestTypeListId == radiologyRequestType.RadiologyRequestTypeListId).FirstOrDefault().TypeName</p>
+                                        <p class="text-s text-secondary mb-0">@RadiologyRequestTypeLists.Where(i => i.RadiologyRequestTypeListId == radiologyRequestType.RadiologyRequestTypeListId).FirstOrDefault().TypeName</p>
                                     }
                                 </td>
                                 <td class="align-middle">
                                     @foreach (var radiologyRequestType in RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequest.RadiologyRequestId).ToList())
                                     {
-                                        <p class="text-xs text-secondary mb-0">@radiologyRequestType.Price₺</p>
+                                        <p class="text-s text-secondary mb-0">@radiologyRequestType.Price₺</p>
                                     }
                                 </td>
                                 <td class="align-middle text-center">
@@ -541,17 +635,17 @@
                                     {
                                         @if (radiologyRequestType.IsEndoklinikTest){
                                             sum += radiologyRequestType.Price;
-                                            <p class="text-xs text-primary mb-0">EndoKlinik</p>
+                                            <p class="text-s text-primary mb-0">EndoKlinik</p>
                                         }
                                         else{
-                                            <p class="text-xs text-secondary mb-0">Dışarı</p>
+                                            <p class="text-s text-secondary mb-0">Dışarı</p>
                                         }
                                     }
                                 </td>
-                                <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">@sum₺</span></td>
-                                <td class="align-middle"><span class="text-secondary text-xs font-weight-bold" style="white-space: normal !important; max-width: 20vw">@radiologyRequest.Description</span></td>
+                                <td class="align-middle text-center"><span class="text-secondary text-s font-weight-bold">@sum₺</span></td>
+                                <td class="align-middle"><span class="text-secondary text-s font-weight-bold" style="white-space: normal !important; max-width: 20vw">@radiologyRequest.Description</span></td>
                                 <td class="align-middle">
-                                    <a class="text-secondary font-weight-bold text-xs" onclick="openRadiologyRequestPopup(@radiologyRequest.RadiologyRequestId)">Düzenle</a>
+                                    <a class="text-secondary font-weight-bold text-s" onclick="openRadiologyRequestPopup(@radiologyRequest.RadiologyRequestId)">Düzenle</a>
                                 </td>
                                 <td class="align-middle">
                                     <a href="/RadiologyRequestType/Remove/?radiologyRequestId=@radiologyRequest.RadiologyRequestId&patientId=@Model.PatientId" class="text-danger font-weight-bold text-xs">Sil</a>
@@ -636,7 +730,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="crylineDescriptionModalLabel">Cryline Not</h5>
+                <h5 class="modal-title" id="crylineDescriptionModalLabel">Cryoline Not</h5>
                 <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -644,7 +738,7 @@
                     <input type="hidden" name="PatientId" value="@Model.PatientId" id="CrylineModalPatientId">
                     <div class="modal-body" id="CrylineTypeModal">
                         <div class="form-group">
-                            <label for="CrylineDescription">Cryline Not:</label>
+                            <label for="CrylineDescription">Cryoline Not:</label>
                             <textarea class="form-control" id="CrylineDescription" name="CrylineDescription" rows="4">@Model.CrylineDescription</textarea>
                         </div>
                     </div>

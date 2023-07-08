@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,11 @@ namespace Cor.Apt.Controllers
             if (_context.Anamnesises.Where(i => i.PatientId == patientId).Any()) ViewBag.Anamnesis = _context.Anamnesises.Where(i => i.PatientId == patientId).FirstOrDefault();
             else ViewBag.Anamnesis = new Anamnesis() { };
             
+            ViewBag.PatientName = patient.FullName;
+            ViewBag.IdentificationNumber = patient.IdentificationNumber;
+            ViewBag.Age = (int) ((DateTime.Now - patient.BirthDate).TotalDays/365.242199);
+            ViewBag.Phone = patient.Phone;
+
             ViewBag.RadiologyTypes = _context.RadiologyTypes.ToList();
             ViewBag.DecisionAndTracingTypes = _context.DecisionAndTracingTypes.ToList();
             ViewBag.Users = _context.Users.ToList();

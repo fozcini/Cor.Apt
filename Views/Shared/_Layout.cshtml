@@ -66,6 +66,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Treatment,TreatmentDetails", controllers: "User")' href="/User/Treatment">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-collection color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Tedavi Yönetimi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class='nav-link @Html.IsActive(actions: "Users", controllers: "User")' href="/User/Users">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                           <i class="ni ni-badge color-background"></i>
@@ -89,6 +97,33 @@
                         <span class="nav-link-text ms-1">Muhasebe</span>
                     </a>
                 </li> *@
+                }
+                else
+                {
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Index", controllers: "Admin")' href="/Admin/Index">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-calendar-grid-58 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Genel Yönetim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Analysis", controllers: "Admin")' href="/Admin/Analysis">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-badge color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Laboratuvar Yönetimi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Radiology", controllers: "Admin")' href="/Admin/Radiology">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-archive-2 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Radyoloji Yönetimi</span>
+                    </a>
+                </li>
                 }
             </ul>
         </div>

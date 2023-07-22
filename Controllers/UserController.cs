@@ -68,6 +68,29 @@ namespace Cor.Apt.Controllers
             ViewBag.RadiologyRequestTypeLists = _context.RadiologyRequestTypeLists.ToList();
             return View(patient);
         }
+        
+        public IActionResult Treatment()
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            ViewBag.SocialSecurities = _context.SocialSecurities.ToList();
+            ViewBag.DiscountTypes = _context.DiscountTypes.ToList();
+            return View();
+        }
+
+        public IActionResult TreatmentDetails(int patientId)
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            Patient patient = _context.Patients.Include(i => i.DiscountType).Include(i => i.SocialSecurity).Where(i => i.PatientId == patientId).FirstOrDefault();
+            if (_context.Anamnesises.Where(i => i.PatientId == patientId).Any()) ViewBag.Anamnesis = _context.Anamnesises.Where(i => i.PatientId == patientId).FirstOrDefault();
+            else ViewBag.Anamnesis = new Anamnesis() { };
+            
+            ViewBag.PatientName = patient.FullName;
+            ViewBag.IdentificationNumber = patient.IdentificationNumber;
+            ViewBag.Age = (int) ((DateTime.Now - patient.BirthDate).TotalDays/365.242199);
+            ViewBag.Phone = patient.Phone;
+            
+            return View(patient);
+        }
 
         public IActionResult Users()
         {

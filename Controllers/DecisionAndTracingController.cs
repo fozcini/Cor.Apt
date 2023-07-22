@@ -25,7 +25,7 @@ namespace Cor.Apt.Controllers
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid, bool isDecision)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            IEnumerable<DecisionAndTracing> DataSource = isDecision ? _context.DecisionAndTracings.Where(i => i.PatientId == pid & i.DecisionAndTracingTypeId == 1).ToList(): _context.DecisionAndTracings.Where(i => i.PatientId == pid & i.DecisionAndTracingTypeId == 2).ToList();
+            IEnumerable<DecisionAndTracing> DataSource = isDecision ? _context.DecisionAndTracings.Where(i => i.PatientId == pid & i.DecisionAndTracingTypeId == 1).OrderByDescending(i => i.RecordDate).ToList(): _context.DecisionAndTracings.Where(i => i.PatientId == pid & i.DecisionAndTracingTypeId == 2).OrderByDescending(i => i.RecordDate).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting

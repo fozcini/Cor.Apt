@@ -88,7 +88,7 @@
                                                 allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                                                     <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
                                                     <e-data-manager adaptor="UrlAdaptor" url="/Leave/Get?pid=@Model.UserId" insertUrl="/Leave/Insert?pid=@Model.UserId" updateUrl="/Leave/Update" removeUrl="/Leave/Remove"></e-data-manager>
-                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                                                     <e-grid-columns>
                                                         <e-grid-column field="Id" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                                                         <e-grid-column field="StartTime" headerText="Başlangıç" format='yMd' editType="datepickeredit" width="100" DefaultValue="@(DateTime.Now)"></e-grid-column>
@@ -113,7 +113,7 @@
                                                 allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                                                     <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
                                                     <e-data-manager adaptor="UrlAdaptor" url="/SalaryPayment/Get?pid=@Model.UserId" insertUrl="/SalaryPayment/Insert?pid=@Model.UserId" updateUrl="/SalaryPayment/Update" removeUrl="/SalaryPayment/Remove"></e-data-manager>
-                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                                                     <e-grid-columns>
                                                         <e-grid-column field="SalaryPaymentId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                                                         <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80" DefaultValue="@(DateTime.Now)"></e-grid-column>
@@ -135,7 +135,7 @@
                                         <div id="four" class="accordion-collapse collapse p-2" aria-labelledby="headingFour">
                                             <ejs-grid id="GridUserNote" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                                                     <e-data-manager adaptor="UrlAdaptor" url="/UserNote/Get?pid=@Model.UserId" insertUrl="/UserNote/Insert?pid=@Model.UserId" updateUrl="/UserNote/Update" removeUrl="/UserNote/Remove"></e-data-manager>
-                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+                                                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                                                     <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
                                                     <e-grid-columns>
                                                         <e-grid-column field="UserNoteId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>

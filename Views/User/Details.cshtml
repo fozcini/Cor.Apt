@@ -58,13 +58,14 @@
                     @Model.FullName - @Model.IdentificationNumber
                 </h5>
                 <p class="mb-0 font-weight-bold text-sm text-primary">
-                    @Model.Gender - @Model.BirthDate.ToString("d") - Yaş @age
+                    @Model.Gender - @Model.BirthDate.ToString("dd/MM/yyyy") - Yaş @age
                 </p>
             </div>
         </div>
     </div>
 </div>
 <div class="container-fluid px-2 py-4">
+    <a type="button" class="btn btn-primary" href="/User/TreatmentDetails?patientId=@Model.PatientId" style="background-color: #03834f !important;">Tedavi Yönetimi</a>
     <div class="card h-100">
         <div class="card-body p-3">
             <!-- ACCORDION ITEM -->
@@ -146,7 +147,7 @@
                             }
                             else 
                             {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; @Anamnesis.Weight</li>
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kilo:</strong> &nbsp; @Anamnesis.Weight</li>
                             }
                         </div>
                     </div>
@@ -453,86 +454,6 @@
             </div>
             <!-- ACCORDION ITEM -->
             <div class="my-3">
-                <h6 class="text-primary" style="font-size: 1.2rem !important;">Andülasyon</h6>
-                <hr class="horizontal dark mt-0" style="height: 2px">
-                <a href="javascript:;" class="mb-3 text-primary">
-                    <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#andulationDescriptionModal">Düzenle</i>
-                </a>
-                <p><strong class="text-muted">Andülasyon Not: </strong> @Model.AndulationDescription</p>
-                <ejs-grid id="GridAndulation" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                        <e-data-manager adaptor="UrlAdaptor" url="/Andulation/Get?pid=@Model.PatientId" insertUrl="/Andulation/Insert?pid=@Model.PatientId" updateUrl="/Andulation/Update" removeUrl="/Andulation/Remove"></e-data-manager>
-                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                        <e-grid-columns>
-                            <e-grid-column field="AndulationId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                            <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="100"></e-grid-column>
-                            <e-grid-column field="Program" headerText="Program" width="450"></e-grid-column>
-                            <e-grid-column field="IsDone" headerText="Uygulandı" width="100" displayAsCheckBox="true" textAlign="Center" type="boolean" editType="booleanedit"></e-grid-column>
-                        </e-grid-columns>
-                </ejs-grid>
-            </div>
-            <!-- ACCORDION ITEM -->
-            <div class="my-3">
-                <h6 class="text-primary" style="font-size: 1.2rem !important;">Andülasyon Ölçüm</h6>
-                <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridAndulationRecord" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                        <e-data-manager adaptor="UrlAdaptor" url="/AndulationRecord/Get?pid=@Model.PatientId" insertUrl="/AndulationRecord/Insert?pid=@Model.PatientId" updateUrl="/AndulationRecord/Update" removeUrl="/AndulationRecord/Remove"></e-data-manager>
-                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                        <e-grid-columns>
-                            <e-grid-column field="AndulationRecordId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="SessionDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                            <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
-                            <e-grid-column field="Chest" headerText="Göğüs" editType="numericedit" width="80"></e-grid-column>
-                            <e-grid-column field="Waist" headerText="Bel" editType="numericedit" width="80"></e-grid-column>
-                            <e-grid-column field="Abdomen" headerText="Karın" editType="numericedit" width="80"></e-grid-column>
-                            <e-grid-column field="Hip" headerText="Kalça" editType="numericedit" width="80"></e-grid-column>
-                            <e-grid-column field="RightArm" headerText="Sağ Kol" editType="numericedit" width="80"></e-grid-column>
-                            <e-grid-column field="RightLeg" headerText="Sağ Bacak" editType="numericedit" width="80"></e-grid-column>
-                        </e-grid-columns>
-                </ejs-grid>
-            </div>
-            <!-- ACCORDION ITEM -->
-            <div class="my-3">
-                <h6 class="text-primary" style="font-size: 1.2rem !important;">Cryoline</h6>
-                <hr class="horizontal dark mt-0" style="height: 2px">
-                <a href="javascript:;" class="mb-3 text-primary">
-                    <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#crylineDescriptionModal">Düzenle</i>
-                </a>
-                <p><strong class="text-muted">Cryoline Not: </strong> @Model.CrylineDescription</p>
-                <ejs-grid id="GridCryline" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                        <e-data-manager adaptor="UrlAdaptor" url="/Cryline/Get?pid=@Model.PatientId" insertUrl="/Cryline/Insert?pid=@Model.PatientId" updateUrl="/Cryline/Update" removeUrl="/Cryline/Remove"></e-data-manager>
-                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                        <e-grid-columns>
-                            <e-grid-column field="CrylineId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                            <e-grid-column field="Area" headerText="Bölge" width="200"></e-grid-column>
-                            <e-grid-column field="Seans" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
-                            <e-grid-column field="MeasureOnFoot" headerText="Ayakta Ölçüm" width="100"></e-grid-column>
-                            <e-grid-column field="MeasureOnBed" headerText="Yatarak Ölçüm" width="100"></e-grid-column>
-                        </e-grid-columns>
-                </ejs-grid>
-            </div>
-            <!-- ACCORDION ITEM -->
-            <div class="my-3">
-                <h6 class="text-primary" style="font-size: 1.2rem !important;">Ozon</h6>
-                <hr class="horizontal dark mt-0" style="height: 2px">
-                <a href="javascript:;" class="mb-3 text-primary">
-                    <i class="fas fa-edit text-primary text-sm" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#ozoneDescriptionModal">Düzenle</i>
-                </a>
-                <p><strong class="text-muted">Ozon Not: </strong> @Model.OzoneDescription</p>
-                <ejs-grid id="GridOzone" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
-                    <e-data-manager adaptor="UrlAdaptor" url="/Ozone/Get?pid=@Model.PatientId" insertUrl="/Ozone/Insert?pid=@Model.PatientId" updateUrl="/Ozone/Update" removeUrl="/Ozone/Remove"></e-data-manager>
-                    <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
-                    <e-grid-columns>
-                        <e-grid-column field="OzoneId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
-                        <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
-                        <e-grid-column field="Session" headerText="Seans" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() { ValidateDecimalOnType = true, Decimals = 0, Format = "N"}})' width="80"></e-grid-column>
-                        <e-grid-column field="Description" headerText="Açıklama" width="600"></e-grid-column>
-                    </e-grid-columns>
-                </ejs-grid>
-            </div>
-            <!-- ACCORDION ITEM -->
-            <div class="my-3">
                 <h6 class="text-primary" style="font-size: 1.2rem !important;">Laboratuvar</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
                 <a href="/User/Analysis?patientId=@Model.PatientId" class="mb-3 text-primary">
@@ -551,7 +472,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var analysis in Analyses)
+                        @foreach (var analysis in Analyses.OrderByDescending(i => i.AnalysisDate))
                         {
                             double sum = 0;
                             <tr>
@@ -613,7 +534,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var radiologyRequest in RadiologyRequests)
+                        @foreach (var radiologyRequest in RadiologyRequests.OrderByDescending(i => i.RadiologyRequestDate))
                         {
                             double sum = 0;
                             <tr>
@@ -698,86 +619,6 @@
     }
 </script>
 
-<!-- Andulation Description Modal -->
-<div class="modal fade" id="andulationDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="andulationDescriptionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="andulationDescriptionModalLabel">Andülasyon Not</h5>
-                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form asp-action="UpdateAndulationDescription" asp-controller="Andulation" method="post">
-                    <input type="hidden" name="PatientId" value="@Model.PatientId" id="AndulationModalPatientId">
-                    <div class="modal-body" id="AndulationTypeModal">
-                        <div class="form-group">
-                            <label for="OzoneDescription">Andülasyon Not:</label>
-                            <textarea class="form-control" id="AndulationDescription" name="AndulationDescription" rows="4">@Model.AndulationDescription</textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">İptal</button>
-                        <button type="submit" class="btn bg-gradient-info">Kaydet</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Cryline Description Modal -->
-<div class="modal fade" id="crylineDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="crylineDescriptionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="crylineDescriptionModalLabel">Cryoline Not</h5>
-                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form asp-action="UpdateCrylineDescription" asp-controller="Cryline" method="post">
-                    <input type="hidden" name="PatientId" value="@Model.PatientId" id="CrylineModalPatientId">
-                    <div class="modal-body" id="CrylineTypeModal">
-                        <div class="form-group">
-                            <label for="CrylineDescription">Cryoline Not:</label>
-                            <textarea class="form-control" id="CrylineDescription" name="CrylineDescription" rows="4">@Model.CrylineDescription</textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">İptal</button>
-                        <button type="submit" class="btn bg-gradient-info">Kaydet</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Ozone Description Modal -->
-<div class="modal fade" id="ozoneDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="ozoneDescriptionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ozoneDescriptionModalLabel">Ozon Not:</h5>
-                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form asp-action="UpdateOzoneDescription" asp-controller="Ozone" method="post">
-                    <input type="hidden" name="PatientId" value="@Model.PatientId" id="OzoneModalPatientId">
-                    <div class="modal-body" id="AnalysisTypeModal">
-                        <div class="form-group">
-                            <label for="OzoneDescription">Ozon Not:</label>
-                            <textarea class="form-control" id="OzoneDescription" name="OzoneDescription" rows="4">@Model.OzoneDescription</textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">İptal</button>
-                        <button type="submit" class="btn bg-gradient-info">Kaydet</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Analysis Modal -->
 <div class="modal fade" id="analysisModal" tabindex="-1" role="dialog" aria-labelledby="analysisModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -877,13 +718,13 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="Height">Boy (cm)</label>
-                                <input type="number" class="form-control" name="Height" value="@Anamnesis.Height" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="Height" value="@Anamnesis.Height">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="Weight">Kilo (kg)</label>
-                                <input type="number" class="form-control" name="Weight" value="@Anamnesis.Weight" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="Weight" value="@Anamnesis.Weight">
                             </div>
                         </div>
                     </div>
@@ -908,31 +749,31 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnTeen">18 Yaş</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnTeen" value="@Anamnesis.WeightHistoryOnTeen" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnTeen" value="@Anamnesis.WeightHistoryOnTeen" min="0">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnEducation">Eğitim</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnEducation" value="@Anamnesis.WeightHistoryOnEducation" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnEducation" value="@Anamnesis.WeightHistoryOnEducation" min="0">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnWork">İş</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnWork" value="@Anamnesis.WeightHistoryOnWork" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnWork" value="@Anamnesis.WeightHistoryOnWork" min="0">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnMarriage">Evlilik</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnMarriage" value="@Anamnesis.WeightHistoryOnMarriage" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnMarriage" value="@Anamnesis.WeightHistoryOnMarriage" min="0">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnPregnancy">Gebelik</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnPregnancy" value="@Anamnesis.WeightHistoryOnPregnancy" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnPregnancy" value="@Anamnesis.WeightHistoryOnPregnancy" min="0">
                             </div>
                         </div>
                     </div>
@@ -940,31 +781,31 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnDiet">Diyet</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnDiet" value="@Anamnesis.WeightHistoryOnDiet" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnDiet" value="@Anamnesis.WeightHistoryOnDiet" min="0">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnTop">En Yüksek</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnTop" value="@Anamnesis.WeightHistoryOnTop" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnTop" value="@Anamnesis.WeightHistoryOnTop" min="0">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnLow">En Düşük</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnLow" value="@Anamnesis.WeightHistoryOnLow" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnLow" value="@Anamnesis.WeightHistoryOnLow" min="0">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnDream">Hayal</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnDream" value="@Anamnesis.WeightHistoryOnDream" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnDream" value="@Anamnesis.WeightHistoryOnDream" min="0">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnGoal">Hedef</label>
-                                <input type="number" class="form-control" name="WeightHistoryOnGoal" value="@Anamnesis.WeightHistoryOnGoal" min="0">
+                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnGoal" value="@Anamnesis.WeightHistoryOnGoal" min="0">
                             </div>
                         </div>
                     </div>

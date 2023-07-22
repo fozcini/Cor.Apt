@@ -22,7 +22,7 @@ namespace Cor.Apt.Controllers
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            IEnumerable<SalaryPayment> DataSource = _context.SalaryPayments.Include(i => i.SalaryPaymentType).Where(i => i.UserId == pid).ToList();
+            IEnumerable<SalaryPayment> DataSource = _context.SalaryPayments.Include(i => i.SalaryPaymentType).Where(i => i.UserId == pid).OrderByDescending(i => i.RecordDate).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting

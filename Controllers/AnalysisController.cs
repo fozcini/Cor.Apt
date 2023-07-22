@@ -21,7 +21,7 @@ namespace Cor.Apt.Controllers
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            IEnumerable<Analysis> DataSource = _context.Analyses.Where(i => i.PatientId == pid).ToList();
+            IEnumerable<Analysis> DataSource = _context.Analyses.Where(i => i.PatientId == pid).OrderByDescending(i => i.AnalysisDate).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting

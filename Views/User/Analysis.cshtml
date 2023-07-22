@@ -56,6 +56,10 @@
                                     <td style="padding-left: 0.5rem"><p class="text-xs text-secondary mb-0">@type.Price₺</p></td>
                                 </tr>
                             }
+                            <tr>
+                                <td><ejs-checkbox id="@Types.Where(i => i.TypeId == 170).FirstOrDefault().TypeId" checked='@Model.Any(i => i.TypeId == 170) ? true : false' label="@Types.Where(i => i.TypeId == 170).FirstOrDefault().TypeName" value="@Types.Where(i => i.TypeId == 170).FirstOrDefault().TypeId" name="Type"></ejs-checkbox></td>
+                                <td style="padding-left: 0.5rem"><p class="text-xs text-secondary mb-0">@Types.Where(i => i.TypeId == 170).FirstOrDefault().Price₺</p></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -197,7 +201,7 @@
                                 </tr>
                             }
                             <tr><td><h6>Çölyak</h6></td></tr>
-                            @foreach (var type in Types.Skip(165).Take(3))
+                            @foreach (var type in Types.Skip(165).Take(4))
                             {
                                 <tr>
                                     <td><ejs-checkbox id="@type.TypeId" checked='@Model.Any(i => i.TypeId == type.TypeId) ? true : false' label="@type.TypeName" value="@type.TypeId" name="Type"></ejs-checkbox></td>

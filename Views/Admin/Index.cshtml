@@ -7,9 +7,9 @@
     <div class="card-body">
         <h6 class="text-primary" style="font-size: 1.2rem !important;">Sigorta Türleri</h6>
         <div class="control-section">
-            <ejs-grid id="GridSocialSecurities" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
-                <e-data-manager adaptor="UrlAdaptor" url="/SocialSecurity/Get" insertUrl="/SocialSecurity/Insert" updateUrl="/SocialSecurity/Update" removeUrl="/SocialSecurity/Remove"></e-data-manager>
-                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+            <ejs-grid id="GridSocialSecurities" toolbar='@(new List<string>() {"Search", "Add", "Edit"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/SocialSecurity/Get" insertUrl="/SocialSecurity/Insert" updateUrl="/SocialSecurity/Update"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
                     <e-grid-column field="SocialSecurityId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                     <e-grid-column field="SocialSecurityName" headerText="Sigorta Türü"></e-grid-column>
@@ -18,9 +18,9 @@
         </div>
         <h6 class="text-primary mt-3" style="font-size: 1.2rem !important;">İndirim Türleri</h6>
         <div class="control-section">
-            <ejs-grid id="GridDiscountTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
-                <e-data-manager adaptor="UrlAdaptor" url="/DiscountType/Get" insertUrl="/DiscountType/Insert" updateUrl="/DiscountType/Update" removeUrl="/DiscountType/Remove"></e-data-manager>
-                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+            <ejs-grid id="GridDiscountTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/DiscountType/Get" insertUrl="/DiscountType/Insert" updateUrl="/DiscountType/Update"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
                     <e-grid-column field="DiscountTypeId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                     <e-grid-column field="DiscountTypeName" headerText="İndirim Türü"></e-grid-column>
@@ -30,9 +30,9 @@
         </div>
         <h6 class="text-primary mt-3" style="font-size: 1.2rem !important;">Radyoloji Türleri</h6>
         <div class="control-section">
-            <ejs-grid id="GridRadiologyTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
-                <e-data-manager adaptor="UrlAdaptor" url="/RadiologyType/Get" insertUrl="/RadiologyType/Insert" updateUrl="/RadiologyType/Update" removeUrl="/RadiologyType/Remove"></e-data-manager>
-                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+            <ejs-grid id="GridRadiologyTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/RadiologyType/Get" insertUrl="/RadiologyType/Insert" updateUrl="/RadiologyType/Update"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
                     <e-grid-column field="RadiologyTypeId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                     <e-grid-column field="RadiologyTypeName" headerText="Radyoloji Türü"></e-grid-column>
@@ -50,9 +50,9 @@
     <div class="card-body">
         <h6 class="text-primary mt-3" style="font-size: 1.2rem !important;">İzin Türleri</h6>
         <div class="control-section">
-            <ejs-grid id="GridLeaveTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
-                <e-data-manager adaptor="UrlAdaptor" url="/LeaveType/Get" insertUrl="/LeaveType/Insert" updateUrl="/LeaveType/Update" removeUrl="/LeaveType/Remove"></e-data-manager>
-                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+            <ejs-grid id="GridLeaveTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/LeaveType/Get" insertUrl="/LeaveType/Insert" updateUrl="/LeaveType/Update"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
                     <e-grid-column field="LeaveTypeId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                     <e-grid-column field="LeaveTypeName" headerText="İzin Türü"></e-grid-column>
@@ -61,9 +61,9 @@
         </div>
         <h6 class="text-primary mt-3" style="font-size: 1.2rem !important;">Ödeme Türleri</h6>
         <div class="control-section">
-            <ejs-grid id="GridSalaryPaymentTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
-                <e-data-manager adaptor="UrlAdaptor" url="/SalaryPaymentType/Get" insertUrl="/SalaryPaymentType/Insert" updateUrl="/SalaryPaymentType/Update" removeUrl="/SalaryPaymentType/Remove"></e-data-manager>
-                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+            <ejs-grid id="GridSalaryPaymentTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/SalaryPaymentType/Get" insertUrl="/SalaryPaymentType/Insert" updateUrl="/SalaryPaymentType/Update"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
                     <e-grid-column field="SalaryPaymentTypeId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                     <e-grid-column field="SalaryPaymentTypeName" headerText="Ödeme Türü"></e-grid-column>
@@ -72,9 +72,9 @@
         </div>
         <h6 class="text-primary mt-3" style="font-size: 1.2rem !important;">Başvuru Bölümü Türleri</h6>
         <div class="control-section">
-            <ejs-grid id="GridApplicationTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
-                <e-data-manager adaptor="UrlAdaptor" url="/ApplicationType/Get" insertUrl="/ApplicationType/Insert" updateUrl="/ApplicationType/Update" removeUrl="/ApplicationType/Remove"></e-data-manager>
-                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+            <ejs-grid id="GridApplicationTypes" toolbar='@(new List<string>() {"Search", "Add", "Edit"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/ApplicationType/Get" insertUrl="/ApplicationType/Insert" updateUrl="/ApplicationType/Update"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
                     <e-grid-column field="ApplicationTypeId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                     <e-grid-column field="ApplicationTypeName" headerText="Başvuru Bölümü Türü"></e-grid-column>

@@ -4,20 +4,20 @@ namespace Cor.Apt.Entities
     {
         public int AnamnesisId { get; set; }
         public string Profession { get; set; }
-        public double Height { get; set; }
-        public double Weight { get; set; }
+        public string Height { get; set; }
+        public string Weight { get; set; }
         public string Complaint { get; set; }
         public string MedicalHistory { get; set; }
-        public double WeightHistoryOnTeen { get; set; }
-        public double WeightHistoryOnEducation { get; set; }
-        public double WeightHistoryOnWork { get; set; }
-        public double WeightHistoryOnMarriage { get; set; }
-        public double WeightHistoryOnPregnancy { get; set; }
-        public double WeightHistoryOnDiet { get; set; }
-        public double WeightHistoryOnTop { get; set; }
-        public double WeightHistoryOnLow { get; set; }
-        public double WeightHistoryOnDream { get; set; }
-        public double WeightHistoryOnGoal { get; set; }
+        public string WeightHistoryOnTeen { get; set; }
+        public string WeightHistoryOnEducation { get; set; }
+        public string WeightHistoryOnWork { get; set; }
+        public string WeightHistoryOnMarriage { get; set; }
+        public string WeightHistoryOnPregnancy { get; set; }
+        public string WeightHistoryOnDiet { get; set; }
+        public string WeightHistoryOnTop { get; set; }
+        public string WeightHistoryOnLow { get; set; }
+        public string WeightHistoryOnDream { get; set; }
+        public string WeightHistoryOnGoal { get; set; }
         public string Period { get; set; }
         public int NumberOfBirth { get; set; }
         public int NumberOfMiscarry { get; set; }

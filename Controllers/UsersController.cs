@@ -27,7 +27,7 @@ namespace Cor.Apt.Controllers
         public IActionResult Get([FromBody] DataManagerRequest dm)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
-            IEnumerable<User> DataSource = _context.Users.ToList();
+            IEnumerable<User> DataSource = _context.Users.Where(i => i.RoleId == 1).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting
@@ -45,6 +45,7 @@ namespace Cor.Apt.Controllers
             _user.FullName = value.Value.FullName;
             _user.BirthDate = value.Value.BirthDate;
             _user.StartTime = value.Value.StartTime;
+            _user.EndTime = value.Value.EndTime;
             _user.Phone = value.Value.Phone;
             _user.SecondPhone = value.Value.SecondPhone;
             _user.Email = value.Value.Email;
@@ -69,6 +70,7 @@ namespace Cor.Apt.Controllers
                 _user.FullName = value.Value.FullName;
                 _user.BirthDate = value.Value.BirthDate;
                 _user.StartTime = value.Value.StartTime;
+                _user.EndTime = value.Value.EndTime;
                 _user.Phone = value.Value.Phone;
                 _user.SecondPhone = value.Value.SecondPhone;
                 _user.Email = value.Value.Email;

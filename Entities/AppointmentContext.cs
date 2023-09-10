@@ -41,6 +41,8 @@ namespace Cor.Apt.Entities
         public DbSet<Patient> Patients { get; set; }
         public DbSet<PatientRecord> PatientRecords { get; set; }
         public DbSet<PerformanceNote> PerformanceNotes { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<PhysicalExamination> PhysicalExaminations { get; set; }
         public DbSet<Radiology> Radiologies { get; set; }
         public DbSet<RadiologyType> RadiologyTypes { get; set; }
@@ -48,6 +50,8 @@ namespace Cor.Apt.Entities
         public DbSet<SalaryPayment> SalaryPayments { get; set; }
         public DbSet<SalaryPaymentType> SalaryPaymentTypes { get; set; }
         public DbSet<SocialSecurity> SocialSecurities { get; set; }
+        public DbSet<StockRecord> StockRecords { get; set; }
+        public DbSet<StockRecordDecrease> StockRecordDecreases { get; set; }
         public DbSet<Type> Types { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<User> Users { get; set; }

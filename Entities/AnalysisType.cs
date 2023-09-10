@@ -7,7 +7,7 @@ namespace Cor.Apt.Entities
         public int AnalysisTypeId { get; set; }
         public double Price { get; set; }
         public Boolean IsDone { get; set; }
-        public Boolean IsEndoklinikTest { get; set; }
+        public string IsEndoklinikTest { get; set; }
 
         public int AnalysisId { get; set; }
         public Analysis Analysis { get; set; }

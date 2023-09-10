@@ -10,6 +10,7 @@ namespace Cor.Apt.Entities
         public string FullName { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public string Phone { get; set; }
         public string SecondPhone { get; set; }
         public string Email { get; set; }

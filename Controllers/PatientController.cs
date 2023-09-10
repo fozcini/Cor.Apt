@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +6,7 @@ using Syncfusion.EJ2.Base;
 
 using Cor.Apt.Entities;
 using Cor.Apt.Services.Interfaces;
+using System.Globalization;
 
 namespace Cor.Apt.Controllers
 {
@@ -23,7 +25,8 @@ namespace Cor.Apt.Controllers
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
             IEnumerable<Patient> DataSource = _context.Patients.ToList();
             DataOperations operation = new DataOperations();
-            if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
+            if (dm.Search != null && dm.Search.Count > 0) DataSource = DataSource.Where(i => i.FullName.ToUpper(new CultureInfo("tr-TR", false)).Contains(dm.Search[0].Key.ToUpper(new CultureInfo("tr-TR", false)))).ToList();  //Search
+            // if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting
             if (dm.Where != null && dm.Where.Count > 0) DataSource = operation.PerformFiltering(DataSource, dm.Where, dm.Where[0].Operator); //Filtering
             int count = DataSource.Cast<Patient>().Count();

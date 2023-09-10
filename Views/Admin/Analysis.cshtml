@@ -1,1 +1,76 @@
-<h1>Lab</h1>
+<div class="card">
+    <div class="card-header card-header-primary card-header-text py-2">
+        <div class="card-text">
+            <h4 class="card-title">Laboratuvar Paneli</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <h6 class="text-primary" style="font-size: 1.2rem !important;">Laboratuvar Türleri</h6>
+        <div class="control-section">
+            <ejs-grid id="GridAnalysisTypes" toolbar='@(new List<string>() {"Search", "Edit"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/Type/Get" updateUrl="/Type/Update"></e-data-manager>
+                <e-grid-editSettings allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="TypeId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                    <e-grid-column field="TypeName" headerText="Laboratuvar Tetkik Türü"></e-grid-column>
+                    <e-grid-column field="Price" headerText="Fiyat" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })'></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    ej.base.L10n.load({
+        'tr': {
+            'datepicker': {
+                'today': 'Bugün'
+            },
+            'grid': {
+                'EmptyRecord': 'Kayıt yok.',
+                'Add': 'Ekle',
+                'Edit': 'Düzenle',
+                'Update': 'Güncelle',
+                'Delete': 'Sil',
+                'GroupDropArea': 'Gruplamak için sütunların başlıklarını sürükleyiniz.',
+                'Search': 'Arama',
+                'EditOperationAlert': 'Düzenlemek için kayıt seçilmedi.',
+                'Save': 'Kaydet',
+                'EditFormTitle': 'Kayıt Düzenleme - ',
+                'ConfirmDelete': 'Kaydı silmek istediğinize emin misiniz?',
+                'AddFormTitle': 'Yeni Kayıt',
+                'OKButton': 'Tamam',
+                'SaveButton': 'Kaydet',
+                'CancelButton': 'İptal',
+                'Item': 'kayıt',
+                'Items': 'kayıt',
+            },
+            'pager': {
+                'currentPageInfo': '{0}/{1}',
+                'totalItemsInfo': '({0} kayıt)',
+                'firstPageTooltip': 'İlk Sayfa',
+                'lastPageTooltip': 'Son Sayfa',
+                'nextPageTooltip': 'Sonraki Sayfa',
+                'previousPageTooltip': 'Önceki Sayfa',
+                'nextPagerTooltip': 'Sonraki Sayfa',
+                'previousPagerTooltip': 'Önceki Sayfa',
+                'pagerDropDown' : 'Sayfa başı kayıt',
+                'All': 'Tümü'
+            }
+        }
+    });
+    loadCultureFiles('tr');
+    function loadCultureFiles(name) {
+        var files = ['ca-gregorian.json', 'numbers.json', 'timeZoneNames.json', 'dateFields.json'];
+        var loader = ej.base.loadCldr;
+        var loadCulture = function (prop) {
+            var val, ajax;
+            ajax = new ej.base.Ajax(location.origin + '/cldr-data/main/' + name + '/' + files[prop], 'GET', false);
+            ajax.onSuccess = function (value) { val = value; };
+            ajax.send();
+            loader(JSON.parse(val));
+            ej.base.setCulture('tr');
+        };
+        for (var prop = 0; prop < files.length; prop++) { loadCulture(prop); }
+    }
+</script>

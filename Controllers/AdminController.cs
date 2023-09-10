@@ -35,6 +35,10 @@ namespace Cor.Apt.Controllers
             if (!_authService.UserIsValid(new List<string> { "Admin" })) return RedirectToAction("Index", "Auth");
             return View();
         }
-
+        public IActionResult Appointment()
+        {
+            if (!_authService.UserIsValid(new List<string> { "Admin" })) return RedirectToAction("Index", "Auth");
+            return View(_context.AppointmentTypes.ToList());
+        }
     }
 }

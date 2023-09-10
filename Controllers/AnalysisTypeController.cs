@@ -40,7 +40,7 @@ namespace Cor.Apt.Controllers
                             TypeId = _type.TypeId,
                             AnalysisId = _analysisId,
                             IsDone = false,
-                            IsEndoklinikTest = true
+                            IsEndoklinikTest = "Endoklinik"
                         };
                         _newAnalysisTypes.Add(_analysisType);
                     }
@@ -65,7 +65,7 @@ namespace Cor.Apt.Controllers
                             TypeId = _type.TypeId,
                             AnalysisId = _analysisId,
                             IsDone = false,
-                            IsEndoklinikTest = true
+                            IsEndoklinikTest = "Endoklinik"
                         };
                         _analysisTypes.Add(_analysisType);
                     }
@@ -86,14 +86,7 @@ namespace Cor.Apt.Controllers
             _analysis.Description = HttpContext.Request.Form["Description"];
             foreach (var analysisType in analysisTypes)
             {
-                if (HttpContext.Request.Form["IsEndoklinikTest"].Contains(analysisType.AnalysisTypeId.ToString()))
-                {
-                    analysisType.IsEndoklinikTest = true;
-                }
-                else
-                {
-                    analysisType.IsEndoklinikTest = false;
-                }
+                analysisType.IsEndoklinikTest = HttpContext.Request.Form[analysisType.AnalysisTypeId.ToString()].ToString();
             }
             _context.SaveChanges();
             return RedirectToAction("Details", "User", new { patientId = _patientId });

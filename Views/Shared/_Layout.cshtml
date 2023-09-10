@@ -98,7 +98,7 @@
                     </a>
                 </li> *@
                 }
-                else
+                else if(@HttpContextAccessor.HttpContext.Session.GetInt32("rl") == 2)
                 {
                 <li class="nav-item">
                     <a class='nav-link @Html.IsActive(actions: "Index", controllers: "Admin")' href="/Admin/Index">
@@ -119,11 +119,30 @@
                 <li class="nav-item">
                     <a class='nav-link @Html.IsActive(actions: "Radiology", controllers: "Admin")' href="/Admin/Radiology">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                          <i class="ni ni-archive-2 color-background"></i>
+                          <i class="ni ni-camera-compact color-background"></i>
                         </div>
                         <span class="nav-link-text ms-1">Radyoloji Yönetimi</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Appointment", controllers: "Admin")' href="/Admin/Appointment">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-calendar-grid-58 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Takvim Yönetimi</span>
+                    </a>
+                </li>
+                }
+                else if(@HttpContextAccessor.HttpContext.Session.GetInt32("rl") == 4)
+                {
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Index", controllers: "Accountant")' href="/Accountant/Index">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-calendar-grid-58 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Stok Yönetimi</span>
+                    </a>
+                </li> 
                 }
             </ul>
         </div>
@@ -143,7 +162,7 @@
             </div>
         </div> *@
     </aside>
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <main class="main-content position-relative h-100 border-radius-lg ">
         <!-- Navbar -->
         <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl position-sticky blur shadow-blur mt-4 left-auto top-1 z-index-sticky" id="navbarBlur" navbar-scroll="true">
             <div class="container-fluid py-1">

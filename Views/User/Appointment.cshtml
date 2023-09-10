@@ -435,6 +435,7 @@
             scheduleObj.addEvent(addObj);
         }
         else if (e.target.id === 'delete') {
+            
             var eventDetails = scheduleObj.activeEventData.event;
             var currentAction = void 0;
             if (eventDetails.RecurrenceRule) {
@@ -509,7 +510,7 @@
                 dataSource: scheduleObj.getResourceCollections()[1].dataSource,
                 placeholder: 'Randevu Türü',
                 fields: { text: 'AppointmentTypeName', value: 'AppointmentTypeId' },
-                index: scheduleObj.getResourceCollections()[1].dataSource.findIndex(o => o.AppointmentTypeId == args.data.AppointmentTypeId)
+                index: 11
             });
             var unitObj = new ej.dropdowns.DropDownList({
                 dataSource: scheduleObj.getResourceCollections()[0].dataSource,

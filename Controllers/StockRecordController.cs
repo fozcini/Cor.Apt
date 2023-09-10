@@ -1,0 +1,82 @@
+using System.Linq;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Syncfusion.EJ2.Base;
+
+using Cor.Apt.Entities;
+using Cor.Apt.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace Cor.Apt.Controllers
+{
+    public class StockRecordController : Controller
+    {
+        private readonly AppointmentContext _context;
+        private readonly IAuthService _authService;
+
+        public StockRecordController(IAuthService authService, AppointmentContext context)
+        {
+            _context = context;
+            _authService = authService;
+        }
+        public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant" })) return RedirectToAction("Index", "Auth");
+            IEnumerable<StockRecord> DataSource = _context.StockRecords.Include(i => i.Product).ToList();
+            DataOperations operation = new DataOperations();
+            if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
+            if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting
+            if (dm.Where != null && dm.Where.Count > 0) DataSource = operation.PerformFiltering(DataSource, dm.Where, dm.Where[0].Operator); //Filtering
+            int count = DataSource.Cast<StockRecord>().Count();
+            if (dm.Skip != 0) DataSource = operation.PerformSkip(DataSource, dm.Skip);   //Paging
+            if (dm.Take != 0) DataSource = operation.PerformTake(DataSource, dm.Take);
+            return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
+        }
+        public IActionResult Insert([FromBody] CRUDModel<StockRecord> value) // Insert the new record 
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant" })) return RedirectToAction("Index", "Auth");
+            StockRecord _stockRecord = new StockRecord
+            {
+                InvoiceId = value.Value.InvoiceId,
+                InvoiceDetails = value.Value.InvoiceDetails,
+                RecordDate = value.Value.RecordDate,
+                Piece = value.Value.Piece,
+                UnitAmount = value.Value.UnitAmount,
+                TotalAmount = value.Value.TotalAmount,
+                ProductId = value.Value.ProductId
+            };
+            Product _product = _context.Products.Where(i => i.ProductId == _stockRecord.ProductId).FirstOrDefault();
+            _product.Piece += _stockRecord.Piece;
+            _context.StockRecords.Add(_stockRecord);
+            _context.SaveChanges();
+            return Json(value);
+        }
+        public IActionResult Update([FromBody] CRUDModel<StockRecord> value) // Update record 
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant" })) return RedirectToAction("Index", "Auth");
+            var _stockRecord = _context.StockRecords.Where(i => i.StockRecordId == value.Value.StockRecordId).FirstOrDefault();
+            Product _product = _context.Products.Where(i => i.ProductId == _stockRecord.ProductId).FirstOrDefault();
+            _product.Piece -= _stockRecord.Piece - value.Value.Piece;
+            if (_stockRecord != null)
+            {
+                _stockRecord.InvoiceId = value.Value.InvoiceId;
+                _stockRecord.InvoiceDetails = value.Value.InvoiceDetails;
+                _stockRecord.RecordDate = value.Value.RecordDate;
+                _stockRecord.Piece = value.Value.Piece;
+                _stockRecord.UnitAmount = value.Value.UnitAmount;
+                _stockRecord.TotalAmount = value.Value.TotalAmount;
+                _stockRecord.ProductId = value.Value.ProductId;
+            }
+            _context.SaveChanges();
+            return Json(value.Value);
+        }
+        public ActionResult Remove([FromBody] CRUDModel<StockRecord> value) // Remove record 
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant" })) return RedirectToAction("Index", "Auth");
+            var _stockRecord = _context.StockRecords.Where(i => i.StockRecordId == int.Parse(value.Key.ToString())).FirstOrDefault();
+            _context.Remove(_stockRecord);
+            _context.SaveChanges();
+            return Json(value);
+        }
+    }
+}

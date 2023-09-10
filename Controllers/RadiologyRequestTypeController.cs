@@ -40,7 +40,7 @@ namespace Cor.Apt.Controllers
                             RadiologyRequestTypeListId = _type.RadiologyRequestTypeListId,
                             RadiologyRequestId = _radiologyRequestId,
                             IsDone = false,
-                            IsEndoklinikTest = true
+                            IsEndoklinikTest = "Endoklinik"
                         };
                         _newRadiologyRequestTypes.Add(_radiologyRequestType);
                     }
@@ -65,7 +65,7 @@ namespace Cor.Apt.Controllers
                             RadiologyRequestTypeListId = _type.RadiologyRequestTypeListId,
                             RadiologyRequestId = _radiologyRequestId,
                             IsDone = false,
-                            IsEndoklinikTest = true
+                            IsEndoklinikTest = "Endoklinik"
                         };
                         _radiologyRequestTypes.Add(_radiologyRequestType);
                     }
@@ -86,14 +86,7 @@ namespace Cor.Apt.Controllers
             _radiologyRequest.Description = HttpContext.Request.Form["Description"];
             foreach (var radiologyRequestType in radiologyRequestTypes)
             {
-                if (HttpContext.Request.Form["IsEndoklinikTest"].Contains(radiologyRequestType.RadiologyRequestTypeId.ToString()))
-                {
-                    radiologyRequestType.IsEndoklinikTest = true;
-                }
-                else
-                {
-                    radiologyRequestType.IsEndoklinikTest = false;
-                }
+                radiologyRequestType.IsEndoklinikTest = HttpContext.Request.Form[radiologyRequestType.RadiologyRequestTypeId.ToString()].ToString();
             }
             _context.SaveChanges();
             return RedirectToAction("Details", "User", new { patientId = _patientId });

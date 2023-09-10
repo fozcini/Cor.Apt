@@ -131,24 +131,10 @@
                             <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Meslek:</strong> &nbsp; @Anamnesis.Profession</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.Height == 0)
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; </li>
-                            }
-                            else 
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; @Anamnesis.Height</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Boy:</strong> &nbsp; @Anamnesis.Height</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.Height == 0)
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kilo:</strong> &nbsp; </li>
-                            }
-                            else 
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kilo:</strong> &nbsp; @Anamnesis.Weight</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Kilo:</strong> &nbsp; @Anamnesis.Weight</li>
                         </div>
                     </div>
                     <h6 class="m-0 mt-3 text-muted">Şikayet - Öykü</h6>
@@ -167,106 +153,36 @@
                     <hr class="horizontal m-2 gray-light" style="background-color:#b4c0d2">
                     <div class="row">
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnTeen == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">18 Yaş:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">18 Yaş:</strong> &nbsp; @Anamnesis.WeightHistoryOnTeen</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">18 Yaş:</strong> &nbsp; @Anamnesis.WeightHistoryOnTeen</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnEducation == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Eğitim:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Eğitim:</strong> &nbsp; @Anamnesis.WeightHistoryOnEducation</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Eğitim:</strong> &nbsp; @Anamnesis.WeightHistoryOnEducation</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnWork == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">İş:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">İş:</strong> &nbsp; @Anamnesis.WeightHistoryOnWork</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">İş:</strong> &nbsp; @Anamnesis.WeightHistoryOnWork</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnMarriage == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Evlilik:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Evlilik:</strong> &nbsp; @Anamnesis.WeightHistoryOnMarriage</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Evlilik:</strong> &nbsp; @Anamnesis.WeightHistoryOnMarriage</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnPregnancy == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Gebelik:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Gebelik:</strong> &nbsp; @Anamnesis.WeightHistoryOnPregnancy</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Gebelik:</strong> &nbsp; @Anamnesis.WeightHistoryOnPregnancy</li>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnDiet == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diyet:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diyet:</strong> &nbsp; @Anamnesis.WeightHistoryOnDiet</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Diyet:</strong> &nbsp; @Anamnesis.WeightHistoryOnDiet</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnTop == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Yüksek:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Yüksek:</strong> &nbsp; @Anamnesis.WeightHistoryOnTop</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Yüksek:</strong> &nbsp; @Anamnesis.WeightHistoryOnTop</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnLow == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Düşük:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Düşük:</strong> &nbsp; @Anamnesis.WeightHistoryOnLow</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">En Düşük:</strong> &nbsp; @Anamnesis.WeightHistoryOnLow</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnDream == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hayal:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hayal:</strong> &nbsp; @Anamnesis.WeightHistoryOnDream</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hayal:</strong> &nbsp; @Anamnesis.WeightHistoryOnDream</li>
                         </div>
                         <div class="col-md">
-                            @if (Anamnesis.WeightHistoryOnGoal == 0)
-                            { 
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hedef:</strong> &nbsp; </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hedef:</strong> &nbsp; @Anamnesis.WeightHistoryOnGoal</li>
-                            }
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-muted">Hedef:</strong> &nbsp; @Anamnesis.WeightHistoryOnGoal</li>
                         </div>
                     </div>
                     <h6 class="m-0 mt-3 text-muted">Özgeçmiş</h6>
@@ -465,6 +381,7 @@
                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Tarih</th>
                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Seçimler</th>
                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Ücret</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">%10 İndirim</th>
                             <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Uygulama Yeri</th>
                             <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Toplam</th>
                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Açıklama</th>
@@ -489,16 +406,27 @@
                                         <p class="text-s text-secondary mb-0">@analysisType.Price₺</p>
                                     }
                                 </td>
+                                <td class="align-middle">
+                                    @foreach (var analysisType in AnalysisTypes.Where(i => i.AnalysisId == analysis.AnalysisId).ToList())
+                                    {
+                                        <p class="text-s text-secondary mb-0">@(analysisType.Price*0.9)₺</p>
+                                    }
+                                </td>
                                 <td class="align-middle text-center">
                                     @foreach (var analysisType in AnalysisTypes.Where(i => i.AnalysisId == analysis.AnalysisId).ToList())
                                     {
-                                        @if (analysisType.IsEndoklinikTest){
+                                        @if (analysisType.IsEndoklinikTest == "Endoklinik"){
                                             sum += analysisType.Price;
-                                            <p class="text-xs text-primary mb-0">EndoKlinik</p>
+                                            <p class="text-s text-primary mb-0" style="font-size: 1rem !important;">EndoKlinik</p>
                                         }
-                                        else{
-                                            <p class="text-xs text-secondary mb-0">Dışarı</p>
+                                        else if(analysisType.IsEndoklinikTest == "Beklemede"){
+                                            <p class="text-s text-warning mb-0" style="font-size: 1rem !important;">Beklemede</p>
                                         }
+                                        else
+                                        {
+                                            <p class="text-s text-danger mb-0" style="font-size: 1rem !important;">Dışarı</p>
+                                        }
+
                                     }
                                 </td>
                                 <td class="align-middle text-center"><span class="text-secondary text-s font-weight-bold">@sum₺</span></td>
@@ -527,6 +455,7 @@
                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Tarih</th>
                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Seçimler</th>
                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Ücret</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">%10 İndirim</th>
                             <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Uygulama Yeri</th>
                             <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Toplam</th>
                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Açıklama</th>
@@ -551,15 +480,25 @@
                                         <p class="text-s text-secondary mb-0">@radiologyRequestType.Price₺</p>
                                     }
                                 </td>
+                                <td class="align-middle">
+                                    @foreach (var radiologyRequestType in RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequest.RadiologyRequestId).ToList())
+                                    {
+                                        <p class="text-s text-secondary mb-0">@(radiologyRequestType.Price*0.9)₺</p>
+                                    }
+                                </td>
                                 <td class="align-middle text-center">
                                     @foreach (var radiologyRequestType in RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequest.RadiologyRequestId).ToList())
                                     {
-                                        @if (radiologyRequestType.IsEndoklinikTest){
+                                        @if (radiologyRequestType.IsEndoklinikTest == "Endoklinik"){
                                             sum += radiologyRequestType.Price;
-                                            <p class="text-s text-primary mb-0">EndoKlinik</p>
+                                            <p class="text-s text-primary mb-0" style="font-size: 1rem !important;">Endoklinik</p>
                                         }
-                                        else{
-                                            <p class="text-s text-secondary mb-0">Dışarı</p>
+                                        else if(radiologyRequestType.IsEndoklinikTest == "Beklemede"){
+                                            <p class="text-s text-warning mb-0" style="font-size: 1rem !important;">Beklemede</p>
+                                        }
+                                        else 
+                                        {
+                                            <p class="text-s text-danger mb-0" style="font-size: 1rem !important;">Dışarı</p>
                                         }
                                     }
                                 </td>
@@ -590,11 +529,15 @@
         document.getElementById('Description').value = analysesList.find(o => o.AnalysisId == analysisId).Description
         analysisTypeList.forEach((e) => {
             if(e.AnalysisId == analysisId)
-            {
-                var isEndo = e.IsEndoklinikTest ? 'checked' : ''
+            {   
+                var isEndo = e.IsEndoklinikTest == "Endoklinik" ? 'checked' : ''
+                var isWait = e.IsEndoklinikTest == "Beklemede" ? 'checked' : ''
+                var isAnother = e.IsEndoklinikTest == "Dışarı" ? 'checked' : ''
                 rows += '<tr><td><p class="text-s text-secondary mb-0">'+ e.Type.TypeName +'</p></td>' +
                     '<td><p class="text-s text-secondary mb-0">'+ e.Price +'₺</p></td>' +
-                    '<td><input type="checkbox" id="'+e.AnalysisTypeId+'" name="IsEndoklinikTest" value="'+e.AnalysisTypeId+'"'+isEndo+'><label for="'+e.AnalysisTypeId+'">EndoKlinik</label></td></tr>'
+                    '<td><input type="radio" name="'+e.AnalysisTypeId+'" value="Endoklinik"'+isEndo+'><label for="'+e.AnalysisTypeId+'">EndoKlinik</label>  ' +
+                    '<input type="radio" name="'+e.AnalysisTypeId+'" value="Beklemede"'+isWait+'><label for="'+e.AnalysisTypeId+'">Beklemede</label>  ' +
+                    '<input type="radio" name="'+e.AnalysisTypeId+'" value="Dışarı"'+isAnother+'><label for="'+e.AnalysisTypeId+'">Dışarı</label></td></tr>'
             }
         })
         tableBody.innerHTML = rows
@@ -608,14 +551,82 @@
         radiologyRequestTypeListJs.forEach((e) => {
             if(e.RadiologyRequestId == radiologyRequestId)
             {
-                var isEndo = e.IsEndoklinikTest ? 'checked' : ''
+                var isEndo = e.IsEndoklinikTest == "Endoklinik" ? 'checked' : ''
+                var isWait = e.IsEndoklinikTest == "Beklemede" ? 'checked' : ''
+                var isAnother = e.IsEndoklinikTest == "Dışarı" ? 'checked' : ''
                 rows += '<tr><td><p class="text-s text-secondary mb-0">'+ e.RadiologyRequestTypeList.TypeName +'</p></td>' +
                     '<td><p class="text-s text-secondary mb-0">'+ e.Price +'₺</p></td>' +
-                    '<td><input type="checkbox" id="'+e.RadiologyRequestTypeId+'" name="IsEndoklinikTest" value="'+e.RadiologyRequestTypeId+'"'+isEndo+'><label for="'+e.RadiologyRequestTypeId+'">EndoKlinik</label></td></tr>'
+                    '<td><input type="radio" name="'+e.RadiologyRequestTypeId+'" value="Endoklinik"'+isEndo+'><label for="'+e.AnalysisTypeId+'">EndoKlinik</label>  ' +
+                    '<input type="radio" name="'+e.RadiologyRequestTypeId+'" value="Beklemede"'+isWait+'><label for="'+e.AnalysisTypeId+'">Beklemede</label>  ' +
+                    '<input type="radio" name="'+e.RadiologyRequestTypeId+'" value="Dışarı"'+isAnother+'><label for="'+e.AnalysisTypeId+'">Dışarı</label></td></tr>'
             }
         })
         tableBody.innerHTML = rows
         $('#radiologyRequestModal').modal('show')
+    }
+    function selectAllFunc(form) {
+        var check = document.getElementsByName("selectAll"),
+    	    radios = document.form.elements;
+
+    	if (check[0].checked) {
+    		for( i = 0; i < radios.length; i++ ) {
+    			if( radios[i].type == "radio" ) {
+    				if (radios[i].value == "Endoklinik" ) {
+    					radios[i].checked = true;
+    				}
+    			}
+    		}
+    	} else if (check[1].checked)
+        {
+            for( i = 0; i < radios.length; i++ ) {
+    			if( radios[i].type == "radio" ) {
+    				if (radios[i].value == "Beklemede" ) {
+    					radios[i].checked = true;
+    				}
+    			}
+    		}   
+        } else {
+    		for( i = 0; i < radios.length; i++ ) {
+    			if( radios[i].type == "radio" ) {
+    				if (radios[i].value == "Dışarı" ) {
+    					radios[i].checked = true;
+    				}
+
+    			}
+    		}
+    	};
+    }
+    function selectAllFuncRadiology(formRadiology) {
+        var check = document.getElementsByName("selectAllRadiology"),
+    	    radios = document.formRadiology.elements;
+
+    	if (check[0].checked) {
+    		for( i = 0; i < radios.length; i++ ) {
+    			if( radios[i].type == "radio" ) {
+    				if (radios[i].value == "Endoklinik" ) {
+    					radios[i].checked = true;
+    				}
+    			}
+    		}
+    	} else if (check[1].checked)
+        {
+            for( i = 0; i < radios.length; i++ ) {
+    			if( radios[i].type == "radio" ) {
+    				if (radios[i].value == "Beklemede" ) {
+    					radios[i].checked = true;
+    				}
+    			}
+    		}   
+        } else {
+    		for( i = 0; i < radios.length; i++ ) {
+    			if( radios[i].type == "radio" ) {
+    				if (radios[i].value == "Dışarı" ) {
+    					radios[i].checked = true;
+    				}
+
+    			}
+    		}
+    	};
     }
 </script>
 
@@ -628,7 +639,7 @@
                 <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form asp-action="Set" asp-controller="AnalysisType" method="post">
+                <form asp-action="Set" asp-controller="AnalysisType" method="post" name="form">
                     <input type="hidden" name="AnalysisId" value="" id="ModalAnalysisId">
                     <input type="hidden" name="PatientId" value="@Model.PatientId" id="ModalPatientId">
                     <div class="modal-body" id="AnalysisTypeModal">
@@ -640,8 +651,22 @@
                                   <th class="text-uppercase text-secondary text-s font-weight-bolder opacity-7">Uygulama Yeri</th>
                                 </tr>
                             </thead>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <h6>Hepsini değiştir:</h6>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="radio" name="selectAll" value="Endoklinik" onclick="selectAllFunc(form)"><label for="selectAll">EndoKlinik</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="radio" name="selectAll" value="Beklemede" onclick="selectAllFunc(form)"><label for="selectAll">Beklemede</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="radio" name="selectAll" value="Dışarı" onclick="selectAllFunc(form)"><label for="selectAll">Dışarı</label>
+                                </div>
+                            </div>
                             <tbody id="tableBody">
-
+                                
                             </tbody>
                         </table>
                         <div class="form-group">
@@ -667,7 +692,7 @@
                 <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form asp-action="Set" asp-controller="RadiologyRequestType" method="post">
+                <form asp-action="Set" asp-controller="RadiologyRequestType" method="post" name="formRadiology">
                     <input type="hidden" name="RadiologyRequestId" value="" id="ModalRadiologyRequestId">
                     <input type="hidden" name="PatientId" value="@Model.PatientId" id="ModalRadiologyRequestPatientId">
                     <div class="modal-body" id="RadiologyRequestTypeModal">
@@ -679,6 +704,20 @@
                                   <th class="text-uppercase text-secondary text-s font-weight-bolder opacity-7">Uygulama Yeri</th>
                                 </tr>
                             </thead>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <h6>Hepsini değiştir:</h6>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="radio" name="selectAllRadiology" value="Endoklinik" onclick="selectAllFuncRadiology(formRadiology)"><label for="selectAllRadiology">EndoKlinik</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="radio" name="selectAllRadiology" value="Beklemede" onclick="selectAllFuncRadiology(formRadiology)"><label for="selectAllRadiology">Beklemede</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="radio" name="selectAllRadiology" value="Dışarı" onclick="selectAllFuncRadiology(formRadiology)"><label for="selectAllRadiology">Dışarı</label>
+                                </div>
+                            </div>
                             <tbody id="tableRequestTypeBody">
 
                             </tbody>
@@ -705,7 +744,7 @@
                 <h5 class="modal-title" id="anamnesisModalLabel">Anamnez Bilgileri</h5>
                 <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <form asp-action="Update" asp-controller="Anamnesis" method="post">
+            <form id="anamnesisForm">
                 <input type="hidden" name="PatientId" value="@Model.PatientId">
                 <div class="modal-body">
                     <div class="row">
@@ -718,13 +757,13 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="Height">Boy (cm)</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="Height" value="@Anamnesis.Height">
+                                <input type="text" class="form-control" name="Height" value="@Anamnesis.Height">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="Weight">Kilo (kg)</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="Weight" value="@Anamnesis.Weight">
+                                <input type="text" class="form-control" name="Weight" value="@Anamnesis.Weight">
                             </div>
                         </div>
                     </div>
@@ -749,31 +788,31 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnTeen">18 Yaş</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnTeen" value="@Anamnesis.WeightHistoryOnTeen" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnTeen" value="@Anamnesis.WeightHistoryOnTeen">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnEducation">Eğitim</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnEducation" value="@Anamnesis.WeightHistoryOnEducation" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnEducation" value="@Anamnesis.WeightHistoryOnEducation">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnWork">İş</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnWork" value="@Anamnesis.WeightHistoryOnWork" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnWork" value="@Anamnesis.WeightHistoryOnWork">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnMarriage">Evlilik</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnMarriage" value="@Anamnesis.WeightHistoryOnMarriage" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnMarriage" value="@Anamnesis.WeightHistoryOnMarriage">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnPregnancy">Gebelik</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnPregnancy" value="@Anamnesis.WeightHistoryOnPregnancy" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnPregnancy" value="@Anamnesis.WeightHistoryOnPregnancy">
                             </div>
                         </div>
                     </div>
@@ -781,31 +820,31 @@
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnDiet">Diyet</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnDiet" value="@Anamnesis.WeightHistoryOnDiet" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnDiet" value="@Anamnesis.WeightHistoryOnDiet">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnTop">En Yüksek</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnTop" value="@Anamnesis.WeightHistoryOnTop" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnTop" value="@Anamnesis.WeightHistoryOnTop">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnLow">En Düşük</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnLow" value="@Anamnesis.WeightHistoryOnLow" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnLow" value="@Anamnesis.WeightHistoryOnLow">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnDream">Hayal</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnDream" value="@Anamnesis.WeightHistoryOnDream" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnDream" value="@Anamnesis.WeightHistoryOnDream">
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group">
                                 <label for="WeightHistoryOnGoal">Hedef</label>
-                                <input type="text" inputmode="decimal" class="form-control" name="WeightHistoryOnGoal" value="@Anamnesis.WeightHistoryOnGoal" min="0">
+                                <input type="text" class="form-control" name="WeightHistoryOnGoal" value="@Anamnesis.WeightHistoryOnGoal">
                             </div>
                         </div>
                     </div>
@@ -945,7 +984,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">İptal</button>
-                    <button type="submit" class="btn bg-gradient-info">Kaydet</button>
+                    <a class="btn bg-gradient-info" onclick="updateAnamnesis()">Kaydet</a>
                 </div>
             </form>
         </div>
@@ -953,6 +992,21 @@
 </div>
 
 <script>
+    function updateAnamnesis()
+    {
+        $.ajax({
+                url: '@Url.Action("Update","Anamnesis")',
+                type: 'POST',
+                dataType: 'json',
+                data: $('#anamnesisForm').serialize(),
+                success: function (res) {
+                    if(!alert('Kayıt başarılı! Verilerin güncellenmesi için sayfa yenilenecektir.')){window.location.reload();}
+                },
+                error: function (err) {
+                    alert('Hata! Bir süre bekledikten sonra tekrar deneyin.');
+                }
+            });
+    }
     var richTextEditor;
     var rteElem;
     function create(args) {

@@ -40,6 +40,10 @@
                                     <td style="padding-left: 0.5rem"><p class="text-xs text-secondary mb-0">@type.Price₺</p></td>
                                 </tr>
                             }
+                            <tr>
+                                <td><ejs-checkbox id="@Types.Where(i => i.TypeId == 171).FirstOrDefault().TypeId" checked='@Model.Any(i => i.TypeId == 171) ? true : false' label="@Types.Where(i => i.TypeId == 171).FirstOrDefault().TypeName" value="@Types.Where(i => i.TypeId == 171).FirstOrDefault().TypeId" name="Type"></ejs-checkbox></td>
+                                <td style="padding-left: 0.5rem"><p class="text-xs text-secondary mb-0">@Types.Where(i => i.TypeId == 171).FirstOrDefault().Price₺</p></td>
+                            </tr>
                             <tr><td><h6>Hormonlar</h6></td></tr>
                             @foreach (var type in Types.Skip(12).Take(25))
                             {

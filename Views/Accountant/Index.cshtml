@@ -7,7 +7,7 @@
     <div class="card-body">
         <h6 class="text-primary" style="font-size: 1.2rem !important;">Ürün Yönetimi</h6>
         <div class="control-section">
-            <ejs-grid id="GridProducts" height="400px" width="%100" allowExcelExport="true" toolbarClick="toolbarClick" excelExportComplete="excelExportComplete" toolbar='@(new List<string>() {"Search", "Add", "Edit", "ExcelExport"})' allowResizing="true" allowTextWrap="true" locale="tr">
+            <ejs-grid id="GridProducts" height="400px" width="%100" allowExcelExport="true" allowGrouping="true" allowSorting="true" toolbarClick="toolbarClick" excelExportComplete="excelExportComplete" toolbar='@(new List<string>() {"Search", "Add", "Edit", "ExcelExport"})' allowResizing="true" allowTextWrap="true" locale="tr">
                 <e-data-manager adaptor="UrlAdaptor" url="/Product/Get" insertUrl="/Product/Insert" updateUrl="/Product/Update"></e-data-manager>
                 <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
@@ -15,19 +15,20 @@
                     <e-grid-column field="ProductName" headerText="Malzeme Adı"></e-grid-column>
                     <e-grid-column field="ProductTypeId" headerText="Malzeme Türü" foreignKeyValue="ProductTypeName" foreignKeyField="ProductTypeId" dataSource="ViewBag.ProductTypes"></e-grid-column>
                     <e-grid-column field="Piece" headerText="Adet" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })'></e-grid-column>
+                    <e-grid-column field="SalePrice" headerText="Satış Fiyatı" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })'></e-grid-column>
                 </e-grid-columns>
             </ejs-grid>
         </div>
         <h6 class="text-primary mt-5" style="font-size: 1.2rem !important;">Stok Girdi Kaydı</h6>
         <div class="control-section">
-            <ejs-grid id="GridStockRecords" height="400px" width="%100" allowExcelExport="true" toolbarClick="toolbarClick" excelExportComplete="excelExportComplete" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete", "ExcelExport"})' allowResizing="true" allowTextWrap="true" locale="tr">
+            <ejs-grid id="GridStockRecords" height="400px" width="%100" allowExcelExport="true" allowGrouping="true" allowSorting="true" toolbarClick="toolbarClick" excelExportComplete="excelExportComplete" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete", "ExcelExport"})' allowResizing="true" allowTextWrap="true" locale="tr">
                 <e-data-manager adaptor="UrlAdaptor" url="/StockRecord/Get" insertUrl="/StockRecord/Insert" updateUrl="/StockRecord/Update" removeUrl="/StockRecord/Remove"></e-data-manager>
                 <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
                     <e-grid-column field="StockRecordId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                     <e-grid-column field="InvoiceId" headerText="Fatura No"></e-grid-column>
                     <e-grid-column field="InvoiceDetails" headerText="Fatura Detay"></e-grid-column>
-                    <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                    <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="110" DefaultValue="@(DateTime.Now)"></e-grid-column>
                     <e-grid-column field="ProductId" headerText="Malzeme" foreignKeyValue="ProductName" foreignKeyField="ProductId" dataSource="ViewBag.Products"></e-grid-column>
                     <e-grid-column field="Piece" headerText="Adet" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })'></e-grid-column>
                     <e-grid-column field="UnitAmount" headerText="Birim Fiyat" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })'></e-grid-column>
@@ -37,13 +38,13 @@
         </div>
         <h6 class="text-primary mt-5" style="font-size: 1.2rem !important;">Stok Çıkış Kaydı</h6>
         <div class="control-section">
-            <ejs-grid id="GridStockRecordDecs" height="400px" width="%100" allowExcelExport="true" toolbarClick="toolbarClick" excelExportComplete="excelExportComplete" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete", "ExcelExport"})' allowResizing="true" allowTextWrap="true" locale="tr">
+            <ejs-grid id="GridStockRecordDecs" height="400px" width="%100" allowExcelExport="true" allowGrouping="true" allowSorting="true" toolbarClick="toolbarClick" excelExportComplete="excelExportComplete" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete", "ExcelExport"})' allowResizing="true" allowTextWrap="true" locale="tr">
                 <e-data-manager adaptor="UrlAdaptor" url="/StockRecordDecrease/Get" insertUrl="/StockRecordDecrease/Insert" updateUrl="/StockRecordDecrease/Update" removeUrl="/StockRecordDecrease/Remove"></e-data-manager>
                 <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                 <e-grid-columns>
                     <e-grid-column field="StockRecordDecreaseId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                     <e-grid-column field="Details" headerText="Detay"></e-grid-column>
-                    <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="80" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                    <e-grid-column field="RecordDate" headerText="Kayıt Tarihi" format='yMd' editType="datepickeredit" width="110" DefaultValue="@(DateTime.Now)"></e-grid-column>
                     <e-grid-column field="ProductId" headerText="Malzeme" foreignKeyValue="ProductName" foreignKeyField="ProductId" dataSource="ViewBag.Products"></e-grid-column>
                     <e-grid-column field="Piece" headerText="Adet" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })'></e-grid-column>
                 </e-grid-columns>
@@ -72,7 +73,7 @@
         if (args.item.id === 'GridStockRecordDecs_excelexport') {
             var gridObj = document.getElementById("GridStockRecordDecs").ej2_instances[0];
             var excelExportProperties = {
-                 fileName:"Stok_Çıktı.xlsx"
+                 fileName:"Stok_Cikti.xlsx"
             };
             gridObj.showSpinner();
             gridObj.excelExport(excelExportProperties);
@@ -82,7 +83,6 @@
         this.hideSpinner();
     }
 </script>
-
 <script type="text/javascript">
     ej.base.L10n.load({
         'tr': {

@@ -6,6 +6,7 @@ using Syncfusion.EJ2.Base;
 using Cor.Apt.Entities;
 using Cor.Apt.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Cor.Apt.Controllers
 {
@@ -22,7 +23,7 @@ namespace Cor.Apt.Controllers
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant" })) return RedirectToAction("Index", "Auth");
-            IEnumerable<Product> DataSource = _context.Products.Include(i => i.ProductType).ToList();
+            IEnumerable<Product> DataSource = _context.Products.Include(i => i.ProductType).OrderBy(i => i.Piece).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
             if (dm.Sorted != null && dm.Sorted.Count > 0) DataSource = operation.PerformSorting(DataSource, dm.Sorted); //Sorting
@@ -39,7 +40,8 @@ namespace Cor.Apt.Controllers
             {
                 ProductName = value.Value.ProductName,
                 Piece = value.Value.Piece,
-                ProductTypeId = value.Value.ProductTypeId
+                ProductTypeId = value.Value.ProductTypeId,
+                SalePrice = value.Value.SalePrice
             };
             _context.Products.Add(_product);
             _context.SaveChanges();
@@ -54,6 +56,7 @@ namespace Cor.Apt.Controllers
                 _product.ProductName = value.Value.ProductName;
                 _product.Piece = value.Value.Piece;
                 _product.ProductTypeId = value.Value.ProductTypeId;
+                _product.SalePrice = value.Value.SalePrice;
             }
             _context.SaveChanges();
             return Json(value.Value);

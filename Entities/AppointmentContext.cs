@@ -49,6 +49,8 @@ namespace Cor.Apt.Entities
         public DbSet<Role> Roles { get; set; }
         public DbSet<SalaryPayment> SalaryPayments { get; set; }
         public DbSet<SalaryPaymentType> SalaryPaymentTypes { get; set; }
+        public DbSet<SaleRecord> SaleRecords { get; set; }
+        public DbSet<SaleRecordList> SaleRecordLists { get; set; }
         public DbSet<SocialSecurity> SocialSecurities { get; set; }
         public DbSet<StockRecord> StockRecords { get; set; }
         public DbSet<StockRecordDecrease> StockRecordDecreases { get; set; }

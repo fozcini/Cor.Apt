@@ -8,6 +8,9 @@
     var RadiologyRequests = (List<Cor.Apt.Entities.RadiologyRequest>)ViewBag.RadiologyRequests;
     var RadiologyRequestTypes = (List<Cor.Apt.Entities.RadiologyRequestType>)ViewBag.RadiologyRequestTypes;
     var RadiologyRequestTypeLists = (List<Cor.Apt.Entities.RadiologyRequestTypeList>)ViewBag.RadiologyRequestTypeLists;
+    var SaleRecords = (List<Cor.Apt.Entities.SaleRecord>)ViewBag.SaleRecords;
+    var SaleRecordLists = (List<Cor.Apt.Entities.SaleRecordList>)ViewBag.SaleRecordLists;
+    var Products = (List<Cor.Apt.Entities.Product>)ViewBag.Products;
 }
 <script>
     var patientId = @Model.PatientId
@@ -15,6 +18,8 @@
     var analysesList = JSON.parse('@Json.Serialize(Analyses)');
     var radiologyRequestTypeListJs = JSON.parse('@Json.Serialize(RadiologyRequestTypes)');
     var radiologyRequestListJs = JSON.parse('@Json.Serialize(RadiologyRequests)');
+    var saleRecordsJs = JSON.parse('@Json.Serialize(SaleRecords)');
+    var saleRecordsListJs = JSON.parse('@Json.Serialize(SaleRecordLists)');
 </script>
 <style type="text/css" class="cssStyles">
     input {
@@ -509,6 +514,70 @@
                                 </td>
                                 <td class="align-middle">
                                     <a href="/RadiologyRequestType/Remove/?radiologyRequestId=@radiologyRequest.RadiologyRequestId&patientId=@Model.PatientId" class="text-danger font-weight-bold text-xs">Sil</a>
+                                </td>
+                            </tr>   
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Ürün</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <a href="/User/SaleRecord?patientId=@Model.PatientId" class="mb-3 text-primary">
+                        <i class="fas fa-edit text-primary text-sm">Yeni Kayıt</i>
+                </a>
+                <table class="table mb-0" style="display: block; max-width: fit-content; overflow-x: scroll;">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Tarih</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Seçimler</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Ücret</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">%10 İndirim</th>
+                            <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Adet</th>
+                            <th class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">Toplam</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Açıklama</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var saleRecord in SaleRecords.OrderByDescending(i => i.SaleRecordDate))
+                        {
+                            double sum = 0;
+                            <tr>
+                                <td class="align-middle"><span class="text-secondary text-s font-weight-bold">@saleRecord.SaleRecordDate.ToString("dd/MM/yyyy")</span></td>
+                                <td class="align-middle">
+                                    @foreach (var saleRecordList in SaleRecordLists.Where(i => i.SaleRecordId == saleRecord.SaleRecordId).ToList())
+                                    {
+                                        <p class="text-s text-secondary mb-0">@Products.Where(i => i.ProductId == saleRecordList.ProductId).FirstOrDefault().ProductName</p>
+                                    }
+                                </td>
+                                <td class="align-middle">
+                                    @foreach (var saleRecordList in SaleRecordLists.Where(i => i.SaleRecordId == saleRecord.SaleRecordId).ToList())
+                                    {
+                                        <p class="text-s text-secondary mb-0">@saleRecordList.Price₺</p>
+                                    }
+                                </td>
+                                <td class="align-middle">
+                                    @foreach (var saleRecordList in SaleRecordLists.Where(i => i.SaleRecordId == saleRecord.SaleRecordId).ToList())
+                                    {
+                                        <p class="text-s text-secondary mb-0">@(saleRecordList.Price*0.9)₺</p>
+                                    }
+                                </td>
+                                <td class="align-middle text-center">
+                                    @foreach (var saleRecordList in SaleRecordLists.Where(i => i.SaleRecordId == saleRecord.SaleRecordId).ToList())
+                                    {
+                                        sum += saleRecordList.Price*saleRecordList.Piece;
+                                        <p class="text-s text-secondary mb-0">@(saleRecordList.Piece)</p>
+                                    }
+                                </td>
+                                <td class="align-middle text-center"><span class="text-secondary text-s font-weight-bold">@sum₺</span></td>
+                                @* <td class="align-middle"><span class="text-secondary text-s font-weight-bold" style="white-space: normal !important; max-width: 20vw">@saleRecord.Description</span></td> *@
+                                @* <td class="align-middle">
+                                    <a class="text-secondary font-weight-bold text-s" onclick="openSaleRecordPopup(@saleRecord.SaleRecordId)">Düzenle</a>
+                                </td> *@
+                                <td class="align-middle">
+                                    <a href="/SaleRecord/Remove/?saleRecordId=@saleRecord.SaleRecordId&patientId=@Model.PatientId" class="text-danger font-weight-bold text-xs">Sil</a>
                                 </td>
                             </tr>   
                         }

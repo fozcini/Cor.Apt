@@ -161,6 +161,14 @@
                 </div>
             </div>
         </div> *@
+        @if (!String.IsNullOrEmpty(ViewBag.PatientName))
+            {
+                <div class="sidenav-footer mx-1">
+                    <div class="card" id="sidenavCard">
+                        <h6>@ViewBag.PatientName</h6>
+                    </div>
+                </div>
+            }
     </aside>
     <main class="main-content position-relative h-100 border-radius-lg ">
         <!-- Navbar -->

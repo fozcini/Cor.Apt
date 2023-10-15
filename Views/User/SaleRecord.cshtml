@@ -1,0 +1,142 @@
+@{
+    var SaleRecord = (Cor.Apt.Entities.SaleRecord)ViewBag.SaleRecord;
+    var Products = (List<Cor.Apt.Entities.Product>)ViewBag.Products;
+}
+<script>
+    var productsJs = JSON.parse('@Json.Serialize(Products)');
+    var saleRecordJs = JSON.parse('@Json.Serialize(SaleRecord)');
+</script>
+<style>
+    h6 {
+        margin-top: 10px !important;
+    }
+</style>
+<a class="btn btn-icon btn-3 btn-default" href="/User/Details?patientId=@SaleRecord.PatientId" type="button">
+    <span class="btn-inner--icon"><i class="ni ni-bold-left"></i></span>
+    <span class="btn-inner--text">Hastaya Geri Dön</span>
+</a>
+<div class="card">
+    <div class="card-header card-header-primary card-header-text" style="padding-bottom: 0px !important">
+        <div class="card-text">
+            <h4 class="card-title">Ürün</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="control-section">
+            <ejs-grid id="GridProducts" height="300px" width="%100" toolbar='@(new List<string>() {"Search"})' allowSorting="true" allowResizing="true" allowTextWrap="true" allowGrouping="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/Product/Get" insertUrl="/Product/Insert" updateUrl="/Product/Update"></e-data-manager>
+                <e-grid-searchsettings fields='@(new string[] { "ProductName"})' ></e-grid-searchsettings>
+                <e-grid-columns>
+                    <e-grid-column field="ProductId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                    <e-grid-column field="ProductName" headerText="Malzeme Adı"></e-grid-column>
+                    <e-grid-column field="ProductTypeId" headerText="Malzeme Türü" foreignKeyValue="ProductTypeName" foreignKeyField="ProductTypeId" dataSource="ViewBag.ProductTypes"></e-grid-column>
+                    <e-grid-column field="Piece" headerText="Adet" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })'></e-grid-column>
+                    <e-grid-column field="SalePrice" headerText="Satış Fiyatı" editType="numericedit" edit='@(new { @params = new Syncfusion.EJ2.Inputs.NumericTextBox() })'></e-grid-column>
+                    <e-grid-column field="Ekle" headerText="Ekle" template="#add" width="110"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+        <script id="add" type="text/x-template">
+            <button type="button" class="btn btn-sm btn-primary" onclick="addRow(${ProductId})" style="font-size: 0.7rem !important">Ekle</i></button>
+        </script>
+        <form asp-action="Update" asp-controller="SaleRecord" method="post">
+            <input type="hidden" name="SaleRecordId" value="@SaleRecord.SaleRecordId">
+            <input type="hidden" name="PatientId" value="@ViewBag.PatientId">
+            <div class="row mt-3 p-3">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th class="text-secondary opacity-7">Ürün</th>
+                            <th class="text-secondary opacity-7">Adet</th>
+                            <th class="text-secondary opacity-7">Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table">
+                    </tbody>
+                </table>
+            </div>
+            <button type="submit" class="btn bg-gradient-default mt-3">Kaydet</button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function addRow(productId)
+    {
+        let table = document.getElementById("table")
+        if(table.rows.namedItem(productId) == null)
+        {
+            let product = productsJs.find(i => i.ProductId == productId)
+            let row = table.insertRow(0)
+            row.id = productId
+
+            let columnProduct = row.insertCell(0)
+            let columnPiece = row.insertCell(1)
+            let columnRemove = row.insertCell(2)
+            columnProduct.innerHTML = "<input type='text' name='productId' value='"+product.ProductId+"' hidden><p>" + product.ProductName + "</p>"
+            columnPiece.innerHTML = "<input type='number' name='productPiece' value='1'>"
+            columnRemove.innerHTML = "<button type='button' class='btn btn-sm btn-danger' style='font-size: 0.7rem  !important' onclick='DeleteRow(this)'>Sil</button>"
+        }
+    }
+    function DeleteRow(o) {
+        var p=o.parentNode.parentNode;
+        var t=o.parentNode.parentNode.parentNode;
+        t.removeChild(p);
+    }
+</script>
+
+<script type="text/javascript">
+    ej.base.L10n.load({
+        'tr': {
+            'datepicker': {
+                'today': 'Bugün'
+            },
+            'grid': {
+                'EmptyRecord': 'Kayıt yok.',
+                'Add': 'Ekle',
+                'Edit': 'Düzenle',
+                'Update': 'Güncelle',
+                'Delete': 'Sil',
+                'Excelexport': 'Excel Dışa Aktar',
+                'GroupDropArea': 'Gruplamak için sütunların başlıklarını sürükleyiniz.',
+                'Search': 'Arama',
+                'EditOperationAlert': 'Düzenlemek için kayıt seçilmedi.',
+                'Save': 'Kaydet',
+                'EditFormTitle': 'Kayıt Düzenleme - ',
+                'ConfirmDelete': 'Kaydı silmek istediğinize emin misiniz?',
+                'AddFormTitle': 'Yeni Kayıt',
+                'OKButton': 'Tamam',
+                'SaveButton': 'Kaydet',
+                'CancelButton': 'İptal',
+                'Item': 'kayıt',
+                'Items': 'kayıt',
+            },
+            'pager': {
+                'currentPageInfo': '{0}/{1}',
+                'totalItemsInfo': '({0} kayıt)',
+                'firstPageTooltip': 'İlk Sayfa',
+                'lastPageTooltip': 'Son Sayfa',
+                'nextPageTooltip': 'Sonraki Sayfa',
+                'previousPageTooltip': 'Önceki Sayfa',
+                'nextPagerTooltip': 'Sonraki Sayfa',
+                'previousPagerTooltip': 'Önceki Sayfa',
+                'pagerDropDown' : 'Sayfa başı kayıt',
+                'All': 'Tümü'
+            }
+        }
+    });
+    loadCultureFiles('tr');
+    function loadCultureFiles(name) {
+        var files = ['ca-gregorian.json', 'numbers.json', 'timeZoneNames.json', 'dateFields.json'];
+        var loader = ej.base.loadCldr;
+        var loadCulture = function (prop) {
+            var val, ajax;
+            ajax = new ej.base.Ajax(location.origin + '/cldr-data/main/' + name + '/' + files[prop], 'GET', false);
+            ajax.onSuccess = function (value) { val = value; };
+            ajax.send();
+            loader(JSON.parse(val));
+            ej.base.setCulture('tr');
+        };
+        for (var prop = 0; prop < files.length; prop++) { loadCulture(prop); }
+    }
+</script>

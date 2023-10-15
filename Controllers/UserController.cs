@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Cor.Apt.Services.Interfaces;
 using Cor.Apt.Entities;
+using Syncfusion.EJ2.Schedule;
 
 namespace Cor.Apt.Controllers
 {
@@ -66,6 +67,10 @@ namespace Cor.Apt.Controllers
             ViewBag.RadiologyRequests = _context.RadiologyRequests.Where(i => i.PatientId == patientId).OrderByDescending(i => i.RadiologyRequestDate).ToList();
             ViewBag.RadiologyRequestTypes = _context.RadiologyRequestTypes.Where(i => i.RadiologyRequest.PatientId == patientId).ToList();
             ViewBag.RadiologyRequestTypeLists = _context.RadiologyRequestTypeLists.ToList();
+
+            ViewBag.SaleRecords = _context.SaleRecords.Where(i => i.PatientId == patientId).OrderByDescending(i => i.SaleRecordDate).ToList();
+            ViewBag.SaleRecordLists = _context.SaleRecordLists.Include(i=> i.SaleRecord).Where(i => i.SaleRecord.PatientId == patientId).ToList();
+            ViewBag.Products = _context.Products.ToList();
             return View(patient);
         }
         
@@ -149,6 +154,26 @@ namespace Cor.Apt.Controllers
             }
             ViewBag.RadiologyRequest = _context.RadiologyRequests.Where(i => i.RadiologyRequestId == radiologyRequestId).FirstOrDefault();
             return View(_context.RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequestId).ToList());
+        }
+
+        public IActionResult SaleRecord(int? saleRecordId, int? patientId)
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            ViewBag.Products = _context.Products.ToList();
+            if (saleRecordId == null && patientId != null)
+            {
+                SaleRecord _saleRecord = new SaleRecord() {
+                    SaleRecordDate = System.DateTime.Now,
+                    PatientId = (int)patientId
+                };
+                _context.Add(_saleRecord);
+                _context.SaveChanges();
+                saleRecordId = _saleRecord.SaleRecordId;
+            }
+            ViewBag.PatientId = patientId;
+            ViewBag.ProductTypes = _context.ProductTypes.ToList();
+            ViewBag.SaleRecord = _context.SaleRecords.Where(i => i.SaleRecordId == saleRecordId).FirstOrDefault();
+            return View();
         }
 
         public IActionResult Accounting()

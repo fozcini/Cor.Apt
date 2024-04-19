@@ -11,6 +11,7 @@
     var SaleRecords = (List<Cor.Apt.Entities.SaleRecord>)ViewBag.SaleRecords;
     var SaleRecordLists = (List<Cor.Apt.Entities.SaleRecordList>)ViewBag.SaleRecordLists;
     var Products = (List<Cor.Apt.Entities.Product>)ViewBag.Products;
+    var ProfileImgLink = Model.PatientId + ".jpg";
 }
 <script>
     var patientId = @Model.PatientId
@@ -53,11 +54,14 @@
 <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
     <div class="row gx-4">
         <div class="col-auto">
-            <div class="avatar avatar-xl position-relative">
-                <img src="/img/Blank-profile.png" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+            <div class="avatar avatar-xxl position-relative">
+                <img src="/img/profile/@ProfileImgLink" onerror="this.onerror=null; this.src='/img/Blank-profile.png'" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="margin-left: 2rem;">
+                <button type="button" class="btn btn-icon-only rounded-circle" style="margin-left: -0.5rem; margin-top: -5rem;">
+                    <span class="btn-inner--icon"><i class="fas fa-plus" data-bs-toggle="modal" data-bs-placement="top" title="Düzenle" data-bs-target="#changeProfilePictureModal"></i></span>
+                </button>
             </div>
         </div>
-        <div class="col-auto my-auto text-light">
+        <div class="col-auto my-auto text-light mx-4">
             <div class="h-100">
                 <h5 class="mb-1">
                     @Model.FullName - @Model.IdentificationNumber
@@ -77,13 +81,29 @@
             <div class="my-3">
                 <h6 class="text-primary" style="font-size: 1.2rem !important;">İşlem Kaydı</h6>
                 <hr class="horizontal dark mt-0" style="height: 2px">
-                <ejs-grid id="GridPatientRecord" height="25vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <ejs-grid id="GridPatientRecord" height="20vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
                         <e-data-manager adaptor="UrlAdaptor" url="/PatientRecord/Get?pid=@Model.PatientId" insertUrl="/PatientRecord/Insert?pid=@Model.PatientId" updateUrl="/PatientRecord/Update" removeUrl="/PatientRecord/Remove"></e-data-manager>
                         <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
                         <e-grid-columns>
                             <e-grid-column field="PatientRecordId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
                             <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
                             <e-grid-column field="Description" headerText="Açıklama" width="600"></e-grid-column>
+                        </e-grid-columns>
+                </ejs-grid>
+            </div>
+            <!-- ACCORDION ITEM -->
+            <div class="my-3">
+                <h6 class="text-primary" style="font-size: 1.2rem !important;">Tanı</h6>
+                <hr class="horizontal dark mt-0" style="height: 2px">
+                <ejs-grid id="GridDiagnoses" height="20vh" toolbar='@(new List<string>() {"Search", "Add", "Edit", "Delete"})' allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr" actionComplete="actionCompleteDiagnosisRecord" actionBegin="actionBeginDiagnosisRecord">
+                        <e-data-manager adaptor="UrlAdaptor" url="/DiagnosisRecord/Get?pid=@Model.PatientId" insertUrl="/DiagnosisRecord/Insert?pid=@Model.PatientId" updateUrl="/DiagnosisRecord/Update" removeUrl="/DiagnosisRecord/Remove"></e-data-manager>
+                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="DiagnosisRecordId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                            <e-grid-column field="RecordDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                            <e-grid-column field="DiagnosisId" headerText="Tanı Kodu" foreignKeyValue="DiagnosisCode" foreignKeyField="DiagnosisId" dataSource="ViewBag.Diagnoses" width="80"></e-grid-column>
+                            <e-grid-column field="DiagnosisId" headerText="Tanı Açıklaması" foreignKeyValue="DiagnosisName" foreignKeyField="DiagnosisId" dataSource="ViewBag.Diagnoses" width="300"></e-grid-column>
+                            <e-grid-column field="Description" headerText="Doktor Notu" width="120" edit='@(new {create = "create", read = "read", destroy = "destroy", write = "write"})'></e-grid-column>
                         </e-grid-columns>
                 </ejs-grid>
             </div>
@@ -591,6 +611,27 @@
     <a href="/User/Analysis?analysisId=${AnalysisId}">Detay<i class="ni ni-bold-right"></i></a>
 </script>
 <script>
+    function actionBeginDiagnosisRecord(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var grid = document.getElementById('GridDiagnoses').ej2_instances[0];
+            for (const cols of grid.columns) {
+                if ((cols).foreignKeyValue === 'DiagnosisCode') {
+                    (cols).visible = false;
+                }
+            }
+        }
+    }
+    function actionCompleteDiagnosisRecord(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var grid = document.getElementById('GridDiagnoses').ej2_instances[0];
+            for (const cols of grid.columns) {
+                if ((cols).foreignKeyValue === 'DiagnosisCode') {
+                    (cols).visible = true;
+                }
+            }
+        }
+    }
+
     function openPopup(analysisId){
         var tableBody = document.getElementById('tableBody')
         var rows = ''
@@ -698,7 +739,29 @@
     	};
     }
 </script>
-
+<!-- changeProfilePictureModal Modal -->
+<div class="modal fade" id="changeProfilePictureModal" tabindex="-1" role="dialog" aria-labelledby="changeProfilePictureModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="analysisModalLabel">Hasta Resmini Düzenle</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="User" asp-action="UpdateProfilePicture" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="PatientId" value="@Model.PatientId" id="ProfilePicturePatientId">
+                    <div class="form-group">
+                        <input name="profilePicture" type="file" accept="image/png, image/jpeg" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">İptal</button>
+                        <button type="submit" class="btn bg-gradient-info">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Analysis Modal -->
 <div class="modal fade" id="analysisModal" tabindex="-1" role="dialog" aria-labelledby="analysisModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

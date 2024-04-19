@@ -6,7 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 using Cor.Apt.Services.Interfaces;
 using Cor.Apt.Entities;
-using Syncfusion.EJ2.Schedule;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Cor.Apt.Controllers
 {
@@ -14,13 +16,14 @@ namespace Cor.Apt.Controllers
     {
         private readonly AppointmentContext _context;
         private readonly IAuthService _authService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public UserController(IAuthService authService, AppointmentContext context)
+        public UserController(IAuthService authService, AppointmentContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _authService = authService;
+            _webHostEnvironment = webHostEnvironment;
         }
-
         public IActionResult Index()
         {
             if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
@@ -50,15 +53,16 @@ namespace Cor.Apt.Controllers
             Patient patient = _context.Patients.Include(i => i.DiscountType).Include(i => i.SocialSecurity).Where(i => i.PatientId == patientId).FirstOrDefault();
             if (_context.Anamnesises.Where(i => i.PatientId == patientId).Any()) ViewBag.Anamnesis = _context.Anamnesises.Where(i => i.PatientId == patientId).FirstOrDefault();
             else ViewBag.Anamnesis = new Anamnesis() { };
-            
+
             ViewBag.PatientName = patient.FullName;
             ViewBag.IdentificationNumber = patient.IdentificationNumber;
-            ViewBag.Age = (int) ((DateTime.Now - patient.BirthDate).TotalDays/365.242199);
+            ViewBag.Age = (int)((DateTime.Now - patient.BirthDate).TotalDays / 365.242199);
             ViewBag.Phone = patient.Phone;
 
             ViewBag.RadiologyTypes = _context.RadiologyTypes.ToList();
             ViewBag.DecisionAndTracingTypes = _context.DecisionAndTracingTypes.ToList();
             ViewBag.Users = _context.Users.ToList();
+            ViewBag.Diagnoses = _context.Diagnoses.ToList();
 
             ViewBag.Analyses = _context.Analyses.Where(i => i.PatientId == patientId).OrderByDescending(i => i.AnalysisDate).ToList();
             ViewBag.AnalysisTypes = _context.AnalysisTypes.Where(i => i.Analysis.PatientId == patientId).ToList();
@@ -69,11 +73,12 @@ namespace Cor.Apt.Controllers
             ViewBag.RadiologyRequestTypeLists = _context.RadiologyRequestTypeLists.ToList();
 
             ViewBag.SaleRecords = _context.SaleRecords.Where(i => i.PatientId == patientId).OrderByDescending(i => i.SaleRecordDate).ToList();
-            ViewBag.SaleRecordLists = _context.SaleRecordLists.Include(i=> i.SaleRecord).Where(i => i.SaleRecord.PatientId == patientId).ToList();
+            ViewBag.SaleRecordLists = _context.SaleRecordLists.Include(i => i.SaleRecord).Where(i => i.SaleRecord.PatientId == patientId).ToList();
             ViewBag.Products = _context.Products.ToList();
+
             return View(patient);
         }
-        
+
         public IActionResult Treatment()
         {
             if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
@@ -88,12 +93,12 @@ namespace Cor.Apt.Controllers
             Patient patient = _context.Patients.Include(i => i.DiscountType).Include(i => i.SocialSecurity).Where(i => i.PatientId == patientId).FirstOrDefault();
             if (_context.Anamnesises.Where(i => i.PatientId == patientId).Any()) ViewBag.Anamnesis = _context.Anamnesises.Where(i => i.PatientId == patientId).FirstOrDefault();
             else ViewBag.Anamnesis = new Anamnesis() { };
-            
+
             ViewBag.PatientName = patient.FullName;
             ViewBag.IdentificationNumber = patient.IdentificationNumber;
-            ViewBag.Age = (int) ((DateTime.Now - patient.BirthDate).TotalDays/365.242199);
+            ViewBag.Age = (int)((DateTime.Now - patient.BirthDate).TotalDays / 365.242199);
             ViewBag.Phone = patient.Phone;
-            
+
             return View(patient);
         }
 
@@ -119,6 +124,22 @@ namespace Cor.Apt.Controllers
             ViewBag.ApplicationTypes = _context.ApplicationTypes.ToList();
             return View();
         }
+        public IActionResult Consents()
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            ViewBag.ConsentForms = _context.ConsentForms.ToList();
+            return View();
+        }
+        public IActionResult Surveys()
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            List<Survey> _surveys = _context.Surveys.ToList();
+            if (Request.HasFormContentType)
+            {
+                _surveys = _context.Surveys.Where(i => i.SurveyDate <= Convert.ToDateTime(Request.Form["end"]) && i.SurveyDate >= Convert.ToDateTime(Request.Form["start"])).ToList();
+            }
+            return View(_surveys);
+        }
 
         public IActionResult Analysis(int? analysisId, int? patientId)
         {
@@ -126,7 +147,8 @@ namespace Cor.Apt.Controllers
             ViewBag.Types = _context.Types.ToList();
             if (analysisId == null && patientId != null)
             {
-                Analysis _analysis = new Analysis() {
+                Analysis _analysis = new Analysis()
+                {
                     AnalysisDate = System.DateTime.Now,
                     PatientId = (int)patientId
                 };
@@ -144,7 +166,8 @@ namespace Cor.Apt.Controllers
             ViewBag.RadiologyRequestTypeLists = _context.RadiologyRequestTypeLists.ToList();
             if (radiologyRequestId == null && patientId != null)
             {
-                RadiologyRequest _radiologyRequest = new RadiologyRequest() {
+                RadiologyRequest _radiologyRequest = new RadiologyRequest()
+                {
                     RadiologyRequestDate = System.DateTime.Now,
                     PatientId = (int)patientId
                 };
@@ -162,7 +185,8 @@ namespace Cor.Apt.Controllers
             ViewBag.Products = _context.Products.ToList();
             if (saleRecordId == null && patientId != null)
             {
-                SaleRecord _saleRecord = new SaleRecord() {
+                SaleRecord _saleRecord = new SaleRecord()
+                {
                     SaleRecordDate = System.DateTime.Now,
                     PatientId = (int)patientId
                 };
@@ -180,6 +204,30 @@ namespace Cor.Apt.Controllers
         {
             if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProfilePicture(IFormFile profilePicture)
+        {
+            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
+            if (profilePicture != null) UploadedFile(profilePicture, _patientId);
+            return RedirectToAction("Details", "User", new { patientId = _patientId });
+        }
+
+        private bool UploadedFile(IFormFile file, int _patientId)
+        {
+
+            if (file != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/profile/" + _patientId + Path.GetExtension(file.FileName));
+                using (var fileStream = new FileStream(uploadsFolder, FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+                return true;
+            }
+            else return false;
         }
     }
 }

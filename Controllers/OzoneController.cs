@@ -6,6 +6,7 @@ using Syncfusion.EJ2.Base;
 
 using Cor.Apt.Entities;
 using Cor.Apt.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace Cor.Apt.Controllers
 {
@@ -67,7 +68,7 @@ namespace Cor.Apt.Controllers
             _context.SaveChanges();
             return Json(value);
         }
-        public IActionResult UpdateOzoneDescription() // Update record 
+        public IActionResult UpdateOzoneDescription()
         {
             if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
             var _patient = _context.Patients.Where(i => i.PatientId == Convert.ToInt32(HttpContext.Request.Form["PatientId"])).FirstOrDefault();

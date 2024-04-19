@@ -1,0 +1,119 @@
+@{
+    Layout = "_SurveyLayout";
+}
+<div class="card">
+    <div class="card-body">
+        <h6 class="text-primary" style="font-size: 1.2rem !important;">EndoKlinik Anket</h6>
+        <p>Kaliteli hizmet sunmayı hedefleyen kliniğimizin bundan sonraki çalışmalarında yol gösterici olması açısından aşağıda yer alan soruların sizler tarafından yanıtlanması büyük önem taşımaktadır. Bu konuda göstermiş olduğunuz ilgi ve yardımlarınızdan dolayı şimdiden teşekkür eder, geçmiş olsun dileklerimizi iletiriz.</p>
+        <div class="control-section">
+            <form asp-controller="Survey" asp-action="Insert" method="post">
+                <div class="row">
+                    <div class="col-md-8"><h6>Lütfen aşağıdaki ifadelere ilişkin görüşünüzü en iyi yansıtan cevabı işaretleyiniz.</h6></div>
+                    <div class="col-md" style="display: flex; justify-content: center; margin: 0 auto;"><h6>Evet</h6></div>
+                    <div class="col-md" style="display: flex; justify-content: center; margin: 0 auto;"><h6>Biraz</h6></div>
+                    <div class="col-md" style="display: flex; justify-content: center; margin: 0 auto;"><h6>Hayır</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>1- Klinikte çok beklemeden muayene oldum.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerOne" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerOne" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerOne" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>2- Kayıt/kabul sırası beklediğim yer rahattı.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerTwo" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerTwo" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerTwo" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>3- Tüm personel bana karşı kibar ve saygılıydı.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerThree" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerThree" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerThree" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>4- Tüm personel kişisel mahremiyetime (muayene edilirken varsa kapının kapanması, aradaki perde ya da paravanın çekilmesi gibi) özen gösterdi.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerFour" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerFour" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerFour" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>5- Beni muayene eden doktor, hastalığımın nedeni konusunda bana bilgi verdi.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerFive" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerFive" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerFive" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>6- Bu kliniği başkalarına tavsiye ederim.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerSix" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerSix" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerSix" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>7- Endoklinikte hizmet aldığım süre boyunca çalışanlar beni iyi yönlendirdi.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerSeven" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerSeven" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerSeven" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>8- Endoklinik temizdi.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerEight" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerEight" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerEight" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>9- Tekrar bir sağlık kuruluşuna gelmem gerekirse yine endokliniği tercih ederim.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerNine" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerNine" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerNine" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>10- Endoklinikte verilen hizmet genel olarak iyiydi.</p></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerTen" value="Evet"></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerTen" value="Biraz" checked></div>
+                    <div class="col-md"><input style="display: block; margin: auto;" type="radio" name="AnswerTen" value="Hayır"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>11- Kliniğimize ilk başvurunuz mu?</p></div>
+                    <div class="col-md"><input type="radio" name="AnswerEleven" value="Evet" id="firstEvet" checked><label class="custom-control-label" for="firstEvet">Evet</label></div>
+                    <div class="col-md"><input type="radio" name="AnswerEleven" value="Hayır" id="firstHayır"><label class="custom-control-label" for="firstHayır">Hayır</label></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>12- Cinsiyetiniz?</p></div>
+                    <div class="col-md"><input type="radio" name="Gender" value="Kadın" id="woman" checked><label class="custom-control-label" for="woman">Kadın</label></div>
+                    <div class="col-md"><input type="radio" name="Gender" value="Erkek" id="man"><label class="custom-control-label" for="man">Erkek</label></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>13- Doğum Yılınız?</p></div>
+                    <div class="col-md">
+                        <div class="form-group">
+                            <input class="form-control" type="number" name="Age" placeholder="1990" id="example-number-input" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>14- Medeni Durumunuz?</p></div>
+                    <div class="col-md"><input type="radio" name="IsMarried" value="Evli" id="isMarriedEvet" checked><label class="custom-control-label" for="isMarriedEvet">Evli</label></div>
+                    <div class="col-md"><input type="radio" name="IsMarried" value="Bekar" id="isMarriedHayır"><label class="custom-control-label" for="isMarriedHayır">Bekar</label></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8"><p>15- Mesleğiniz?</p></div>
+                    <div class="col-md">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="Profession" placeholder="Mesleğiniz" id="example-number-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><p>15- Varsa görüş ve önerileriniz:</p></div>
+                    <div class="col-md">
+                        <div class="form-group">
+                            <textarea class="form-control" name="Description" id="details" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="background-color: #038350;">Gönder</button>
+            </form>
+        </div>
+    </div>
+</div>

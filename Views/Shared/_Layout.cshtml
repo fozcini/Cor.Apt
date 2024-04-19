@@ -89,14 +89,22 @@
                         <span class="nav-link-text ms-1">Başvurular</span>
                     </a>
                 </li>
-                @* <li class="nav-item">
-                    <a class='nav-link @Html.IsActive(actions: "Accounting", controllers: "User")' href="/User/Accounting">
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Consents", controllers: "User")' href="/User/Consents">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                          <i class="ni ni-credit-card color-background"></i>
+                          <i class="ni ni-books color-background"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Muhasebe</span>
+                        <span class="nav-link-text ms-1">Onam Yönetimi</span>
                     </a>
-                </li> *@
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Surveys", controllers: "User")' href="/User/Surveys">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-chart-bar-32 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Anket Yönetimi</span>
+                    </a>
+                </li>
                 }
                 else if(@HttpContextAccessor.HttpContext.Session.GetInt32("rl") == 2)
                 {

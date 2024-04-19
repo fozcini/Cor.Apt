@@ -39,6 +39,18 @@
                 </e-grid-columns>
             </ejs-grid>
         </div>
+        <h6 class="text-primary mt-3" style="font-size: 1.2rem !important;">Tanı Türleri</h6>
+        <div class="control-section">
+            <ejs-grid id="GridDiagnoses" height="20vh" toolbar='@(new List<string>() {"Search", "Add", "Edit"})' height="70%" allowResizing="true" allowTextWrap="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/Diagnosis/Get" insertUrl="/Diagnosis/Insert" updateUrl="/Diagnosis/Update"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="DiagnosisId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                    <e-grid-column field="DiagnosisCode" headerText="Tanı Kodu"></e-grid-column>
+                    <e-grid-column field="DiagnosisName" headerText="Tanı Açıklaması"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
     </div>
 </div>
 <div class="card mt-3">

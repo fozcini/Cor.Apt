@@ -1,0 +1,13 @@
+@model Cor.Apt.Entities.Consent
+@{
+    var ConsentForms = (List<Cor.Apt.Entities.ConsentForm>)ViewBag.ConsentForms;
+    Layout = "_ConsentLayout";
+}
+<h4>EndoKlinik</h4>
+<pre style="height: 80vh; overflow: scroll; font-size: 0.5rem;">@(ConsentForms.Where(i => i.ConsentFormId == Model.ConsentFormId).FirstOrDefault().Details)</pre>
+<form asp-action="Approve" asp-controller="Consent">
+    <input type="text" name="ConsentId" value="@Model.ConsentId" hidden>
+    <input type="checkbox" name="IsAproved" required>
+    <label for="IsAproved">Onam formunu okudum, onaylıyorum.</label><br>
+    <button class="btn btn-secondary" type="submit">Onayla</button>
+</form>

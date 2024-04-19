@@ -1,0 +1,218 @@
+@model List<Cor.Apt.Entities.Survey>
+<style>
+    .e-dialog{
+        width: 80% !important;
+    }
+</style>
+<div class="card">
+    <div class="card-header card-header-primary card-header-text py-2">
+        <div class="card-text">
+            <h4 class="card-title">Sonuçlar</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-controller="User" asp-action="Surveys" method="post">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="example-date-input" class="form-control-label">Başlangıç</label>
+                        <input class="form-control" type="date" name="start">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="example-date-input" class="form-control-label">Bitiş</label>
+                        <input class="form-control" type="date" name="end">
+                    </div>
+                </div>
+                <div class="col-md-3 d-flex">
+                    <button type="submit" class="btn btn-primary" style="background-color: #038350; margin-top: auto; margin-bottom: auto;">Filtrele</button>
+                </div>
+            </div>
+        </form>
+        <h6 class="text-primary" style="font-size: 1.2rem !important;">EndoKlinik Anket</h6>
+        <div class="control-section">
+            <div class="row">
+                <div class="col-md-8"><h6>Toplam cevap sayıları gösterilmiştir.</h6></div>
+                <div class="col-md" style="display: flex; justify-content: center; margin: 0 auto;"><h6>Evet</h6></div>
+                <div class="col-md" style="display: flex; justify-content: center; margin: 0 auto;"><h6>Biraz</h6></div>
+                <div class="col-md" style="display: flex; justify-content: center; margin: 0 auto;"><h6>Hayır</h6></div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>1- Klinikte çok beklemeden muayene oldum.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerOne == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerOne == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerOne == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>2- Kayıt/kabul sırası beklediğim yer rahattı.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerTwo == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerTwo == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerTwo == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>3- Tüm personel bana karşı kibar ve saygılıydı.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerThree == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerThree == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerThree == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>4- Tüm personel kişisel mahremiyetime (muayene edilirken varsa kapının kapanması, aradaki perde ya da paravanın çekilmesi gibi) özen gösterdi.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerFour == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerFour == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerFour == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>5- Beni muayene eden doktor, hastalığımın nedeni konusunda bana bilgi verdi.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerFive == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerFive == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerFive == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>6- Bu kliniği başkalarına tavsiye ederim.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerSix == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerSix == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerSix == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>7- Endoklinikte hizmet aldığım süre boyunca çalışanlar beni iyi yönlendirdi.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerSeven == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerSeven == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerSeven == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>8- Endoklinik temizdi.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerEight == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerEight == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerEight == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>9- Tekrar bir sağlık kuruluşuna gelmem gerekirse yine endokliniği tercih ederim.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerNine == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerNine == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerNine == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>10- Endoklinikte verilen hizmet genel olarak iyiydi.</p></div>
+                <div class="col-md">@Model.Where(i => i.AnswerTen == "Evet").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerTen == "Biraz").Count()</div>
+                <div class="col-md">@Model.Where(i => i.AnswerTen == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>11- Kliniğimize ilk başvurunuz mu?</p></div>
+                <div class="col-md">Evet: @Model.Where(i => i.IsFirstTime == "Evet").Count()</div>
+                <div class="col-md">Hayır: @Model.Where(i => i.IsFirstTime == "Hayır").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>12- Cinsiyetiniz?</p></div>
+                <div class="col-md">Kadın: @Model.Where(i => i.Gender == "Kadın").Count()</div>
+                <div class="col-md">Erkek: @Model.Where(i => i.Gender == "Erkek").Count()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"><p>13- Medeni Durumunuz?</p></div>
+                <div class="col-md">Evli: @Model.Where(i => i.IsMarried == "Evli").Count()</div>
+                <div class="col-md">Bekar: @Model.Where(i => i.IsMarried == "Bekar").Count()</div>
+            </div>
+        </div>
+        <h6 class="text-primary" style="font-size: 1.2rem !important;">Anket Sonuçları</h6>
+        <div class="control-section">
+            <ejs-grid id="GridSurveys" height="400px" width="%100" toolbar='@(new List<string>() {"Search", "Delete"})' allowResizing="true" locale="tr">
+                <e-data-manager adaptor="UrlAdaptor" url="/Survey/Get" removeUrl="/Survey/Remove"></e-data-manager>
+                <e-grid-editSettings allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-columns>
+                    <e-grid-column field="SurveyId" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                    <e-grid-column field="SurveyDate" headerText="Tarih" format='yMd' editType="datepickeredit" width="120" DefaultValue="@(DateTime.Now)"></e-grid-column>
+                    <e-grid-column field="AnswerOne" headerText="Soru Bir"></e-grid-column>
+                    <e-grid-column field="AnswerTwo" headerText="Soru İki"></e-grid-column>
+                    <e-grid-column field="AnswerThree" headerText="Soru Üç"></e-grid-column>
+                    <e-grid-column field="AnswerFour" headerText="Soru Dört"></e-grid-column>
+                    <e-grid-column field="AnswerFive" headerText="Soru Beş"></e-grid-column>
+                    <e-grid-column field="AnswerSix" headerText="Soru Altı"></e-grid-column>
+                    <e-grid-column field="AnswerSeven" headerText="Soru Yedi"></e-grid-column>
+                    <e-grid-column field="AnswerEight" headerText="Soru Sekiz"></e-grid-column>
+                    <e-grid-column field="AnswerNine" headerText="Soru Dokuz"></e-grid-column>
+                    <e-grid-column field="AnswerTen" headerText="Soru On"></e-grid-column>
+                    <e-grid-column field="IsFirstTime" headerText="İlk Kez"></e-grid-column>
+                    <e-grid-column field="Gender" headerText="Cinsiyet"></e-grid-column>
+                    <e-grid-column field="DateYear" headerText="Doğum Yılı"></e-grid-column>
+                    <e-grid-column field="IsMarried" headerText="Evli mi?"></e-grid-column>
+                    <e-grid-column field="Profession" headerText="Meslek"></e-grid-column>
+                    <e-grid-column field="Description" headerText="Not"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    ej.base.L10n.load({
+        'tr': {
+            'datepicker': {
+                'today': 'Bugün'
+            },
+            'grid': {
+                'EmptyRecord': 'Kayıt yok.',
+                'Add': 'Ekle',
+                'Edit': 'Düzenle',
+                'Update': 'Güncelle',
+                'Delete': 'Sil',
+                'GroupDropArea': 'Gruplamak için sütunların başlıklarını sürükleyiniz.',
+                'Search': 'Arama',
+                'EditOperationAlert': 'Düzenlemek için kayıt seçilmedi.',
+                'Save': 'Kaydet',
+                'EditFormTitle': 'Kayıt Düzenleme - ',
+                'ConfirmDelete': 'Kaydı silmek istediğinize emin misiniz?',
+                'AddFormTitle': 'Yeni Kayıt',
+                'OKButton': 'Tamam',
+                'SaveButton': 'Kaydet',
+                'CancelButton': 'İptal',
+                'Item': 'kayıt',
+                'Items': 'kayıt',
+            },
+            'pager': {
+                'currentPageInfo': '{0}/{1}',
+                'totalItemsInfo': '({0} kayıt)',
+                'firstPageTooltip': 'İlk Sayfa',
+                'lastPageTooltip': 'Son Sayfa',
+                'nextPageTooltip': 'Sonraki Sayfa',
+                'previousPageTooltip': 'Önceki Sayfa',
+                'nextPagerTooltip': 'Sonraki Sayfa',
+                'previousPagerTooltip': 'Önceki Sayfa',
+                'pagerDropDown' : 'Sayfa başı kayıt',
+                'All': 'Tümü'
+            }
+        }
+    });
+    loadCultureFiles('tr');
+    function loadCultureFiles(name) {
+        var files = ['ca-gregorian.json', 'numbers.json', 'timeZoneNames.json', 'dateFields.json'];
+        var loader = ej.base.loadCldr;
+        var loadCulture = function (prop) {
+            var val, ajax;
+            ajax = new ej.base.Ajax(location.origin + '/cldr-data/main/' + name + '/' + files[prop], 'GET', false);
+            ajax.onSuccess = function (value) { val = value; };
+            ajax.send();
+            loader(JSON.parse(val));
+            ej.base.setCulture('tr');
+        };
+        for (var prop = 0; prop < files.length; prop++) { loadCulture(prop); }
+    }
+    function create(args) {
+        rteElem = document.createElement('input');
+        return rteElem;
+    }
+    function write(args) {
+        richTextEditor = new ej.inputs.TextBox({
+            placeholder: 'Açıklama',
+            floatLabelType: 'Auto',
+            multiline : true, // enable multiline feature support 
+            value: args.rowData[args.column.field],   // bind the column value to the textbox 
+            created: function () {
+                this.addAttributes({rows: "20"});
+            }
+          });
+        richTextEditor.appendTo(rteElem);
+    }
+    function destroy() { richTextEditor.destroy(); }
+    function read(args) { return richTextEditor.value; }
+</script>

@@ -27,6 +27,8 @@ namespace Cor.Apt.Entities
         public DbSet<Andulation> Andulations { get; set; }
         public DbSet<AndulationRecord> AndulationRecords { get; set; }
         public DbSet<Cryline> Crylines { get; set; }
+        public DbSet<Consent> Consents { get; set; }
+        public DbSet<ConsentForm> ConsentForms { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<ApplicationType> ApplicationTypes { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
@@ -34,6 +36,8 @@ namespace Cor.Apt.Entities
         public DbSet<BodyAnalysis> BodyAnalyses { get; set; }
         public DbSet<DecisionAndTracing> DecisionAndTracings { get; set; }
         public DbSet<DecisionAndTracingType> DecisionAndTracingTypes { get; set; }
+        public DbSet<Diagnosis> Diagnoses { get; set; }
+        public DbSet<DiagnosisRecord> DiagnosisRecords { get; set; }
         public DbSet<DiscountType> DiscountTypes { get; set; }
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
@@ -53,6 +57,7 @@ namespace Cor.Apt.Entities
         public DbSet<SaleRecordList> SaleRecordLists { get; set; }
         public DbSet<SocialSecurity> SocialSecurities { get; set; }
         public DbSet<StockRecord> StockRecords { get; set; }
+        public DbSet<Survey> Surveys { get; set; }
         public DbSet<StockRecordDecrease> StockRecordDecreases { get; set; }
         public DbSet<Type> Types { get; set; }
         public DbSet<Unit> Units { get; set; }

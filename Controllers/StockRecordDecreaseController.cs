@@ -21,7 +21,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant", "Specialist" })) return RedirectToAction("Index", "Auth");
             IEnumerable<StockRecordDecrease> DataSource = _context.StockRecordDecreases.Include(i => i.Product).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -34,7 +34,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Insert([FromBody] CRUDModel<StockRecordDecrease> value) // Insert the new record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant", "Specialist" })) return RedirectToAction("Index", "Auth");
             StockRecordDecrease _stockRecordDecrease = new StockRecordDecrease
             {
                 Details = value.Value.Details,
@@ -50,7 +50,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update([FromBody] CRUDModel<StockRecordDecrease> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _stockRecordDecrease = _context.StockRecordDecreases.Where(i => i.StockRecordDecreaseId == value.Value.StockRecordDecreaseId).FirstOrDefault();
             Product _product = _context.Products.Where(i => i.ProductId == _stockRecordDecrease.ProductId).FirstOrDefault();
             _product.Piece += _stockRecordDecrease.Piece - value.Value.Piece;
@@ -66,7 +66,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<StockRecordDecrease> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Accountant", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _stockRecordDecrease = _context.StockRecordDecreases.Where(i => i.StockRecordDecreaseId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_stockRecordDecrease);
             _context.SaveChanges();

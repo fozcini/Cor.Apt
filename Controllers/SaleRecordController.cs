@@ -23,7 +23,7 @@ namespace Cor.Apt.Controllers
         [HttpPost]
         public IActionResult Update()
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             int _saleRecordId = Convert.ToInt32(HttpContext.Request.Form["SaleRecordId"]);
             int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
             List<Product> _products = _context.Products.ToList();
@@ -61,7 +61,7 @@ namespace Cor.Apt.Controllers
         [HttpPost]
         public IActionResult Set()
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             int _analysisId = Convert.ToInt32(HttpContext.Request.Form["AnalysisId"]);
             int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
             List<AnalysisType> analysisTypes = _context.AnalysisTypes.Where(i => i.AnalysisId == _analysisId).ToList();
@@ -77,7 +77,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Remove(int saleRecordId, int patientId)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             if (_context.SaleRecords.Any(i => i.SaleRecordId == saleRecordId))
             {
                 List<SaleRecordList> _saleRecordList = _context.SaleRecordLists.Where(i => i.SaleRecordId == saleRecordId).ToList();

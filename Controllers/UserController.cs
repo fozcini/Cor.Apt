@@ -26,13 +26,19 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Index()
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
+            return View();
+        }
+        public IActionResult UpdateAppointment()
+        {
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
+            ViewBag.Units = _context.Units.ToList();
             return View();
         }
 
         public IActionResult Appointment()
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             ViewBag.AppointmentTypes = _context.AppointmentTypes.ToList();
             ViewBag.Units = _context.Units.ToList();
             ViewBag.Resources = new string[] { "Units" };
@@ -41,7 +47,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Patient()
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             ViewBag.SocialSecurities = _context.SocialSecurities.ToList();
             ViewBag.DiscountTypes = _context.DiscountTypes.ToList();
             return View();
@@ -49,7 +55,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Details(int patientId)
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             Patient patient = _context.Patients.Include(i => i.DiscountType).Include(i => i.SocialSecurity).Where(i => i.PatientId == patientId).FirstOrDefault();
             if (_context.Anamnesises.Where(i => i.PatientId == patientId).Any()) ViewBag.Anamnesis = _context.Anamnesises.Where(i => i.PatientId == patientId).FirstOrDefault();
             else ViewBag.Anamnesis = new Anamnesis() { };
@@ -81,7 +87,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Treatment()
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             ViewBag.SocialSecurities = _context.SocialSecurities.ToList();
             ViewBag.DiscountTypes = _context.DiscountTypes.ToList();
             return View();
@@ -89,7 +95,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult TreatmentDetails(int patientId)
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             Patient patient = _context.Patients.Include(i => i.DiscountType).Include(i => i.SocialSecurity).Where(i => i.PatientId == patientId).FirstOrDefault();
             if (_context.Anamnesises.Where(i => i.PatientId == patientId).Any()) ViewBag.Anamnesis = _context.Anamnesises.Where(i => i.PatientId == patientId).FirstOrDefault();
             else ViewBag.Anamnesis = new Anamnesis() { };
@@ -104,14 +110,14 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Users()
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist" })) return RedirectToAction("Index", "Auth");
             ViewBag.Patients = _context.Patients.ToList();
             return View();
         }
 
         public IActionResult UserDetails(int userId)
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist" })) return RedirectToAction("Index", "Auth");
             User user = _context.Users.Where(i => i.UserId == userId).FirstOrDefault();
             ViewBag.LeaveTypes = _context.LeaveTypes.ToList();
             ViewBag.SalaryPaymentTypes = _context.SalaryPaymentTypes.ToList();
@@ -120,19 +126,19 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Applications()
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist" })) return RedirectToAction("Index", "Auth");
             ViewBag.ApplicationTypes = _context.ApplicationTypes.ToList();
             return View();
         }
         public IActionResult Consents()
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist" })) return RedirectToAction("Index", "Auth");
             ViewBag.ConsentForms = _context.ConsentForms.ToList();
             return View();
         }
         public IActionResult Surveys()
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist" })) return RedirectToAction("Index", "Auth");
             List<Survey> _surveys = _context.Surveys.ToList();
             if (Request.HasFormContentType)
             {
@@ -143,7 +149,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Analysis(int? analysisId, int? patientId)
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             ViewBag.Types = _context.Types.ToList();
             if (analysisId == null && patientId != null)
             {
@@ -162,7 +168,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult RadiologyRequest(int? radiologyRequestId, int? patientId)
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             ViewBag.RadiologyRequestTypeLists = _context.RadiologyRequestTypeLists.ToList();
             if (radiologyRequestId == null && patientId != null)
             {
@@ -181,7 +187,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult SaleRecord(int? saleRecordId, int? patientId)
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             ViewBag.Products = _context.Products.ToList();
             if (saleRecordId == null && patientId != null)
             {
@@ -202,14 +208,14 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Accounting()
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist" })) return RedirectToAction("Index", "Auth");
             return View();
         }
 
         [HttpPost]
         public IActionResult UpdateProfilePicture(IFormFile profilePicture)
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
             if (profilePicture != null) UploadedFile(profilePicture, _patientId);
             return RedirectToAction("Details", "User", new { patientId = _patientId });

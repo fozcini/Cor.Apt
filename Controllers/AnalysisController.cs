@@ -20,7 +20,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             IEnumerable<Analysis> DataSource = _context.Analyses.Where(i => i.PatientId == pid).OrderByDescending(i => i.AnalysisDate).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -33,7 +33,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Insert([FromBody] CRUDModel<Analysis> value, int pid) // Insert the new record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             Analysis _analysis = new Analysis();
             _analysis.Description = value.Value.Description;
             _analysis.AnalysisDate = value.Value.AnalysisDate;
@@ -44,7 +44,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update([FromBody] CRUDModel<Analysis> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _analysis = _context.Analyses.Where(i => i.AnalysisId == value.Value.AnalysisId).FirstOrDefault();
             if (_analysis != null)
             {
@@ -57,7 +57,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<Analysis> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _analysis = _context.Analyses.Where(i => i.AnalysisId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_analysis);
             _context.SaveChanges();

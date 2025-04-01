@@ -20,7 +20,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             IEnumerable<ApplicationType> DataSource = _context.ApplicationTypes.ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -33,7 +33,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Insert([FromBody] CRUDModel<ApplicationType> value) // Insert the new record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             ApplicationType _applicationType = new ApplicationType();
             _applicationType.ApplicationTypeName = value.Value.ApplicationTypeName;
             _context.ApplicationTypes.Add(_applicationType);
@@ -42,7 +42,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update([FromBody] CRUDModel<ApplicationType> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _applicationType = _context.ApplicationTypes.Where(i => i.ApplicationTypeId == value.Value.ApplicationTypeId).FirstOrDefault();
             if (_applicationType != null)
             {
@@ -53,7 +53,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<ApplicationType> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _applicationType = _context.ApplicationTypes.Where(i => i.ApplicationTypeId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_applicationType);
             _context.SaveChanges();

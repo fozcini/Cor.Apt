@@ -20,7 +20,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             IEnumerable<AndulationRecord> DataSource = _context.AndulationRecords.Where(i => i.PatientId == pid).OrderByDescending(i => i.SessionDate).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -33,7 +33,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Insert([FromBody] CRUDModel<AndulationRecord> value, int pid) // Insert the new record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             AndulationRecord _andulationRecord = new AndulationRecord();
             _andulationRecord.SessionDate = value.Value.SessionDate;
             _andulationRecord.Session = value.Value.Session;
@@ -50,7 +50,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update([FromBody] CRUDModel<AndulationRecord> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             var _andulationRecord = _context.AndulationRecords.Where(i => i.AndulationRecordId == value.Value.AndulationRecordId).FirstOrDefault();
             if (_andulationRecord != null)
             {
@@ -69,7 +69,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<AndulationRecord> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             var _andulationRecord = _context.AndulationRecords.Where(i => i.AndulationRecordId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_andulationRecord);
             _context.SaveChanges();

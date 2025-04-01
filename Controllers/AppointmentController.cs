@@ -21,13 +21,13 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Load()  // Here we get the Start and End Date and based on that can filter the data and return to Scheduler
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             return Json(_context.Appointments.Include(i => i.AppointmentType).Include(i => i.Unit).ToList());
         }
         [HttpPost]
         public ActionResult Update([FromBody] EditParams param)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Secretary" })) return RedirectToAction("Index", "Auth");
             if (param.action == "insert" || (param.action == "batch" && param.added.Count > 0)) // this block of code will execute while inserting the appointments
             {
                 var value = (param.action == "insert") ? param.value : param.added[0];
@@ -71,14 +71,20 @@ namespace Cor.Apt.Controllers
                 {
                     int key = Convert.ToInt32(param.key);
                     Appointment appointment = _context.Appointments.Where(c => c.Id == key).FirstOrDefault();
-                    if (appointment != null) _context.Appointments.Remove(appointment);
+                    //if (appointment != null) _context.Appointments.Remove(appointment);
+                    appointment.StartTime = Convert.ToDateTime("01.01.2024 10:00:00");
+                    appointment.EndTime = Convert.ToDateTime("01.01.2024 10:10:00");
+                    _context.Update(appointment);
                 }
                 else
                 {
                     foreach (var apps in param.deleted)
                     {
                         Appointment appointment = _context.Appointments.Where(c => c.Id == apps.Id).FirstOrDefault();
-                        if (appointment != null) _context.Appointments.Remove(appointment);
+                        //if (appointment != null) _context.Appointments.Remove(appointment);
+                        appointment.StartTime = Convert.ToDateTime("01.01.2020 10:00:00");
+                        appointment.EndTime = Convert.ToDateTime("01.01.2020 10:10:00");
+                        _context.Update(appointment);
                     }
                 }
                 _context.SaveChanges();
@@ -90,7 +96,7 @@ namespace Cor.Apt.Controllers
         public List<Appointment> Search(string str)
         {
             return _context.Appointments.Include(i => i.Unit).Where(i => i.PatientName.Contains(str)).OrderByDescending(i => i.StartTime).ToList();
-        } 
+        }
         public class EditParams
         {
             public string key { get; set; }

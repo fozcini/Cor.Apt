@@ -24,7 +24,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid, bool isDecision)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             IEnumerable<DecisionAndTracing> DataSource = isDecision ? _context.DecisionAndTracings.Where(i => i.PatientId == pid & i.DecisionAndTracingTypeId == 1).OrderByDescending(i => i.RecordDate).ToList(): _context.DecisionAndTracings.Where(i => i.PatientId == pid & i.DecisionAndTracingTypeId == 2).OrderByDescending(i => i.RecordDate).ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -37,7 +37,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Insert([FromBody] CRUDModel<DecisionAndTracing> value, int pid, bool isDecision) // Insert the new record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             DecisionAndTracing _decisionAndTracing = new DecisionAndTracing();
             int uid = (int)_accesor.HttpContext.Session.GetInt32("userid");
             _decisionAndTracing.Description = value.Value.Description;
@@ -51,7 +51,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update([FromBody] CRUDModel<DecisionAndTracing> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             var _decisionAndTracing = _context.DecisionAndTracings.Where(i => i.DecisionAndTracingId == value.Value.DecisionAndTracingId).FirstOrDefault();
             if (_decisionAndTracing != null)
             {
@@ -66,7 +66,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<DecisionAndTracing> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             var _decisionAndTracing = _context.DecisionAndTracings.Where(i => i.DecisionAndTracingId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_decisionAndTracing);
             _context.SaveChanges();

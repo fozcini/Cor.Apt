@@ -30,7 +30,7 @@ namespace Cor.Apt.Controllers
         [HttpPost]
         public IActionResult Insert()
         {
-            if (!_authService.UserIsValid(new List<string> { "Survey", "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "Survey", "User", "Specialist"})) return RedirectToAction("Index", "Auth");
             Survey survey = new Survey()
             {
                 SurveyDate = DateTime.Now,
@@ -58,7 +58,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Get([FromBody] DataManagerRequest dm)
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist" })) return RedirectToAction("Index", "Auth");
             IEnumerable<Survey> DataSource = _context.Surveys.ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -71,7 +71,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<Survey> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Specialist"})) return RedirectToAction("Index", "Auth");
             var _survey = _context.Surveys.Where(i => i.SurveyId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_survey);
             _context.SaveChanges();

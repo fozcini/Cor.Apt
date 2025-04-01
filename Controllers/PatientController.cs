@@ -22,7 +22,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             IEnumerable<Patient> DataSource = _context.Patients.ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = DataSource.Where(i => i.FullName.ToUpper(new CultureInfo("tr-TR", false)).Contains(dm.Search[0].Key.ToUpper(new CultureInfo("tr-TR", false)))).ToList();  //Search
@@ -36,7 +36,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Insert([FromBody] CRUDModel<Patient> value) // Insert the new record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             Patient _patient = new Patient();
             _patient.IdentificationNumber = value.Value.IdentificationNumber;
             _patient.FullName = value.Value.FullName;
@@ -56,7 +56,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update([FromBody] CRUDModel<Patient> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             var _patient = _context.Patients.Where(i => i.PatientId == value.Value.PatientId).FirstOrDefault();
             if (_patient != null)
             {
@@ -78,7 +78,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<Patient> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _patient = _context.Patients.Where(i => i.PatientId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_patient);
             _context.SaveChanges();
@@ -88,7 +88,7 @@ namespace Cor.Apt.Controllers
         [HttpPost]
         public IActionResult UpdatePatientByUser(Patient value)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse", "Secretary" })) return RedirectToAction("Index", "Auth");
             var _patient = _context.Patients.Where(i => i.PatientId == value.PatientId).FirstOrDefault();
             if (_patient != null)
             {

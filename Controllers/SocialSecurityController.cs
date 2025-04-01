@@ -20,7 +20,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             IEnumerable<SocialSecurity> DataSource = _context.SocialSecurities.ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -33,7 +33,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Insert([FromBody] CRUDModel<SocialSecurity> value) // Insert the new record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             SocialSecurity _socialSecurity = new SocialSecurity();
             _socialSecurity.SocialSecurityName = value.Value.SocialSecurityName;
             _context.SocialSecurities.Add(_socialSecurity);
@@ -42,7 +42,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update([FromBody] CRUDModel<SocialSecurity> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _socialSecurity = _context.SocialSecurities.Where(i => i.SocialSecurityId == value.Value.SocialSecurityId).FirstOrDefault();
             if (_socialSecurity != null)
             {
@@ -53,7 +53,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<SocialSecurity> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _socialSecurity = _context.SocialSecurities.Where(i => i.SocialSecurityId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_socialSecurity);
             _context.SaveChanges();

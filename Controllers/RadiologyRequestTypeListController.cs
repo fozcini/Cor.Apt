@@ -20,7 +20,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             IEnumerable<RadiologyRequestTypeList> DataSource = _context.RadiologyRequestTypeLists.ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -33,7 +33,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Insert([FromBody] CRUDModel<RadiologyRequestTypeList> value) // Insert the new record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             RadiologyRequestTypeList _radiologyRequestTypeList = new RadiologyRequestTypeList();
             _radiologyRequestTypeList.TypeName = value.Value.TypeName;
             _radiologyRequestTypeList.Price = value.Value.Price;
@@ -43,7 +43,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update([FromBody] CRUDModel<RadiologyRequestTypeList> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _radiologyRequestTypeList = _context.RadiologyRequestTypeLists.Where(i => i.RadiologyRequestTypeListId == value.Value.RadiologyRequestTypeListId).FirstOrDefault();
             if (_radiologyRequestTypeList != null)
             {
@@ -55,7 +55,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<RadiologyRequestTypeList> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _radiologyRequestTypeList = _context.RadiologyRequestTypeLists.Where(i => i.RadiologyRequestTypeListId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_radiologyRequestTypeList);
             _context.SaveChanges();

@@ -15,7 +15,7 @@
     <link href="~/css/nucleo-icons.css" rel="stylesheet" />
     <link href="~/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/f9ab2bc580.js" crossorigin="anonymous"></script>
     <link href="~/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="~/css/soft-ui-dashboard.css?v=1.0.6" rel="stylesheet" />
@@ -106,6 +106,58 @@
                     </a>
                 </li>
                 }
+                @if(@HttpContextAccessor.HttpContext.Session.GetInt32("rl") == 6) {
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Appointment", controllers: "User")' href="/User/Appointment">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-calendar-grid-58 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Randevu Takvimi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Patient,Details", controllers: "User")' href="/User/Patient">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-single-02 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Hasta Yönetimi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Treatment,TreatmentDetails", controllers: "User")' href="/User/Treatment">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-collection color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Tedavi Yönetimi</span>
+                    </a>
+                </li>
+                }
+                @if(@HttpContextAccessor.HttpContext.Session.GetInt32("rl") == 7) {
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Appointment", controllers: "User")' href="/User/Appointment">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-calendar-grid-58 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Randevu Takvimi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Patient,Details", controllers: "User")' href="/User/Patient">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-single-02 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Hasta Yönetimi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Treatment,TreatmentDetails", controllers: "User")' href="/User/Treatment">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-collection color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Tedavi Yönetimi</span>
+                    </a>
+                </li>
+                }
                 else if(@HttpContextAccessor.HttpContext.Session.GetInt32("rl") == 2)
                 {
                 <li class="nav-item">
@@ -151,6 +203,49 @@
                         <span class="nav-link-text ms-1">Stok Yönetimi</span>
                     </a>
                 </li> 
+                }
+                else if(@HttpContextAccessor.HttpContext.Session.GetInt32("rl") == 3)
+                {
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Patient,Details", controllers: "User")' href="/User/Patient">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-single-02 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Hasta Yönetimi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Users", controllers: "User")' href="/User/Users">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-badge color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Personel Yönetimi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Applications", controllers: "User")' href="/User/Applications">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-archive-2 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Başvurular</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Consents", controllers: "User")' href="/User/Consents">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-books color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Onam Yönetimi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link @Html.IsActive(actions: "Surveys", controllers: "User")' href="/User/Surveys">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-chart-bar-32 color-background"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Anket Yönetimi</span>
+                    </a>
+                </li>
                 }
             </ul>
         </div>

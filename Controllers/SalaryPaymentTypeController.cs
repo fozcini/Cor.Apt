@@ -20,7 +20,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             IEnumerable<SalaryPaymentType> DataSource = _context.SalaryPaymentTypes.ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -33,7 +33,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Insert([FromBody] CRUDModel<SalaryPaymentType> value) // Insert the new record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             SalaryPaymentType _salaryPaymentType = new SalaryPaymentType();
             _salaryPaymentType.SalaryPaymentTypeName = value.Value.SalaryPaymentTypeName;
             _context.SalaryPaymentTypes.Add(_salaryPaymentType);
@@ -42,7 +42,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update([FromBody] CRUDModel<SalaryPaymentType> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _salaryPaymentType = _context.SalaryPaymentTypes.Where(i => i.SalaryPaymentTypeId == value.Value.SalaryPaymentTypeId).FirstOrDefault();
             if (_salaryPaymentType != null)
             {
@@ -53,7 +53,7 @@ namespace Cor.Apt.Controllers
         }
         public ActionResult Remove([FromBody] CRUDModel<SalaryPaymentType> value) // Remove record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _salaryPaymentType = _context.SalaryPaymentTypes.Where(i => i.SalaryPaymentTypeId == int.Parse(value.Key.ToString())).FirstOrDefault();
             _context.Remove(_salaryPaymentType);
             _context.SaveChanges();

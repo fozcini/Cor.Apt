@@ -36,8 +36,11 @@ namespace Cor.Apt.Controllers
                 {
                     if(HttpContext.Session.GetInt32("rl") == 1) return RedirectToAction("Appointment", "User");
                     if(HttpContext.Session.GetInt32("rl") == 2) return RedirectToAction("Index", "Admin");
+                    if(HttpContext.Session.GetInt32("rl") == 3) return RedirectToAction("Patient", "User");
                     if(HttpContext.Session.GetInt32("rl") == 4) return RedirectToAction("Index", "Accountant");
                     if(HttpContext.Session.GetInt32("rl") == 5) return RedirectToAction("Index", "Survey");
+                    if(HttpContext.Session.GetInt32("rl") == 6) return RedirectToAction("Appointment", "User");
+                    if(HttpContext.Session.GetInt32("rl") == 7) return RedirectToAction("Appointment", "User");
                 }
                 else ModelState.AddModelError(string.Empty, "Kullanıcı adı veya parola hatalı.");
             }

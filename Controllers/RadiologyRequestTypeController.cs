@@ -22,7 +22,7 @@ namespace Cor.Apt.Controllers
         [HttpPost]
         public IActionResult Update()
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             int _radiologyRequestId = Convert.ToInt32(HttpContext.Request.Form["RadiologyRequestId"]);
             int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
             if (_context.RadiologyRequestTypes.Where(i => i.RadiologyRequestId == _radiologyRequestId).Any())
@@ -78,7 +78,7 @@ namespace Cor.Apt.Controllers
         [HttpPost]
         public IActionResult Set()
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             int _radiologyRequestId = Convert.ToInt32(HttpContext.Request.Form["RadiologyRequestId"]);
             int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
             List<RadiologyRequestType> radiologyRequestTypes = _context.RadiologyRequestTypes.Where(i => i.RadiologyRequestId == _radiologyRequestId).ToList();
@@ -94,7 +94,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Remove(int radiologyRequestId, int patientId)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             if (_context.RadiologyRequestTypes.Any(i => i.RadiologyRequestId == radiologyRequestId))
             {
                 List<RadiologyRequestType> _radiologyRequestTypes = _context.RadiologyRequestTypes.Where(i => i.RadiologyRequestId == radiologyRequestId).ToList();

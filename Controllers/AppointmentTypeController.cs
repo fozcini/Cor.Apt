@@ -21,7 +21,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Update(AppointmentType value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             if (value.AppointmentTypeId == 0)
             {
                 AppointmentType _appointmentType = new AppointmentType();

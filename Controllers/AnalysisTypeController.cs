@@ -22,7 +22,7 @@ namespace Cor.Apt.Controllers
         [HttpPost]
         public IActionResult Update()
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             int _analysisId = Convert.ToInt32(HttpContext.Request.Form["AnalysisId"]);
             int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
             if (_context.AnalysisTypes.Where(i => i.AnalysisId == _analysisId).Any())
@@ -78,7 +78,7 @@ namespace Cor.Apt.Controllers
         [HttpPost]
         public IActionResult Set()
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             int _analysisId = Convert.ToInt32(HttpContext.Request.Form["AnalysisId"]);
             int _patientId = Convert.ToInt32(HttpContext.Request.Form["PatientId"]);
             List<AnalysisType> analysisTypes = _context.AnalysisTypes.Where(i => i.AnalysisId == _analysisId).ToList();
@@ -94,7 +94,7 @@ namespace Cor.Apt.Controllers
 
         public IActionResult Remove(int analysisId, int patientId)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist", "Nurse" })) return RedirectToAction("Index", "Auth");
             if (_context.AnalysisTypes.Any(i => i.AnalysisId == analysisId))
             {
                 List<AnalysisType> _analysisTypes = _context.AnalysisTypes.Where(i => i.AnalysisId == analysisId).ToList();

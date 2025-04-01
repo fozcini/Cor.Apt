@@ -20,7 +20,7 @@ namespace Cor.Apt.Controllers
         }
         public IActionResult Get([FromBody] DataManagerRequest dm, int pid)
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             IEnumerable<Type> DataSource = _context.Types.ToList();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0) DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
@@ -33,7 +33,7 @@ namespace Cor.Apt.Controllers
         }
         // public IActionResult Insert([FromBody] CRUDModel<Type> value) // Insert the new record 
         // {
-        //     if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+        //     if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
         //     Type _type = new Type();
         //     _type.TypeName = value.Value.TypeName;
         //     _type.Price = value.Value.Price;
@@ -43,7 +43,7 @@ namespace Cor.Apt.Controllers
         // }
         public IActionResult Update([FromBody] CRUDModel<Type> value) // Update record 
         {
-            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+            if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
             var _type = _context.Types.Where(i => i.TypeId == value.Value.TypeId).FirstOrDefault();
             if (_type != null)
             {
@@ -55,7 +55,7 @@ namespace Cor.Apt.Controllers
         }
         // public ActionResult Remove([FromBody] CRUDModel<Type> value) // Remove record 
         // {
-        //     if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master" })) return RedirectToAction("Index", "Auth");
+        //     if (!_authService.UserIsValid(new List<string> { "User", "Admin", "Master", "Specialist" })) return RedirectToAction("Index", "Auth");
         //     var _type = _context.Types.Where(i => i.TypeId == int.Parse(value.Key.ToString())).FirstOrDefault();
         //     _context.Remove(_type);
         //     _context.SaveChanges();

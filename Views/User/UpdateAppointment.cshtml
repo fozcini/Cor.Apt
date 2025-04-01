@@ -1,0 +1,120 @@
+<div class="card">
+    <div class="card-header card-header-primary card-header-text py-2">
+        <div class="card-text">
+            <h4 class="card-title">Randevu Düzenle</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <a type="button" class="btn btn-primary" href="/User/Appointment" style="background-color: #03834f !important;">Randevular</a>
+        <div class="control-section">
+            <ejs-grid id="Grid" toolbar='@(new List<string>() {"Search", "Edit"})' allowGrouping="true" allowPaging="true" allowResizing="true" allowTextWrap="true" allowSorting="true" locale="tr">
+                <e-grid-pageSettings pageSizes="true" pageSize="6"></e-grid-pagesettings>
+                <e-data-manager adaptor="UrlAdaptor" url="/AppointmentUpdate/Get" updateUrl="/AppointmentUpdate/Update"></e-data-manager>
+                <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" showDeleteConfirmDialog="true" mode="Dialog"></e-grid-editSettings>
+                <e-grid-searchSettings fields='@(new string[] {"PatientName"})' operator="contains" ignoreCase="true"></e-grid-searchSettings><e-grid-columns>
+                    <e-grid-column field="Id" headerText="Id" isPrimaryKey="true" visible="false"></e-grid-column>
+                    <e-grid-column field="PatientName" headerText="İsim Soyisim" width="110"></e-grid-column>
+                    <e-grid-column field="Phone" headerText="Telefon" width="110"></e-grid-column>
+                    <e-grid-column field="StartTime" headerText="Başlangıç Tarihi" customFormat="@(new { type ="date", format="dd/MM/yyyy HH:mm" })" width="110" edit="@(new {create = "create", read = "read", destroy = "destroy", write = "write"})" ></e-grid-column>
+                    <e-grid-column field="EndTime" headerText="Bitişi Tarihi" customFormat="@(new { type ="date", format="dd/MM/yyyy HH:mm" })" width="110" edit="@(new {create = "createEnd", read = "readEnd", destroy = "destroyEnd", write = "writeEnd"})" ></e-grid-column>
+                    <e-grid-column field="UnitId" headerText="Oda" foreignKeyValue="UnitName" foreignKeyField="UnitId" dataSource="ViewBag.Units" width="120"></e-grid-column>
+                    <e-grid-column field="Description" headerText="Açıklama" width="250" editType="TextBox"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+</div>
+<script>
+    var timeObject;
+    var element
+    function create(args) {
+        element = document.createElement('input');
+        return element;
+    }
+    function read(e) {
+        return timeObject.value;
+    }
+    function destroy() {
+        timeObject.destroy();
+    }
+    function write(args) {
+        timeObject = new ej.calendars.DateTimePicker({
+            value: args.rowData[args.column.field],
+            step: 15
+        });
+        timeObject.appendTo(element);
+    }
+    var timeObjectEnd;
+    var elementEnd
+    function createEnd(args) {
+        elementEnd = document.createElement('input');
+        return elementEnd;
+    }
+    function readEnd(e) {
+        return timeObjectEnd.value;
+    }
+    function destroyEnd() {
+        timeObjectEnd.destroy();
+    }
+    function writeEnd(args) {
+        timeObjectEnd = new ej.calendars.DateTimePicker({
+            value: args.rowData[args.column.field],
+            step: 15
+        });
+        timeObjectEnd.appendTo(elementEnd);
+    }
+</script>
+<script type="text/javascript">
+    ej.base.L10n.load({
+        'tr': {
+            'datepicker': {
+                'today': 'Bugün'
+            },
+            'grid': {
+                'EmptyRecord': 'Kayıt yok.',
+                'Add': 'Ekle',
+                'Edit': 'Düzenle',
+                'Update': 'Güncelle',
+                'Delete': 'Sil',
+                'GroupDropArea': 'Gruplamak için sütunların başlıklarını sürükleyiniz.',
+                'Search': 'Arama',
+                'EditOperationAlert': 'Düzenlemek için kayıt seçilmedi.',
+                'Save': 'Kaydet',
+                'EditFormTitle': 'Kayıt Düzenleme - ',
+                'ConfirmDelete': 'Kaydı silmek istediğinize emin misiniz?',
+                'AddFormTitle': 'Yeni Kayıt',
+                'OKButton': 'Tamam',
+                'SaveButton': 'Kaydet',
+                'CancelButton': 'İptal',
+                'Item': 'kayıt',
+                'Items': 'kayıt',
+            },
+            'pager': {
+                'currentPageInfo': '{0}/{1}',
+                'totalItemsInfo': '({0} kayıt)',
+                'firstPageTooltip': 'İlk Sayfa',
+                'lastPageTooltip': 'Son Sayfa',
+                'nextPageTooltip': 'Sonraki Sayfa',
+                'previousPageTooltip': 'Önceki Sayfa',
+                'nextPagerTooltip': 'Sonraki Sayfa',
+                'previousPagerTooltip': 'Önceki Sayfa',
+                'pagerDropDown' : 'Sayfa başı kayıt',
+                'All': 'Tümü'
+            }
+        }
+    });
+    loadCultureFiles('tr');
+    function loadCultureFiles(name) {
+        var files = ['ca-gregorian.json', 'numbers.json', 'timeZoneNames.json', 'dateFields.json'];
+        var loader = ej.base.loadCldr;
+        var loadCulture = function (prop) {
+            var val, ajax;
+            ajax = new ej.base.Ajax(location.origin + '/cldr-data/main/' + name + '/' + files[prop], 'GET', false);
+            ajax.onSuccess = function (value) { val = value; };
+            ajax.send();
+            loader(JSON.parse(val));
+            ej.base.setCulture('tr');
+        };
+        for (var prop = 0; prop < files.length; prop++) { loadCulture(prop); }
+    }
+</script>
